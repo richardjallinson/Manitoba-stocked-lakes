@@ -1,7 +1,7 @@
 {
   "id": "./",
   "name": "Manitoba Stocked Lakes",
-  "short_name": "MB Stocked Lakes",
+  "short_name": "Manitoba Lakes",
   "description": "Find Ontario stocked lakes by distance, species and stocking year, then check regulations, access points, weather and consumption advice.",
   "start_url": "./",
   "scope": "./",
