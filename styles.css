@@ -1,0 +1,1498 @@
+
+/* Colour pass (v3y). --green stays the deep navy it always was — headers,
+   text-on-light, the identity colour — because renaming it would touch every
+   rule below. --accent is new: the vivid "sport" green for anything that
+   invites a tap (Search, My Location, active tab, active language, the
+   trip-start button). --gold narrows to a deliberate second accent used only
+   where it always meant "official/dated" — the stocking-date line and the
+   focus ring — rather than being the app's one CTA colour.
+   Navy-on-accent repeats the navy-on-gold pattern already used everywhere
+   else, so buttons keep one visual grammar regardless of which accent. */
+:root{--green:#13263C;--green2:#1D3A57;--water:#2E6E9E;--cream:#F3EFE4;--ink:#152230;--muted:#5D6B7A;--card:#fff;--line:#DCE5EC;--gold:#C4941F;
+ /* v4d: lime, sampled from Richard's reference (#8AD720 on the wordmark,
+    #7BC71F on the active tab). Navy text on this lime measures 8.6:1, so the
+    buttons keep the navy-on-accent grammar. --accent-dark exists because lime
+    on WHITE is only 1.8:1 — unusable — so anything sitting on a white card
+    (filter icons, the sort label) uses the darker one at 4.2:1. */
+ --accent:#8AD720;--accent-dark:#4F8A0F;--accent-deep:#20421A;
+ --accent-soft:#B6EA6A;
+ --display:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#E8F1FA;color:var(--ink)}
+header{background:var(--green);color:white;padding:calc(14px + env(safe-area-inset-top)) 18px 15px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000}
+header h1{margin:0;font-size:24px}.eyebrow{font-size:11px;letter-spacing:2px;color:#A8C2DA;font-weight:700}.round{border:1px solid #4A6B94;background:#ffffff12;color:white;width:42px;height:42px;border-radius:50%;font-size:24px}
+main{max-width:850px;margin:auto;padding:16px}/* The hero is a raised card now, with the app's own trout artwork sunk into
+   the corner at low opacity. Reusing icons/header-mark.png rather than adding
+   a photo keeps this to zero new bytes and keeps the app offline-first: a
+   bundled mark cannot fail to load at a lake. */
+/* The card plate sits on the right, where the mockup shows trees behind the
+   controls. Scrim measured the same way: ~75% on the left where the heading
+   and hint sit (13:1), easing to 30% past the controls so the photo is
+   actually visible. The green gradient stays as the base layer, so this is
+   photo-on-top-of-colour rather than photo-instead-of-colour — if the image
+   fails to decode the card is still the v3y card, not a white box. */
+/* Base geometry only. The background lives in the later .hero rule further
+   down this file — putting it here as well is what broke v3z. */
+.hero{position:relative;overflow:hidden;
+ color:white;padding:24px 22px 22px;border-radius:24px;box-shadow:0 14px 34px #0B182B33;margin-bottom:4px}
+/* v3z: the trout watermark is gone from the hero. It existed because there
+   was no photo to put here; now there is one, and two overlapping textures
+   behind the same text was one too many. The trout still leads the header. */
+.hero>*{position:relative;z-index:1}
+.hero h2{font-size:1.6rem;line-height:1.15;margin-bottom:6px}
+.hero h2{font-size:25px;margin:0 0 7px}.hero p{margin:0 0 17px;color:#C6D8E8}.searchrow{display:flex;gap:10px;margin-top:14px}
+.searchrow input{border-radius:14px;padding:15px 16px;font-size:15px;border:0}
+.searchrow button{border-radius:14px;padding:0 22px;font-weight:800;font-size:15px}
+.searchAlt{margin-top:10px}
+.searchAlt button{border-radius:14px;padding:13px 20px;font-weight:800}.searchrow input{flex:1;border:0;padding:14px;border-radius:12px;font-size:16px;min-width:0}.searchrow button,#searchBtn{border:0;background:var(--accent);color:var(--green);padding:0 17px;border-radius:12px;font-weight:800}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.quick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.quick button{background:#EFF8F1;border:1px solid #CFE6D6;border-radius:20px;text-align:left;
+ padding:17px 16px;box-shadow:0 4px 14px #13263C10}
+.quick button:nth-of-type(2){background:#EAF3FC;border-color:#CBDFF2}
+/* The icon sits in a filled rounded tile, as in the mockup, rather than
+   floating loose against the card. */
+.quick button .qi{display:flex;align-items:center;justify-content:center;width:42px;height:42px;
+ border-radius:13px;background:var(--accent);color:var(--green);margin-bottom:11px}
+/* Recent Near Me keeps its own tile colour — location is a different kind of
+   action from stocking recency, and one green tile plus one blue tile reads
+   faster than two identical squares with different icons inside them. */
+/* v4e: the lime tile next to a dark navy one made Recent Near Me look
+   disabled. Both are now bright and equally weighted; only the hue differs,
+   which is what distinguishes them without ranking them. */
+.quick button:nth-of-type(2) .qi{background:#2E9BD6;color:#06233A}
+.quick button .qi svg{width:22px;height:22px}
+/* One point down from the first cut (16px->15px), and in px like every other
+   size in this file — 1rem was the odd one out. Freed from the dead narrow-
+   column layout above, 15px now has the card's full width to sit in. */
+.quick button b{display:block;font-size:15px;line-height:1.2;margin-bottom:3px}.quick b,.quick span{display:block}.quick span{font-size:12px;color:var(--muted);margin-top:4px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}/* Pills: the icon is a sibling of the <select>, absolutely placed, because a
+   <select> cannot contain markup. Left padding on the select makes room. */
+.fpill{position:relative;flex:1;display:flex}
+.fpill .fi{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--accent-dark);opacity:.9}
+.fpill .fi svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.filters select{flex:1;width:100%;background:white;border:1px solid var(--line);
+ border-radius:16px;padding:14px 28px 14px 37px;font-size:14px;font-weight:600;
+ box-shadow:0 2px 8px #13263C0D;
+ /* iOS ignores padding on natively-drawn selects, which shoved the label
+    under the icon and clipped long French options. appearance:none makes
+    the padding real; the chevron is redrawn since the native one goes. */
+ -webkit-appearance:none;appearance:none;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6B7C' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+ background-repeat:no-repeat;background-position:right 9px center;background-size:15px}
+.mapcard{background:white;padding:5px;border-radius:18px;box-shadow:0 3px 12px #0000000b}.mapcard #map{height:310px;border-radius:14px}
+.sectiontitle{display:flex;justify-content:space-between;align-items:center;margin:20px 2px 8px}.sectiontitle h3{margin:0}.sectiontitle span{font-size:13px;color:var(--muted)}
+.results{display:grid;gap:10px}.record{background:white;border:1px solid var(--line);border-radius:16px;padding:15px;cursor:pointer}.topline{display:flex;justify-content:space-between;gap:10px}.record h4{font-size:18px;margin:0 0 3px}.pill{white-space:nowrap;background:#E7EFF7;color:var(--green);font-weight:800;font-size:12px;border-radius:20px;padding:6px 9px;height:max-content}.species{font-weight:700;color:var(--green2)}.meta{display:flex;flex-wrap:wrap;gap:7px 14px;margin-top:10px;font-size:13px;color:var(--muted)}
+footer{text-align:center;padding:25px 15px 40px;color:var(--muted);font-size:12px}
+.sheet{position:fixed;inset:0;background:#0008;z-index:3000;display:flex;align-items:flex-end}.sheet.hidden{display:none}.sheetbox{background:white;width:100%;max-width:850px;margin:auto;border-radius:24px 24px 0 0;padding:24px;max-height:78vh;overflow:auto;position:relative}.close{position:absolute;right:16px;top:12px;border:0;background:#ECF1F6;width:36px;height:36px;border-radius:50%;font-size:24px}.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.detailgrid div{background:#F2F6FA;padding:12px;border-radius:12px}.detailgrid small{display:block;color:var(--muted);margin-bottom:3px}.directions{display:block;text-align:center;text-decoration:none;background:var(--green);color:white;padding:14px;border-radius:12px;font-weight:800}
+/* v4m: a sheet is modal — the list behind it must not move (Trevor could
+   scroll the lake list under an open lake page). Two layers:
+   overscroll-behavior stops the sheet's own scroll from chaining to the page
+   when it hits either end, and body.sheetOpen freezes the page outright
+   (position:fixed is the only lock iOS Safari actually honours; app.js sets
+   top to the saved scroll offset and restores it on close). */
+.sheetbox{overscroll-behavior:contain}
+.sheet{overscroll-behavior:contain}
+body.sheetOpen{position:fixed;left:0;right:0;width:100%;overflow:hidden}
+.error{padding:20px;background:#fff3f0;border-radius:14px;color:#7b3027}
+@media(max-width:480px){.quick{grid-template-columns:1fr 1fr}.mapcard #map{height:280px}.hero{padding:18px}.detailgrid{grid-template-columns:1fr 1fr}}
+
+.history{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:10px 0 18px}
+.historyrow{display:flex;justify-content:space-between;gap:15px;padding:12px 13px;border-bottom:1px solid var(--line);background:#fff}
+.historyrow:last-child{border-bottom:0}.historyrow span{display:block;font-size:12px;color:var(--muted);margin-top:3px}.historyright{text-align:right}
+
+body{padding-bottom:76px}.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px}/* v4h: Clear is an ACTION, not a fourth filter.
+   It used to be an identical white card sitting in a 2x2 grid with three
+   dropdowns — same fill, same border, same shadow — so the only thing saying
+   "this wipes your filters" was the word itself. It is now transparent and
+   outlined: same footprint, so the grid stays tidy and its position stays
+   predictable, but it plainly is not one of the selects.
+   Two states: disarmed when nothing is set (it genuinely has nothing to do,
+   and a control that does nothing when tapped teaches people to ignore it),
+   armed the moment any filter is on. */
+/* v4i: two solid states, no dashed outline.
+   The dashed version read as an empty slot or a drop target rather than a
+   button at rest — in interface convention a dashed box means "nothing here
+   yet", which is the opposite of what this is.
+   Disarmed: a quiet grey chip. Still plainly not one of the white dropdowns,
+   still plainly inactive, but it looks like a resting button rather than a
+   gap in the grid.
+   Armed: the palette's water blue with white text at 5.5:1. Blue on purpose —
+   lime already means "go" on Search and My Location, and this undoes rather
+   than starts. Different job, different colour. */
+.clearbtn{display:flex;align-items:center;justify-content:center;gap:7px;
+ background:#EDF1F5;border:1px solid #DCE5EC;border-radius:16px;
+ font-weight:700;color:#647383;padding:14px 16px;box-shadow:none;
+ transition:color .15s ease,border-color .15s ease,background .15s ease}
+.clearbtn[disabled]{cursor:default}
+.clearbtn.armed{background:var(--water);border-color:var(--water);color:#fff;
+ font-weight:800;box-shadow:0 2px 8px #2E6E9E33}
+.clearbtn.armed:active{background:#28618C;border-color:#28618C}
+.clearbtn .fi svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round}
+.cardactions{display:flex;align-items:center;gap:7px}.star,.bigstar{border:0;background:transparent;color:#8494A5;font-size:29px;line-height:1;cursor:pointer}.star.saved,.bigstar.saved{color:#C4941F}.bigstar{font-size:38px}
+.detailhead{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}.detailhead h2{margin-bottom:5px}.empty{text-align:center;color:var(--muted);padding:28px}
+.bottomnav{position:fixed;bottom:0;left:0;right:0;height:calc(64px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:#fff;border-top:1px solid var(--line);display:flex;z-index:2000;box-shadow:0 -4px 18px #0000000d}
+.bottomnav button{flex:1;border:0;background:white;color:var(--muted);font-size:11px;font-weight:700}.bottomnav button span{display:block;font-size:21px;margin-bottom:3px}.bottomnav button.active{color:var(--green)}
+@media(min-width:700px){.filters{grid-template-columns:1fr 1fr 1fr auto}.bottomnav{left:50%;transform:translateX(-50%);max-width:850px;border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+
+.quick{grid-template-columns:1fr 1fr}
+.infoCard{margin:16px 0;background:#F2F6FA;border:1px solid var(--line);border-radius:15px;padding:15px}
+.infoCard h3{margin:0 0 7px}.infoCard p{font-size:13px;line-height:1.45;color:var(--muted);margin:0 0 12px}
+.actionstack{display:grid;gap:8px}.secondaryAction{display:block;text-align:center;text-decoration:none;background:#fff;color:var(--green);border:1px solid #B4C6D6;padding:12px;border-radius:11px;font-weight:800;font-size:14px}
+
+.accessbar{background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 13px;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px}
+.accessbar label{cursor:pointer}.accessbar span{color:var(--muted);font-size:11px;text-align:right}
+.accessrow{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);align-items:center}
+.accessrow:last-child{border-bottom:0}.accessrow span{display:block;color:var(--muted);font-size:11px;margin-top:3px}.accessrow a{text-decoration:none;background:var(--green);color:#fff;padding:8px 9px;border-radius:9px;font-size:11px;font-weight:800}
+@media(max-width:520px){.accessbar{align-items:flex-start;flex-direction:column}.accessbar span{text-align:left}}
+
+.mapcontrols{display:grid;gap:8px;margin-bottom:12px}.mapcontrols .accessbar{margin:0}
+.zoneAction{display:block;text-align:center;text-decoration:none;background:#e7f1ee;color:var(--green);border:1px solid #aac7bf;padding:13px;border-radius:12px;font-weight:900;margin:12px 0 16px}
+
+.dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.dashboard div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 8px;text-align:center}
+.dashboard strong{display:block;color:var(--green);font-size:21px;letter-spacing:-.4px}
+.dashboard span{display:block;color:var(--muted);font-size:10px;margin-top:4px;line-height:1.15}
+@media(max-width:520px){.dashboard{grid-template-columns:1fr 1fr}.dashboard strong{font-size:23px}}
+
+.dashboard{grid-template-columns:repeat(5,1fr)}
+.historynote{background:#F2F6FA;border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--muted);font-size:12px;margin:8px 0 16px}
+.history.historical{max-height:420px;overflow:auto}
+@media(max-width:650px){.dashboard{grid-template-columns:1fr 1fr}.dashboard div:last-child{grid-column:1/-1}}
+
+.specieschips{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}
+.specieschips span{background:#e6f1ed;color:var(--green);border:1px solid #c2d8d1;border-radius:999px;padding:6px 9px;font-size:12px;font-weight:800}
+/* Netting-survey chips carry the count that makes them distinguishable from
+   the presence list: a species name alone reads as the same list twice. */
+.netchips span{display:inline-flex;align-items:baseline;gap:6px}
+.netchips em{font-style:normal;font-weight:600;font-size:11px;opacity:.72;white-space:nowrap}
+.microcopy{font-size:11px!important;margin-top:9px!important}
+.inlineBtn{border:0;background:var(--green);color:white;padding:10px 12px;border-radius:10px;font-weight:800;cursor:pointer}
+
+.bottomnav button{min-width:0}.tripStart{width:100%;border:0;background:var(--accent);color:var(--green);padding:14px;border-radius:12px;font-weight:900;font-size:15px;margin:0 0 16px}
+.tripmeta{color:var(--muted);font-size:12px;margin:-8px 0 14px}.lakeSnapshot{display:grid;gap:5px;background:#eef5f2;border:1px solid var(--line);border-radius:14px;padding:13px;margin:12px 0}.lakeSnapshot span{font-size:12px;color:var(--muted)}
+.catchform{display:grid;gap:8px;background:#F2F6FA;border:1px solid var(--line);border-radius:14px;padding:12px}.catchform input,.catchform select,.catchform textarea,.tripnotes{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit;background:#fff}.formrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.catchform textarea,.tripnotes{min-height:70px;resize:vertical}.catchform button{border:0;background:var(--green);color:white;padding:12px;border-radius:10px;font-weight:900}.checkline{font-size:12px;color:var(--muted)}
+.catchrow{display:flex;justify-content:space-between;padding:10px 2px;border-bottom:1px solid var(--line)}.catchrow span{display:block;font-size:11px;color:var(--muted);margin-top:2px}.catchrow button{border:0;background:#eee;border-radius:50%;width:28px;height:28px}.tripnotes{margin:12px 0 8px}.endTrip{width:100%;border:1px solid #a94442;background:white;color:#8a2927;padding:12px;border-radius:10px;font-weight:900;margin-top:8px}
+@media(max-width:420px){.bottomnav button{font-size:10px}.bottomnav button span{font-size:19px}}
+
+.advisorybox{display:grid;gap:9px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0}
+.advisorybox>span{font-size:11px;color:var(--muted)}.advisorybox label{font-size:11px;font-weight:800;color:var(--muted)}
+.advisorybox select,.advisorybox input{display:block;width:100%;margin-top:4px;border:1px solid var(--line);border-radius:9px;padding:10px;background:#fff;font:inherit}
+
+/* v4n — Trevor: picking a fish in the eating guide and tapping the size box
+   zoomed the whole app in, permanently. iOS auto-zooms any focused control
+   whose text is under 16px, and a standalone web app never zooms back out.
+   Two layers: maximum-scale=1 in the viewport meta stops the auto-zoom
+   itself (pinch still works in Safari; Apple ignores the cap for user
+   gestures), and a 16px floor on every control that takes typing removes
+   the trigger on any iOS version that ignores the meta. Selects that only
+   open pickers keep their designed sizes. */
+.advisorybox input,.advisorybox select,
+.catchform input,.catchform select,.catchform textarea,.tripnotes,
+.findgrid input,.findgrid select,.addItemRow input,.fieldLabel input{font-size:16px}
+.advisorybox button{border:0;background:var(--green);color:#fff;padding:11px;border-radius:10px;font-weight:900}
+.mealgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:5px}.mealgrid div{background:#eef5f2;border-radius:11px;padding:11px;text-align:center}.mealgrid small,.mealgrid span{display:block;color:var(--muted);font-size:10px}.mealgrid b{display:block;font-size:25px;color:var(--green);margin:3px 0}
+
+.findpanel{display:none;background:#fff;border:2px solid var(--green);border-radius:18px;padding:16px;margin:14px 0;box-shadow:0 8px 25px #13263C16}.findpanel.open{display:block}
+.findhead{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}.findhead h3{margin:0;color:var(--green);font-size:20px}.findhead p{margin:3px 0 0;color:var(--muted);font-size:12px}.findhead button{border:0;background:#ECF1F6;border-radius:50%;width:32px;height:32px;font-size:20px}
+.findgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.findgrid label{font-size:11px;font-weight:800;color:var(--muted)}.findgrid select,.findgrid input{display:block;width:100%;margin-top:4px;border:1px solid var(--line);border-radius:10px;padding:11px;background:#fff;font:inherit}
+.runfind{width:100%;border:0;background:var(--green);color:#fff;padding:13px;border-radius:11px;font-weight:900;margin-top:11px;font-size:15px}
+.distancebadge{background:var(--green);color:#fff;border-radius:999px;padding:7px 10px;font-weight:900;font-size:12px;white-space:nowrap}
+.findstats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}.findstats div{background:#F2F6FA;border-radius:10px;padding:9px;text-align:center}.findstats small{display:block;color:var(--muted);font-size:9px}.findstats b{display:block;color:var(--green);font-size:16px;margin-top:2px}
+@media(max-width:520px){.findgrid{grid-template-columns:1fr}.findstats b{font-size:15px}}
+
+.regCard{background:#f7faf8;border:1px solid #b8cdc6;border-radius:15px;padding:14px;margin:10px 0 17px}
+.regCard.warning{border-color:#d9c79d}.regTitle{display:flex;justify-content:space-between;gap:8px;align-items:center}.regTitle span{font-size:11px;color:var(--muted)}
+.regGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:11px 0}.regGrid div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px}.regGrid small{display:block;color:var(--muted);font-size:9px}.regGrid b{display:block;font-size:12px;margin-top:3px;color:var(--green)}
+.regWarning{font-size:11px;color:var(--muted);line-height:1.4}.regCard>a{display:block;text-align:center;text-decoration:none;background:var(--green);color:#fff;padding:11px;border-radius:10px;font-weight:900;font-size:12px}
+.limitStrip{display:flex;justify-content:space-between;gap:10px;background:#edf5f2;border-radius:9px;padding:8px 10px;margin-top:8px;font-size:11px}.limitStrip span{color:var(--muted)}.limitStrip b{color:var(--green);text-align:right}
+
+.regCard.verified{border:2px solid #7eaa9c;background:#f2f8f5}.regCard.exception{border:2px solid #d6a84e;background:#fffaf0}
+.regGrid.exact b{font-size:13px}.verifiedStrip{display:grid;grid-template-columns:auto 1fr;align-items:center}.verifiedStrip small{grid-column:1/-1;color:var(--muted);margin-top:4px}.exceptionStrip{background:#fff4d8}
+
+.sourceStamp{font-size:10px;color:var(--muted);text-align:center;margin:8px 0}
+.exceptionChecklist{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.exceptionChecklist span{font-size:10px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 7px}
+.regActions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.regActions a{text-align:center;text-decoration:none;background:var(--green);color:#fff;padding:10px 7px;border-radius:9px;font-size:11px;font-weight:900}.regActions a:last-child{background:#fff;color:var(--green);border:1px solid var(--green)}
+@media(max-width:460px){.regActions{grid-template-columns:1fr}}
+
+.exactException{display:grid;gap:4px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;margin:9px 0}.exactException span,.ruleNote{font-size:11px;color:var(--muted);line-height:1.35}.exactException b{color:var(--green)}
+
+/* V1Q Lake Finder 2.0 */
+.finder2{padding:14px!important;border-radius:16px!important}.finderTop{display:flex;justify-content:space-between;gap:12px}.finderTop h4{font-size:18px;margin:4px 0}.matchBadge{display:inline-block;background:#eef5f2;color:var(--green);border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900}
+.heroStock{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.heroStock div{background:#EEF4F9;border-radius:11px;padding:10px}.heroStock small{display:block;color:var(--muted);font-size:9px}.heroStock b{display:block;color:var(--green);font-size:20px;margin-top:2px}
+.rulePreview{display:grid;gap:3px;border:1px solid var(--line);border-radius:11px;padding:10px;margin:8px 0}.rulePreview b{font-size:12px}.rulePreview span{font-size:11px;color:var(--muted)}.rulePreview.verified{background:#f1f8f5;border-color:#a9cbbf}.rulePreview.exception{background:#fff8e8;border-color:#ddc27d}
+.featureRow{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0}.featureRow span{font-size:10px;background:#f1f3f2;border-radius:999px;padding:5px 7px}.viewLakeBtn{width:100%;border:0;background:var(--green);color:#fff;padding:11px;border-radius:10px;font-weight:900;margin-top:5px}
+.lakeTabs{display:flex;gap:6px;overflow-x:auto;position:sticky;top:0;background:#fff;padding:9px 0;z-index:8;border-bottom:1px solid var(--line);margin-bottom:10px;scrollbar-width:none}.lakeTabs::-webkit-scrollbar{display:none}.lakeTabs button{white-space:nowrap;border:1px solid var(--line);background:#f6f8f7;color:var(--green);border-radius:999px;padding:7px 10px;font-size:10px;font-weight:800}.lakeTabs button.active{background:var(--green);color:#fff;border-color:var(--green)}.tabAnchor{scroll-margin-top:58px}
+
+/* V1R Weather & Fishing Conditions */
+.weatherCard{background:linear-gradient(180deg,#f5faf8,#fff)}
+.weatherActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.weatherActions a,.weatherActions button{border:0;text-align:center;text-decoration:none;background:var(--green);color:#fff;padding:10px;border-radius:10px;font-size:11px;font-weight:900}.weatherActions button{cursor:pointer}.weatherActions a:last-child{color:#fff}
+.weatherLoading{display:block;background:#f2f4f3;border-radius:10px;padding:10px;font-size:11px;color:var(--muted)}
+.weatherOK{background:#eef7f2;border:1px solid #b8d6c7;color:var(--green);border-radius:10px;padding:10px;font-size:11px;font-weight:800}
+.weatherAlert{display:grid;gap:3px;background:#fff4df;border:1px solid #dfbd72;border-radius:10px;padding:10px;margin:6px 0}.weatherAlert b{font-size:12px}.weatherAlert span{font-size:10px;color:var(--muted)}
+@media(max-width:460px){.weatherActions{grid-template-columns:1fr}}
+
+/* V1S bilingual interface */
+.languageBar{display:flex;justify-content:flex-end;gap:5px;padding:7px 12px;background:#F2F6FA;border-bottom:1px solid var(--line)}
+.languageBar button{border:1px solid var(--line);background:#fff;color:var(--green);padding:6px 11px;border-radius:999px;font-size:11px;font-weight:900}
+.languageBar button.active{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* Branding, onboarding, help & about */
+.headerBrand{min-width:0}
+.headerBrand h1{margin:0}
+.headerBrand span{display:block;font-size:11.5px;color:#A8C2DA;margin-top:3px;max-width:60vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.headerActions{display:flex;gap:8px;flex:0 0 auto}
+.brandMark{width:42px;height:42px;border-radius:13px;background:var(--green);display:grid;place-items:center;font-size:22px;box-shadow:0 4px 12px #13263C20}.brandMark.large{width:52px;height:52px;font-size:27px;flex:0 0 auto}
+.brandCopy{min-width:0;flex:1}.brandCopy strong{display:block;color:var(--green);font-size:17px;line-height:1.1}.brandCopy span{display:block;color:var(--muted);font-size:10px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.headerAction{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#F2F6FA;color:var(--green);font-size:20px;font-weight:900}
+.onboarding{position:fixed;inset:0;background:#0E1B2CA8;z-index:5000;display:grid;place-items:center;padding:18px}.onboarding.hidden{display:none}.onboardCard{position:relative;background:#fff;border-radius:22px;padding:24px;max-width:440px;width:100%;box-shadow:0 24px 70px #0005}.modalClose{position:absolute;right:12px;top:12px;border:0;background:#ECF1F6;width:34px;height:34px;border-radius:50%;font-size:21px}.onboardIcon{font-size:38px}.onboardCard h2{color:var(--green);font-size:23px;margin:8px 0}.onboardCard>p{color:var(--muted);font-size:13px;line-height:1.45}.onboardSteps{display:grid;gap:9px;margin:17px 0}.onboardSteps div{display:flex;align-items:center;gap:10px;background:#F2F6FA;border-radius:12px;padding:10px}.onboardSteps b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;font-size:12px}.onboardSteps span{font-size:12px;font-weight:700}.primaryModalAction{width:100%;border:0;background:var(--green);color:#fff;padding:13px;border-radius:11px;font-weight:900;font-size:14px}
+.helpSheetBox{max-width:620px}.helpHero{display:flex;gap:12px;align-items:center;margin-bottom:14px}.helpHero h2{margin:0;color:var(--green)}.helpHero p{margin:4px 0 0;color:var(--muted);font-size:11px}.helpGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.helpGrid section{background:#F2F6FA;border:1px solid var(--line);border-radius:12px;padding:11px}.helpGrid h3{font-size:12px;margin:0 0 5px;color:var(--green)}.helpGrid p{font-size:11px;line-height:1.4;color:var(--muted);margin:0}.aboutBlock{display:grid;gap:7px;border-top:1px solid var(--line);margin-top:14px;padding-top:14px}.aboutBlock h3{font-size:13px;margin:0;color:var(--green)}.aboutBlock a{font-size:11px;color:var(--green);font-weight:800}.versionStamp{text-align:center;color:var(--muted);font-size:10px;margin-top:18px}
+@media(max-width:520px){.helpGrid{grid-template-columns:1fr}.brandCopy span{max-width:230px}}
+
+
+/* v1.0.0 — non-blocking status messages, data backup controls, a11y floor */
+#toast{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));transform:translate(-50%,14px);
+ background:var(--ink);color:#fff;padding:12px 16px;border-radius:12px;font-size:13px;font-weight:600;line-height:1.35;
+ max-width:min(420px,90vw);text-align:center;box-shadow:0 12px 32px #0004;opacity:0;pointer-events:none;z-index:6000;
+ transition:opacity .18s ease,transform .18s ease}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.helpNote{font-size:11px;color:var(--muted);line-height:1.45;margin:0 0 4px}
+.dataActions{display:flex;gap:8px;flex-wrap:wrap}
+.dataActions button,.importBtn{border:1px solid var(--line);background:#F2F6FA;color:var(--green);
+ padding:9px 14px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+
+
+/* ===========================================================================
+   Interface corrections
+   =========================================================================== */
+
+/* iOS paints <button> text system-blue unless told otherwise, which was
+   turning every card heading into what looked like a broken link. */
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+.quick button{color:var(--ink);transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease}
+.quick button:active{transform:scale(.985)}
+.quick b{color:var(--green);font-size:15px;letter-spacing:-.15px}
+.quick button:hover{border-color:#B9CBDD;box-shadow:0 4px 14px #13263C12}
+#searchBtn{color:var(--ink)}
+/* Scoped to the armed state so the disarmed one stays quiet — the later flat
+   colour rule was overriding the dimming. */
+/* Scoped to .armed, and white rather than the app green: the armed chip is a
+   filled blue surface now, so green text on it would fail contrast. */
+.clearbtn.armed{color:#fff}
+.bottomnav button{color:var(--muted)}
+
+/* Header: let the tagline breathe instead of truncating mid-word. */
+.headerBrand h1{font-size:26px;letter-spacing:-.6px;line-height:1.05}
+.headerBrand span{white-space:normal;overflow:visible;text-overflow:clip;max-width:none;
+ font-size:12px;color:#A8C2DA;margin-top:5px;line-height:1.3;padding-right:8px}
+header{padding-bottom:16px;box-shadow:0 1px 0 #ffffff14}
+.round{display:grid;place-items:center;padding:0;line-height:1;flex:0 0 auto}
+
+/* Stats: a compact strip, not five oversized cards with an orphan row. */
+.dashboard{grid-template-columns:repeat(5,1fr);gap:6px}
+.dashboard div{padding:11px 6px;border-radius:12px}
+.dashboard strong{font-size:17px;letter-spacing:-.3px;font-variant-numeric:tabular-nums}
+.dashboard span{font-size:9.5px;letter-spacing:.1px}
+@media(max-width:650px){
+  .dashboard{grid-template-columns:repeat(3,1fr)}
+  .dashboard div:last-child{grid-column:auto}
+  .dashboard div:nth-child(4){grid-column:span 1}
+  .dashboard strong{font-size:18px}
+}
+@media(max-width:380px){
+  .dashboard{grid-template-columns:repeat(2,1fr)}
+  .dashboard div:last-child{grid-column:1/-1}
+}
+
+/* Bottom navigation: line icons instead of emoji. */
+.bottomnav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+ font-size:10.5px;font-weight:700;letter-spacing:.1px;padding-top:8px}
+.navicon{display:block;margin:0}
+.navicon svg{width:23px;height:23px;display:block;fill:none;stroke:currentColor;
+ stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.bottomnav button.active{color:var(--green)}
+.bottomnav button.active .navicon svg{stroke-width:2.1}
+
+/* Search field: match the app's radius and kill the iOS inner shadow. */
+.searchrow input{-webkit-appearance:none;appearance:none;background:#fff;color:var(--ink);
+ box-shadow:none;border:0}
+.searchrow input::-webkit-search-decoration,
+.searchrow input::-webkit-search-cancel-button{-webkit-appearance:none}
+.searchrow button{color:var(--ink);font-size:15px}
+
+/* Shown when Leaflet is unavailable. */
+.mapNotice{background:#fff7e8;border:1px solid #e6d3a3;color:#6b5417;border-radius:14px;
+ padding:14px 15px;font-size:13px;line-height:1.45;margin:6px}
+.mapNotice.hidden{display:none}
+
+/* Icons in the shortcut cards and layer toggles. Emoji rendered at a different
+   size and weight on every platform and looked accidental next to real type. */
+.qi{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;
+ background:#E6EEF6;color:var(--green);margin-bottom:11px}
+.qi svg{width:19px;height:19px;display:block;fill:none;stroke:currentColor;
+ stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.quick button{padding:14px 15px 16px}
+.quick b{font-size:15.5px;line-height:1.2}
+.quick span{font-size:12px;line-height:1.35;margin-top:5px}
+
+.accessbar label{display:flex;align-items:center;gap:9px}
+.ti{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;
+ background:#EAF1F7;color:var(--green);flex:0 0 auto}
+.ti svg{width:16px;height:16px;display:block;fill:none;stroke:currentColor;
+ stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.accessbar b{font-size:13.5px;font-weight:700}
+.accessbar input[type=checkbox]{width:20px;height:20px;accent-color:var(--green);flex:0 0 auto;margin:0}
+
+/* The favourite star sat underneath the sheet's close button. */
+.detailhead{padding-right:46px}
+.detailhead h2{font-size:24px;line-height:1.15}
+.bigstar{margin-top:-2px}
+
+/* Card meta row without emoji: separate the values so they still scan. */
+.meta{gap:6px 12px;align-items:center}
+.meta span:not(:last-child)::after{content:"•";margin-left:12px;color:#BECBD8}
+
+/* Use the app mark rather than an emoji in the onboarding and help headers. */
+/* .brandMark sets display:grid for the old emoji version; a replaced element
+   needs display:block or Chrome/WebKit paint the background over it. */
+img.brandMark{display:block;object-fit:cover;background:none;box-shadow:0 4px 12px #13263C24}
+img.brandMark.large{width:52px;height:52px;border-radius:15px}
+img.onboardIcon{width:60px;height:60px;border-radius:17px;display:block;
+ box-shadow:0 6px 18px #13263C24}
+.helpGrid h3{font-size:13px;margin:0 0 6px}
+
+/* Language pills were 26px tall — under any reasonable tap target, and this is
+   a control people use one-handed in a boat. */
+.languageBar{padding:8px 12px}
+.languageBar button{padding:9px 14px;min-height:36px}
+
+/* ===========================================================================
+   Top navigation and layout rebuild
+   Tab strip follows the Estate File pattern: it lives inside the dark header,
+   scrolls horizontally, and marks the active section with a gold underline.
+   =========================================================================== */
+
+/* v3z: the lake plate sits behind the header, under a scrim.
+   The scrim is not decoration. Measured on the actual shipped WebP, white
+   text over the bare photo lands at 3.4:1 — under the 4.5:1 floor — and over
+   the bright cloud patches at 1.15:1, which is invisible. A left-weighted
+   black gradient at ~62% fading to ~15% puts the wordmark at 12:1 and the
+   worst cloud patch at 6.6:1, while the right side stays clear enough to
+   read as water and trees behind the trout. Re-measure if the plate is ever
+   regenerated: a brighter sky would need a heavier scrim.
+   The flat navy stays underneath as the fallback, so a failed image decode
+   degrades to exactly the old header rather than to unreadable text. */
+header{display:block;padding:calc(12px + env(safe-area-inset-top)) 0 0;box-shadow:0 2px 14px #0A192B33;
+ position:relative;background:var(--green);isolation:isolate}
+/* Spans the whole header; the tab strip's own solid background is what stops
+   it visually. That is deliberate — an explicit bottom offset here would be a
+   guess at the tab strip's height, which changes with the text-size setting. */
+header::before{content:"";position:absolute;inset:0;z-index:-1;
+ /* v4c: much lighter than v3z–v4b. Richard wants the bright, saturated look
+    of the source plate, and a 88%-to-15% wash was flattening it to mud. This
+    runs 62% to 4%, and the readability that the wash used to provide comes
+    from the text shadows below instead — a dark halo on the glyphs themselves
+    rather than a curtain over the whole picture. Rendered and compared at
+    three strengths before choosing this one. */
+ /* The first layer is a soft pool of shadow sitting exactly where the trout
+    lands. Every crop of this plate has trees on the right — there is no patch
+    of open sky to move the logo onto — so rather than fight the photograph,
+    the logo gets its own backing. A neon-blue cutout needs separation from
+    busy green, and this gives it that without darkening the whole header. */
+ background-image:radial-gradient(105% 125% at 84% 48%,#04101F8C 0%,#04101F52 42%,#04101F00 72%),
+                  linear-gradient(100deg,#04101F9E 0%,#04101F62 28%,#04101F20 55%,#04101F0A 100%),
+                  url(img/header-lake.webp);
+ background-size:cover,cover,cover;background-position:center,center,center 38%;background-repeat:no-repeat,no-repeat,no-repeat}
+.headerTop{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px 12px}
+.headerBrand h1{font-size:23px;margin:0;letter-spacing:-.5px;line-height:1.05}
+/* v4a: scoped and reset deliberately. ".headerBrand span" already existed for
+   the small grey subtitle line (12px, #A8C2DA) and beats a bare .wmAccent on
+   specificity, so the first cut of this rendered "Lakes" as small grey body
+   text on its own line. Every inherited property is overridden explicitly. */
+.headerBrand h1 .wmAccent{display:inline;color:var(--accent);font-size:inherit;
+ font-weight:inherit;line-height:inherit;margin:0;max-width:none;overflow:visible;
+ text-overflow:clip;white-space:inherit}
+.eyebrow{font-size:10px;letter-spacing:2.4px;color:#7FA0BE;font-weight:800;margin-bottom:2px}
+.headerActions{display:flex;gap:8px;flex:0 0 auto}
+.round{width:38px;height:38px;font-size:19px;border-color:#33517A;background:#ffffff14}
+
+/* Solid navy, not translucent: this band is what stops the photo, and the
+   tab labels need a predictable surface rather than whatever pixels of lake
+   happen to be behind them. */
+.tabstrip{position:relative;border-top:1px solid #ffffff14;background:var(--green);z-index:1}
+.tabs{display:flex;gap:0;padding:0 16px;overflow-x:auto;overflow-y:hidden;
+ scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none;height:0}
+/* Tab icons. Scoped to .tabs on purpose: .ti is already the map-layer toggle
+   badge (grey tile, navy glyph) and must not inherit any of this. */
+.tabs button .ti{display:block;width:auto;height:22px;background:none;border-radius:0;
+ color:inherit;margin:0 auto 3px}
+.tabs button .ti svg{width:22px;height:22px;stroke-width:1.7}
+.tabs button span{display:block}
+.tabs button{flex:0 0 auto;border:0;background:transparent;cursor:pointer;
+ padding:14px 13px 11px;font-size:13px;letter-spacing:.2px;font-weight:600;
+ color:#8FA9C4;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs button.active{color:var(--accent);font-weight:800;border-bottom-color:var(--accent)}
+.tabfade{position:absolute;top:0;right:0;width:26px;bottom:0;pointer-events:none;
+ background:linear-gradient(to right,transparent,var(--green))}
+
+/* No bottom bar any more, so the page doesn't need to reserve room for it. */
+body{padding-bottom:0}
+main{padding:14px 16px 40px}
+
+/* Hero: quieter. It was competing with the header for attention. */
+.hero{padding:18px;border-radius:18px}
+.hero h2{font-size:21px;margin:0 0 5px;letter-spacing:-.3px}
+.hero p{font-size:13px;margin:0 0 14px;color:#C0D4E6}
+
+/* Stats: one compact strip. Five large cards pushed everything below the fold. */
+.dashboard{grid-template-columns:repeat(5,1fr);gap:5px;margin:12px 0}
+.dashboard div{padding:9px 4px;border-radius:10px}
+.dashboard strong{font-size:15px;font-variant-numeric:tabular-nums}
+.dashboard span{font-size:9px;letter-spacing:0}
+@media(max-width:520px){
+  .dashboard{grid-template-columns:repeat(5,1fr)}
+  .dashboard div:last-child,.dashboard div:nth-child(4){grid-column:auto}
+  .dashboard strong{font-size:14px}
+  .dashboard span{font-size:8.5px}
+}
+
+/* v3y: removed a third dead block here ("the two that are now links") from
+   back when the shortcuts were anchors, not buttons — no .quick a exists in
+   the app any more. It had also been quietly setting the card radius to 15px
+   ever since, overriding the 20px this design actually calls for.
+
+/* The Regulations tab. */
+.resourcesPanel{margin:4px 0 10px}
+.resourcesPanel h3{margin:6px 0 4px;font-size:19px;color:var(--green)}
+.panelNote{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 14px}
+.resourceLink{display:block;position:relative;background:#fff;border:1px solid var(--line);
+ border-radius:14px;padding:14px 40px 14px 15px;margin-bottom:9px;text-decoration:none;color:var(--ink)}
+.resourceLink b{display:block;color:var(--green);font-size:15px}
+.resourceLink span{display:block;font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+.resourceLink::after{content:"↗";position:absolute;top:50%;right:15px;transform:translateY(-50%);
+ color:#9FB2C4;font-size:15px}
+.resourceLink:active{border-color:#B4C6D6;background:#FAFCFE}
+
+[hidden]{display:none!important}
+
+/* Language switch inside the header. */
+.langSwitch{display:flex;gap:4px;flex:0 0 auto}
+.langSwitch button{border:1px solid #33517A;background:#ffffff14;color:#CFE0F0;
+ padding:0 11px;height:38px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer}
+.langSwitch button.active{background:var(--accent);color:var(--green);border-color:var(--accent)}
+
+/* v3y: the two rule-sets that used to live here ("icon beside a narrow label
+   column") were an older shortcut-card design from before v3x. Nothing
+   removed them when the icon-above-heading card replaced it, so they were
+   still unconditional and still winning: same specificity as the current
+   card's rules, later in the file, so last-in-source took it. That squeezed
+   "Recently Stocked" into a ~100px-wide right-hand column, which is why it
+   wrapped onto three lines instead of the two the card was designed for. Both
+   dead blocks are gone; icons/qi.svg is deleted, an <i class="qi"> that no
+   longer exists elsewhere, but ".qi" as a bare rule if you're hunting for it.
+
+/* Six tabs should very nearly fit a 390pt screen before scrolling. */
+.tabs button{padding:10px 10px 8px;font-size:12.5px}
+
+
+
+/* ===========================================================================
+   Lake-at-dusk repaint: deep water navy, light-blue page, gold accent, and a
+   serif display face — the same voice as Estate File, tuned for open water.
+   =========================================================================== */
+
+h1,h2,h3,.hero h2,.headerBrand h1,.onboardCard h2,.record h4,.detailhead h2,
+.resourcesPanel h3,.helpHero h2,.sectiontitle h3{font-family:var(--display);letter-spacing:0}
+.headerBrand h1{font-weight:700;font-size:24px}
+.hero h2{font-size:23px;font-weight:700}
+.record h4{font-size:18.5px}
+.sectiontitle h3{font-size:19px;color:var(--green)}
+/* v4d: lime, like the rest of the accents and like the reference. */
+.eyebrow{color:var(--accent);letter-spacing:3px}
+
+/* Signature: bathymetry contours behind the hero, echoing the app icon.
+   v4b: this rule used to set `background` wholesale, which silently wiped the
+   lake plate declared 400 lines earlier — same class, same specificity, later
+   in the file, so it won. The plate is declared here now, with the navy
+   gradient kept as the bottom layer so a failed decode still degrades to the
+   old card rather than to a white box. */
+.hero{position:relative;overflow:hidden;
+ /* v4f: water and rock as faint texture, not a second photograph.
+    v4e removed the full-strength plate from this card because two crops of
+    one lake stacked read as interrupted wallpaper and the body text fought
+    trees. Richard wants the card to feel like fishing rather than a plain
+    panel, so the plate comes back at roughly a tenth of its strength: enough
+    to catch the light and suggest water, not enough to compete with the
+    controls sitting on it.
+    It reuses img/header-lake.webp — already bundled and already in the
+    service worker's shell — so this costs zero new bytes. The position is
+    pinned bottom-right, which is the shoreline-and-rocks corner of that crop;
+    that is the part worth showing. The gradient over it is deliberately
+    heavier than the header's for the same reason it always was: this card
+    carries three lines of body text, the header carries two words. */
+ /* Strengths compared side by side offscreen: at F2/EE/EB the texture was
+    invisible — all cost, no effect. E0/DA/D6 shows the water and the rocks
+    while white body text still measures 8.5:1 at its worst and the muted
+    subtitle 5.8:1, both well clear of the 4.5 floor. */
+ background-image:linear-gradient(155deg,#1D3A57E0 0%,#1B3550DA 45%,#13263CD6 100%),
+                  url(img/header-lake.webp),
+                  linear-gradient(150deg,#1D3A57,#13263C);
+ background-size:cover,190% auto,cover;
+ background-position:center,right 78%,center;
+ background-repeat:no-repeat,no-repeat,no-repeat}
+.hero::before{content:"";position:absolute;right:-70px;top:-45px;width:280px;height:200px;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 200'%3E%3Cg fill='none' stroke='%237FA0BE' stroke-opacity='.28'%3E%3Cellipse cx='140' cy='100' rx='130' ry='86' stroke-width='1.4'/%3E%3Cellipse cx='140' cy='100' rx='96' ry='62' stroke-width='1.4'/%3E%3Cellipse cx='140' cy='100' rx='64' ry='40' stroke-width='1.4'/%3E%3Cellipse cx='140' cy='100' rx='34' ry='20' stroke-width='1.4'/%3E%3C/g%3E%3C/svg%3E");
+ background-repeat:no-repeat;pointer-events:none}
+.hero>*{position:relative}
+
+/* The map card: give the map room, frame it, and label it. */
+.mapcard{padding:0;overflow:hidden;border:1px solid var(--line)}
+.mapcard #map{height:380px;border-radius:0}
+@media(max-width:480px){.mapcard #map{height:340px}}
+.maphead{display:flex;justify-content:space-between;align-items:center;gap:10px;
+ padding:11px 14px;border-bottom:1px solid var(--line);background:#fff}
+.maphead b{font-family:var(--display);font-size:15.5px;color:var(--green)}
+.maphead span{font-size:11.5px;color:var(--muted)}
+.leaflet-container{font:inherit;background:#DDE9F2}
+.leaflet-popup-content-wrapper{border-radius:12px;box-shadow:0 8px 28px #13263C2E}
+.leaflet-popup-content{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ font-size:13px;line-height:1.45;margin:12px 14px}
+.leaflet-popup-content b{font-family:var(--display);font-size:15px;color:var(--green)}
+
+/* Result cards: gold year pill, tabular numbers, water-blue species line. */
+.pill{background:#F6EDD8;color:#7A5B10;font-variant-numeric:tabular-nums}
+.species{color:var(--water)}
+.meta{font-variant-numeric:tabular-nums}
+.record{transition:border-color .12s ease,box-shadow .12s ease}
+.record:active{border-color:#B4C6D6}
+.dashboard strong{color:var(--green)}
+.searchrow button,#searchBtn{color:#13263C;font-weight:800}
+.runfind,.primaryModalAction,.directions{background:linear-gradient(150deg,#1D3A57,#13263C)}
+.tabs button.active{color:var(--accent);border-bottom-color:var(--accent);border-bottom-width:3px}
+.tabs button.active .ti{color:var(--accent)}
+.tabs button{color:#C6D8E8}
+.tabfade{background:linear-gradient(to right,transparent,#13263C)}
+.langSwitch button.active{color:var(--green);background:var(--accent);border-color:var(--accent)}
+:focus-visible{outline-color:#C4941F}
+#toast{background:#13263C}
+
+/* ===========================================================================
+   Per-view layout, settings sheet, text size
+   =========================================================================== */
+
+/* The title was wrapping to two lines because four controls crowded it. */
+.headerTop{align-items:flex-start}
+.headerBrand{min-width:0;flex:1}
+.headerBrand h1{font-size:23px;white-space:nowrap}
+.round svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round;display:block}
+.round{width:36px;height:36px}
+.langSwitch button{height:36px;padding:0 10px}
+
+/* Per-view headers replace the Explore hero on the other tabs. */
+.viewhead{margin:2px 0 14px}
+.viewhead h2{font-family:var(--display);font-size:22px;color:var(--green);margin:0 0 4px}
+.viewhead p{margin:0 0 12px;font-size:13.5px;color:var(--muted);line-height:1.45}
+.viewrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.viewrow input[type=search]{flex:1;min-width:180px;border:1px solid var(--line);background:#fff;
+ border-radius:12px;padding:12px 14px;font-size:15px;-webkit-appearance:none;appearance:none}
+.inlinefield{display:flex;align-items:center;gap:7px;font-size:13.5px;color:var(--muted);
+ background:#fff;border:1px solid var(--line);border-radius:12px;padding:7px 11px}
+.inlinefield select{border:0;background:transparent;font-size:14px;font-weight:700;color:var(--ink)}
+.ghostbtn{border:1px solid var(--line);background:#fff;color:var(--green);border-radius:12px;
+ padding:11px 15px;font-size:13.5px;font-weight:800;cursor:pointer}
+.ghostbtn.wide{width:100%;padding:13px}
+
+/* Results sit above the map now. */
+.sectiontitle{margin:6px 2px 10px}
+.mapcard{margin-top:18px}
+
+/* Settings */
+.sheetTitle{font-family:var(--display);font-size:24px;color:var(--green);margin:0 0 4px}
+.setBlock{border-top:1px solid var(--line);padding-top:16px;margin-top:16px}
+.setBlock:first-of-type{border-top:0;padding-top:8px;margin-top:8px}
+.setBlock h3{font-family:var(--display);font-size:16px;color:var(--green);margin:0 0 5px}
+.setNote{font-size:12.5px;color:var(--muted);line-height:1.45;margin:0 0 11px}
+.segmented{display:flex;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.segmented button{flex:1;border:0;background:#fff;color:var(--muted);padding:12px 8px;
+ font-size:13.5px;font-weight:700;cursor:pointer;border-right:1px solid var(--line)}
+.segmented button:last-child{border-right:0}
+.segmented button.on{background:var(--green);color:#fff;font-weight:800}
+.sizePreview{margin:11px 0 0;padding:11px 13px;background:#F2F6FA;border:1px solid var(--line);
+ border-radius:11px;font-size:14px;color:var(--ink)}
+.linkRow{background:#F2F6FA;border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:10px}
+.linkRow code{font-size:12px;color:var(--green);word-break:break-all;font-family:ui-monospace,Menlo,monospace}
+
+/* Text size. The app is set in px, so each step lifts the text that carries
+   meaning rather than scaling the chrome and breaking the tab strip. */
+body.text-large .record h4{font-size:20.5px}
+body.text-large .species{font-size:15.5px}
+body.text-large .meta{font-size:14.5px}
+body.text-large .quick b{font-size:16.5px}
+body.text-large .quick span{font-size:13.5px}
+body.text-large .hero h2{font-size:25px}
+body.text-large .hero p{font-size:14.5px}
+body.text-large .sectiontitle h3{font-size:21px}
+body.text-large .viewhead h2{font-size:24px}
+body.text-large .viewhead p{font-size:15px}
+body.text-large .detailgrid div{font-size:16px}
+body.text-large .historyrow{font-size:15.5px}
+body.text-large .resourceLink b{font-size:16.5px}
+body.text-large .resourceLink span{font-size:14px}
+body.text-large .dashboard strong{font-size:17px}
+body.text-large .dashboard span{font-size:10.5px}
+body.text-large .tabs button{font-size:14px}
+body.text-large .helpGrid p,body.text-large .setNote{font-size:14px}
+
+body.text-larger .record h4{font-size:23px}
+body.text-larger .species{font-size:17px}
+body.text-larger .meta{font-size:16px}
+body.text-larger .quick b{font-size:18px}
+body.text-larger .quick span{font-size:15px}
+body.text-larger .hero h2{font-size:27px}
+body.text-larger .hero p{font-size:16px}
+body.text-larger .sectiontitle h3{font-size:23px}
+body.text-larger .viewhead h2{font-size:26px}
+body.text-larger .viewhead p{font-size:16.5px}
+body.text-larger .detailgrid div{font-size:17.5px}
+body.text-larger .historyrow{font-size:17px}
+body.text-larger .resourceLink b{font-size:18px}
+body.text-larger .resourceLink span{font-size:15.5px}
+body.text-larger .dashboard strong{font-size:18px}
+body.text-larger .dashboard span{font-size:11.5px}
+body.text-larger .tabs button{font-size:15px}
+body.text-larger .helpGrid p,body.text-larger .setNote{font-size:15.5px}
+body.text-larger .searchrow input{font-size:17px}
+
+/* Searching mode: the stats strip and shortcut cards are browse chrome. Once
+   someone has typed a query they want the answer, not the front page, so the
+   chrome collapses and the results come up to meet them. */
+body.filtering .dashboard,body.filtering .quick{display:none}
+body.filtering .hero{padding:14px 16px}
+body.filtering .hero h2,body.filtering .hero p{display:none}
+body.filtering .hero::before{opacity:.5}
+body.filtering .sectiontitle{margin-top:14px}
+
+/* Lakes that have never been stocked. They are the majority of Ontario's
+   fisheries, so they need to look like first-class results, not leftovers. */
+.pill.wild{background:#E7EFF7;color:#1D3A57}
+.species .more{color:var(--muted);font-weight:600;font-size:13px}
+.species .nospecies{color:var(--muted);font-weight:600}
+.speciesGrid{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.speciesGrid span{background:#E7EFF7;color:#1D3A57;border-radius:8px;
+ padding:6px 10px;font-size:12.5px;font-weight:700}
+.filters.wideline{grid-template-columns:1fr;margin-top:-4px}
+.inlinecheck{background:#fff;border:1px solid var(--line);border-radius:12px;
+ padding:12px 14px;font-size:13.5px;display:flex;align-items:center;gap:10px}
+.inlinecheck input{width:20px;height:20px;accent-color:var(--green);margin:0}
+
+/* Find Fish mode switch: survey data vs stocking records. */
+.modeRow{display:flex;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;margin:12px 0 8px}
+.modeRow button{flex:1;border:0;background:#fff;color:var(--muted);padding:12px 8px;
+ font-size:13px;font-weight:700;cursor:pointer;border-right:1px solid var(--line)}
+.modeRow button:last-child{border-right:0}
+.modeRow button.on{background:var(--green);color:#fff;font-weight:800}
+#modeNote{margin:0 0 4px}
+.disabledField{opacity:.45}
+.findgrid input[list]{width:100%;border:1px solid var(--line);border-radius:11px;
+ padding:11px;font-size:15px;-webkit-appearance:none;appearance:none;background:#fff}
+.heroStock.present b{font-size:15px;line-height:1.2}
+
+/* Tappable species chips and the limits drawer they open. */
+.spChip{display:inline-flex;align-items:center;gap:6px;background:#E7EFF7;color:#1D3A57;
+ border:1px solid transparent;border-radius:8px;padding:8px 10px;font-size:12.5px;
+ font-weight:700;cursor:pointer;font-family:inherit}
+.spChip i{font-style:normal;color:#7E9AB5;font-size:14px;line-height:1;transition:transform .15s ease}
+.spChip:hover{border-color:#B4C6D6}
+.spChip.open{background:var(--green);color:#fff}
+.spChip.open i{transform:rotate(90deg);color:#fff}
+.ruleDrawer{width:100%;background:#fff;border:1px solid var(--line);border-radius:13px;
+ padding:14px;margin:10px 0 4px}
+.ruleHead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+ border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:11px}
+.ruleHead b{font-family:var(--display);font-size:17px;color:var(--green)}
+.ruleHead span{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.ruleGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ruleGrid .wide{grid-column:1/-1}
+.ruleGrid div{background:#F2F6FA;border-radius:10px;padding:10px 11px}
+.ruleGrid small{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}
+.ruleGrid b{font-size:14px;line-height:1.3}
+.ruleAlert{background:#FDF6E7;border:1px solid #E4CE96;border-radius:11px;padding:11px 12px;margin-top:11px}
+.ruleAlert b{color:#7A5B10;font-size:13.5px}
+.ruleAlert p{margin:4px 0 8px;font-size:12.5px;line-height:1.45;color:#6B5416}
+.exRow{display:grid;gap:5px;font-size:12.5px;margin-bottom:7px}
+.exRow span{display:block}
+.exRow small{display:block;color:var(--muted);font-size:10.5px}
+.ruleFine{font-size:11.5px;color:var(--muted);line-height:1.45;margin:11px 0 9px}
+.ruleLink{display:block;text-align:center;background:var(--green);color:#fff;text-decoration:none;
+ padding:11px;border-radius:10px;font-size:13px;font-weight:800}
+
+/* Find Fish panel actions. */
+.findActions{display:grid;grid-template-columns:auto 1fr;gap:8px;margin-top:11px;align-items:stretch}
+.findActions .runfind{margin-top:0}
+.findActions .ghostbtn{white-space:nowrap}
+.modeRow{margin:2px 0 8px}
+
+/* Township and distance lead the meta line — with three Rice Lakes on screen
+   they are the only things that distinguish them. */
+.meta .place{color:var(--green);font-weight:700}
+.meta .dist{color:var(--green);font-weight:700;font-variant-numeric:tabular-nums}
+.distancebadge small{display:block;font-size:9.5px;font-weight:700;opacity:.75;letter-spacing:.4px}
+.featureRow .place{background:#E7EFF7;color:#1D3A57;font-weight:700}
+
+/* Zone chip sits with township and distance as the identifying trio. */
+.meta .zone{color:#7A5B10;font-weight:800;background:#F6EDD8;border-radius:6px;padding:1px 7px}
+.meta .zone::after,.meta .place::after,.meta .dist::after{color:#BECBD8}
+.featureRow .zone{background:#F6EDD8;color:#7A5B10;font-weight:800}
+
+/* Shown above results when no location has been granted, so distance reads as
+   a permission you haven't given rather than a feature that is missing. */
+.distPrompt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;
+ background:#fff;border:1px dashed #B4C6D6;border-radius:14px;padding:13px 15px;
+ text-align:left;cursor:pointer;font-family:inherit;margin-bottom:2px}
+.distPrompt b{color:var(--green);font-size:14px}
+.distPrompt span{color:var(--muted);font-size:12.5px}
+.distPrompt:active{background:#F6FAFD}
+
+/* Basemap switcher in the map header. */
+.maphead{gap:8px}
+.baseSwitch{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex:0 0 auto}
+/* 32px tall: these sit in a header but are still fingers-on-a-boat controls. */
+.baseSwitch button{border:0;background:#fff;color:var(--muted);padding:0 12px;min-height:32px;
+ font-size:12px;font-weight:700;cursor:pointer;border-right:1px solid var(--line);font-family:inherit}
+.baseSwitch button:last-child{border-right:0}
+.baseSwitch button.on{background:var(--green);color:#fff;font-weight:800}
+.mapsub{padding:7px 14px;border-bottom:1px solid var(--line);background:#fff}
+.mapsub span{font-size:11.5px;color:var(--muted)}
+/* Points people at the Map/Topo/Depth buttons, which otherwise look like a
+   plain segmented control worth ignoring. Sits above mapsub rather than
+   replacing it -- mapCount's text changes with search results and shouldn't
+   carry this too. */
+.mapHint{padding:6px 14px 0;font-size:11.5px;color:var(--muted)}
+
+
+/* Four stats now, not five — the 151,000-row historical dataset was removed.
+   The grid was hard-wired to five columns, which left a gap. */
+.dashboard{grid-template-columns:repeat(4,1fr)}
+@media(max-width:650px){.dashboard{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:380px){.dashboard{grid-template-columns:repeat(2,1fr)}
+ .dashboard div:last-child{grid-column:auto}}
+
+/* Filters are staged: nothing runs until Search is pressed, so the button has
+   to show that there is something waiting. */
+#searchBtn.pending{box-shadow:0 0 0 3px #C4941F55;animation:pendingPulse 1.6s ease-in-out infinite}
+@keyframes pendingPulse{0%,100%{box-shadow:0 0 0 3px #C4941F55}50%{box-shadow:0 0 0 6px #C4941F22}}
+@media(prefers-reduced-motion:reduce){#searchBtn.pending{animation:none}}
+.filterHint{margin:8px 2px 0;font-size:12.5px;font-weight:700;color:#7A5B10}
+
+/* v1u trip data: the "About 12 km N of Apsley" line and the OSM credit. */
+.whereLine{margin:2px 0 12px;color:var(--muted);font-size:13px}
+.osmNote{margin-top:8px}
+
+/* The stocking table is a bundled snapshot, not a live feed. Say so plainly
+   under the dashboard, the same way the lodging card names its source. */
+.dataAge{display:flex;align-items:center;justify-content:center;gap:7px;
+ margin:12px 16px 14px;font-size:.8rem;opacity:.72;text-align:center}
+.dataAge .fi svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round;color:var(--accent-dark)}
+.searchHint{display:flex;align-items:flex-start;gap:9px}
+.searchHint .fi{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ width:26px;height:26px;border-radius:9px;background:#FFFFFF1F;margin-top:1px}
+.searchHint .fi svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.7;
+ stroke-linecap:round;stroke-linejoin:round}
+
+/* --- Species plates (v2a) -------------------------------------------------
+   A field-guide plate, not a photo dropped on a card. The illustration sits
+   on the app's own --cream token rather than white, which is what stops it
+   reading as a pasted-in rectangle, and every plate is identical geometry so
+   the set looks commissioned rather than collected.
+
+   Bleeds to the drawer edge deliberately: an inset image with its own margin
+   looks like an attachment, a full-bleed band looks like part of the card. */
+.plate{margin:-14px -14px 12px;background:var(--cream);border-bottom:1px solid var(--line);
+ border-radius:12px 12px 0 0;overflow:hidden}
+.plate img{display:block;width:100%;height:auto;aspect-ratio:20/7;object-fit:cover}
+.plateCap{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+ padding:7px 12px 8px;background:var(--cream)}
+/* Scientific name in the display serif: a plate carries one, and it is real
+   information about the species rather than ornament. */
+.plateCap i{font-family:var(--display);font-style:italic;font-size:12.5px;color:var(--green2)}
+.plateCap span{font-size:10px;letter-spacing:.3px;color:var(--muted);text-align:right}
+/* Find Fish header plate. Shown only when the angler has named one species,
+   so it is never the app guessing which fish a lake is "about". */
+.findPlate{background:var(--cream);border:1px solid var(--line);border-radius:14px;
+ overflow:hidden;margin:0 0 12px}
+.findPlate img{display:block;width:100%;height:auto;aspect-ratio:20/7;object-fit:cover}
+.findPlate .plateCap{border-top:1px solid #E4DED0}
+@media(prefers-reduced-motion:no-preference){
+ .plate img,.findPlate img{animation:plateIn .32s ease-out both}
+}
+@keyframes plateIn{from{opacity:0;transform:scale(1.015)}to{opacity:1;transform:none}}
+
+
+/* ---------------------------------------------------------------------------
+   Header: brand and controls stack on the left, mark fills the right.
+
+   The mark earns a proper size by taking the column the controls used to
+   occupy, and the controls drop under the wordmark. 120px is deliberate and
+   costly: the header goes 121pt -> 187pt, and it is sticky, so that height is
+   spent on every view. It buys an illustration you can actually read.
+
+   Controls are 30px. That is the floor the browser suite enforces for tap
+   targets, not a style choice — 28px puts all four below it.
+   --------------------------------------------------------------------------- */
+.headerTop{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hCol{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1 1 auto}
+.eyebrow{font-size:10px;letter-spacing:2.4px;margin-bottom:3px}
+.headerActions{display:flex;gap:6px;flex:0 0 auto;align-items:flex-start}
+.langSwitch{display:flex;gap:6px;flex:0 0 auto;align-items:flex-start}
+/* v4a: each control is a button plus a caption beneath, as in the reference.
+   The caption is decorative — the buttons keep their aria-labels, so a screen
+   reader is not made to read the name twice. */
+.hAct{display:flex;flex-direction:column;align-items:center;gap:3px}
+.hCap{font-style:normal;font-size:10px;font-weight:700;color:#DDE9F5;
+ text-shadow:0 1px 3px #04101FCC;white-space:nowrap;letter-spacing:.1px}
+/* v4e: 150px -> 122px. On a 390x844 phone the header and tab strip together
+   were eating ~40% of the screen, so the first lake sat below the fold — the
+   wrong trade for an app used on the water, where the data is the point and
+   the photograph is the frame. */
+.oslMark{height:122px;width:auto;flex:0 0 auto;display:block;margin:-6px -4px -8px 0}
+
+/* v4a: the wordmark now sits on sky rather than flat navy, so it carries a
+   shadow. Without it the descenders disappear into the brightest clouds even
+   with the scrim, which the first cut proved on a real phone. */
+/* Load-bearing now the scrim is light: these halos are what keep the wordmark
+   legible where it crosses bright water. */
+.headerBrand h1{text-shadow:0 2px 12px #04101FD9,0 1px 3px #04101FE6,0 0 22px #04101F80}
+.eyebrow{text-shadow:0 1px 4px #04101FE6,0 0 10px #04101FA6}
+.hCap{text-shadow:0 1px 4px #04101FE6,0 0 9px #04101F99}
+
+/* The wordmark is 28px. v2g set 24px, which fell to 22px under the narrow-
+   phone rule — and 375pt is a live width, so on an iPhone X/11 Pro the app's
+   own name read as a caption beside a 120px fish. The stacked column has the
+   room: at 390px the title needs 174px of 220 available, and at 375px 162px
+   of 222. It costs no header height either — the column measures about 103px
+   against the mark's 120px, so the mark still sets the header's height. */
+.headerBrand h1{font-size:28px;white-space:nowrap;line-height:1.05}
+
+/* One shape for all four controls. The cog and ? were circles while EN and FR
+   were rounded rectangles, so a single row carried two geometries and two
+   widths — that mismatch, more than any one control, is what read as
+   unfinished. All four are now a 32px square with a 10px radius. The gaps are
+   equal too: they were 5px between the round controls and 6px inside the
+   language pair, which put uneven space between items that look like a set.
+
+   Outlined rather than filled, still — a solid white EN pill out-shouts the
+   app's own name. But v2g's #5A7699 border measured 3.27:1, barely over the
+   3:1 WCAG floor for interface components, and at that level the controls
+   read as disabled rather than pressable. A 28px wordmark can carry brighter
+   controls without losing the argument, so the border goes to #7691B2
+   (4.72:1) and the glyphs to #B4C9DC (9:1). This app is used in sun on open
+   water, so contrast is not cosmetic. */
+.headerActions .round,
+.langSwitch button{
+ width:38px;height:38px;min-width:38px;padding:0;
+ border-radius:11px;
+ /* v4b: filled, not outlined. A hairline border over the lake plate read as
+    noise and the glyphs sat on whatever pixels happened to be behind them. */
+ background:#0C2138D9;
+ border:1px solid #FFFFFF2E;
+ color:#EAF2FA;
+ box-shadow:0 2px 8px #04101F55;
+ display:inline-flex;align-items:center;justify-content:center;
+ cursor:pointer;
+}
+.headerActions .round{font-size:16px}
+.round svg{width:16px;height:16px}
+.langSwitch button{font-size:11.5px;font-weight:700}
+/* The active language is marked, not spotlit. */
+/* The active language is the one filled-green control in the header, as in
+   the reference — navy on green, the same grammar as Search. */
+.langSwitch button.active{
+ background:var(--accent);
+ border-color:var(--accent);
+ color:#0B2018;
+}
+
+/* Narrow phones cannot carry a 120px mark and a 28px wordmark side by side.
+   The mark shrinks first; below 340 it goes entirely, because the app's name
+   matters and the decoration does not. */
+@media(max-width:389px){
+  .oslMark{height:104px}
+  .headerBrand h1{font-size:26px}
+}
+@media(max-width:339px){
+  .oslMark{display:none}
+  .headerBrand h1{font-size:24px}
+}
+
+/* Tablets. 32px is a phone floor, not a considered size — 28px puts all four
+   controls under the 30px tap target the browser suite enforces, so 32px is
+   simply the smallest thing that passes. On an iPad it looks like a phone
+   layout stretched wide, so the controls and the wordmark both step up.
+   740px catches every iPad in portrait — mini 744, Air 820, 11-inch 834,
+   12.9-inch 1024 — and all of them in landscape. */
+@media(min-width:740px){
+  .headerBrand h1{font-size:34px}
+  .eyebrow{font-size:11px}
+  .hCol{gap:10px}
+  .headerActions{gap:8px}
+  .langSwitch{gap:8px}
+  .headerActions .round,
+  .langSwitch button{width:44px;height:44px;min-width:44px;border-radius:13px}
+  .headerActions .round{font-size:19px}
+  .round svg{width:19px;height:19px}
+  .langSwitch button{font-size:13px}
+}
+
+/* Version stamp carries the ownership line now. The spans are blocks so the
+   three lines stack; the rights note is quieter because it is a scoping
+   clarification, not a claim — the government, OSM and GeoNames data the app
+   bundles is not the author's to licence, and the stamp should not imply it is. */
+.versionStamp span{display:block;margin-top:3px}
+.versionStamp .rightsNote{font-size:9.5px;line-height:1.45;opacity:.85;
+ max-width:34em;margin-left:auto;margin-right:auto}
+
+/* ---------------------------------------------------------------------------
+   Trip sheet: tabs, checklist, catch form.
+
+   The sheet used to be one long scroll — snapshot, catch log, form, notes,
+   end-trip — so logging a fish on the water meant scrolling past everything
+   else with cold hands. Three tabs put each job one tap away and keep the
+   End Fishing Trip button pinned below them, out of the way of the tap you
+   actually make forty times a day.
+   --------------------------------------------------------------------------- */
+.tripTabs{display:flex;gap:6px;margin:14px 0 12px;border-bottom:1px solid var(--line)}
+.tripTabs button{flex:1;border:0;background:transparent;color:var(--muted);
+ font:inherit;font-weight:800;font-size:13px;padding:10px 4px;min-height:40px;
+ border-bottom:2px solid transparent;cursor:pointer}
+.tripTabs button.on{color:var(--green);border-bottom-color:var(--accent)}
+
+/* Labelled number fields. Length and weight are indistinguishable as two bare
+   boxes, and the unit belongs on the label rather than in a placeholder that
+   vanishes the moment you type. */
+.fieldLabel{display:grid;gap:4px;font-size:11px;font-weight:800;color:var(--muted)}
+.fieldLabel input{width:100%}
+
+/* Checklist. Rows are 44px because this is used standing in a boat. */
+.checklistHead{display:flex;justify-content:space-between;align-items:center;margin:0 0 4px}
+.checklistHead h3{margin:0}
+.checklist{display:grid;gap:6px;margin:10px 0 12px}
+.checkItem{display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 10px;
+ background:#fff;border:1px solid var(--line);border-radius:12px;cursor:pointer}
+.checkItem input{width:22px;height:22px;flex:0 0 auto;accent-color:var(--green)}
+.checkItem span{flex:1;font-size:14px}
+.checkItem.done span{color:var(--muted);text-decoration:line-through}
+.checkItem button{border:0;background:#eee;border-radius:50%;width:30px;height:30px;
+ flex:0 0 auto;font-size:16px;line-height:1;color:var(--ink)}
+.addItemRow{grid-template-columns:1fr auto;align-items:center;gap:8px}
+.addItemRow input{border:1px solid var(--line);border-radius:10px;padding:11px;
+ font:inherit;background:#fff;min-height:44px}
+.secondaryAction.wide{width:100%;margin-top:4px}
+.catchrow .catchNote{font-style:italic}
+/* There is no global .hidden rule — the sheets each scope their own — so the
+   free-text species field needs its own. */
+#catchSpeciesOther.hidden{display:none}
+
+/* Catch row actions: edit and delete. Both are 34px and separated, because
+   they sit next to each other and one of them destroys data. */
+.rowActions{display:flex;gap:6px;align-items:flex-start;flex:0 0 auto}
+.rowActions button{border:0;background:#ECF1F6;border-radius:50%;
+ width:34px;height:34px;font-size:15px;line-height:1;color:var(--green)}
+.rowActions button[data-delcatch]{background:#eee;font-size:19px}
+.catchrow.editing{background:#FFF9E8;border-radius:10px}
+
+/* Delete is armed, then confirmed. The armed row states the question rather
+   than relying on a browser dialog, which in a standalone iOS app is a modal
+   that can land behind the sheet. */
+.confirmRow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.confirmAsk{font-size:13px;font-weight:800;color:#8a2927}
+.confirmRow .secondaryAction{padding:8px 14px;font-size:13px}
+.dangerBtn{border:0;background:#8a2927;color:#fff;padding:9px 16px;
+ border-radius:10px;font-weight:900;font-size:13px;min-height:36px}
+.catchrow.confirming{background:#FCF3F2;border-radius:10px;padding-left:8px;padding-right:8px}
+
+/* Editing header inside the shared form. */
+.formHead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.formHead b{font-size:13px;color:var(--green)}
+.formHead .secondaryAction{padding:8px 14px;font-size:13px}
+.catchform.editingForm{background:#FFF9E8;border-color:#E6D3A3}
+
+/* The units toggle at the top of the catch log. Smaller than the Settings
+   one — it is a shortcut, not the primary control. */
+.unitToggle{margin-bottom:12px}
+.unitToggle button{padding:9px 6px;font-size:13px;min-height:38px}
+
+/* ---------------------------------------------------------------------------
+   Explore absorbs the last two Find Fish controls.
+
+   Sort and the access-point filter join the checkbox row rather than the
+   select row above, which already carries three dropdowns and Clear. Find
+   Fish's own panel styles (.findpanel, .findgrid, .modeRow, .runfind,
+   .stockOnlyField) are left in place: they cost nothing, and .findPlate is
+   still used — the species plate moved into Explore's results rather than
+   leaving with the view it was born in.
+   --------------------------------------------------------------------------- */
+.filters.wideline{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.filters.wideline .inlinecheck{flex:0 1 auto}
+/* Sort gets its own full-width card so the label and the value read as one
+   row, rather than a select crammed against the right edge. */
+.sortField{margin-left:0;flex:1;display:flex;align-items:center;gap:12px;background:white;
+ border:1px solid var(--line);border-radius:16px;padding:6px 14px;box-shadow:0 2px 8px #13263C0D}
+.sortField>span{flex:0 0 auto;font-weight:700;color:var(--green);font-size:.86rem}
+.sortField select{flex:1;border:0;background:transparent;font-weight:800;padding:11px 0;font-size:14px}
+.sortField select{min-height:38px}
+.filters.wideline .filterHint{flex:1 0 100%;margin:2px 2px 0}
+@media(max-width:520px){
+  .sortField{margin-left:0;flex:1 0 100%}
+  .sortField select{width:100%}
+}
+
+/* The pre-search state. Explore holds its list back until asked, so this card
+   is the first thing in the results area on a cold launch — it has to say
+   what is available and how to reach it, not just sit there being empty. */
+.searchPrompt{display:grid;gap:6px;text-align:center;padding:26px 18px;
+ background:#F7FAFD;border-style:dashed}
+.searchPrompt b{font-family:var(--display);font-size:18px;color:var(--green)}
+.searchPrompt span{font-size:13px;color:var(--muted);line-height:1.5;
+ max-width:32em;margin:0 auto}
+
+/* ---------------------------------------------------------------------------
+   Explore gets its screen back.
+
+   The dataset stats and the two government shortcut links left Explore in
+   v2n. The stats are a first-impression device — interesting exactly once —
+   so they belong on the onboarding card, which is shown exactly once. The two
+   links were already in Help and in the Regulations tab, verbatim, so they
+   were spending prime real estate duplicating a tab one tap away.
+   --------------------------------------------------------------------------- */
+.onboardStats{margin:14px 0 4px;gap:7px}
+.onboardStats div{background:#F2F6FA;border-radius:12px;padding:9px 6px;text-align:center}
+.onboardStats strong{display:block;font-size:17px;color:var(--green);line-height:1.15}
+.onboardStats span{display:block;font-size:9.5px;color:var(--muted);margin-top:2px;line-height:1.25}
+
+/* Two shortcut cards, not four, so they sit on one row rather than two. */
+.quick{grid-template-columns:1fr 1fr}
+.dataAge{margin-top:10px}
+/* The .dashboard rules carry a stale repeat(5,1fr) and a last-child span from
+   when this sat full-width in Explore. Inside a 440px card it wants a plain
+   2x2 for four stats. */
+.onboardStats{grid-template-columns:1fr 1fr}
+.onboardStats div:last-child{grid-column:auto}
+.onboardStats strong{font-size:17px}
+
+/* The search box does four different jobs and looked like it did one. A
+   placeholder cannot hold four without clipping on a 375pt phone, so the
+   fourth explanation lives under the box instead of inside it.
+
+   It deliberately survives body.filtering, which hides the rest of the hero
+   copy. The moment someone most needs to know they could have searched a town
+   is right after a search that found nothing. */
+.hero p.searchHint{
+ margin:10px 2px 0;font-size:12px;line-height:1.5;color:#C6D8E8;
+}
+body.filtering .hero p.searchHint{display:block}
+body.filtering .hero{padding-bottom:12px}
+
+/* The fifth way to search. It sits under the box rather than beside it: the
+   search row is already an input plus a button, and a third control there
+   pushes the input below a usable width on a 375pt phone. */
+.searchAlt{display:flex;gap:8px;margin-top:9px}
+/* Gold, like Search: the two are the same kind of act — start a search — and
+   an outlined ghost read as secondary chrome next to the thing it equals. */
+.searchAlt button{
+ border:0;background:var(--accent);color:var(--green);
+ padding:10px 16px;border-radius:11px;font:inherit;font-weight:800;font-size:14px;
+ min-height:40px;cursor:pointer;
+}
+.searchAlt button:active{filter:brightness(1.08)}
+body.filtering .searchAlt{display:flex}
+
+/* The lake sheet's own map.
+
+   Tapping a lake panned the main map behind the sheet, where nobody could see
+   it. 190px is enough to place a lake against its shoreline and neighbours
+   without pushing the facts below the fold — the grid, the regulations link
+   and the species chips are why people opened the sheet. */
+/* The lake sheet's own basemap tabs, riding above its mini map. Right-aligned
+   the way the main map's are; the wrap below loses its top margin so the two
+   read as one control-plus-map unit. */
+.detailMapHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:12px 0 8px}
+/* Save-for-offline sits opposite the basemap tabs. Quiet until it has done
+   something: outlined normally, filled green once this lake is saved. */
+.offlineBtn{border:1px solid var(--line);background:#fff;color:var(--ink);
+ border-radius:11px;padding:7px 12px;font:inherit;font-weight:800;font-size:12.5px;
+ cursor:pointer;white-space:nowrap}
+.offlineBtn.saved{background:var(--accent);border-color:var(--accent);color:var(--green)}
+.offlineBtn:disabled{opacity:.65;cursor:default}
+.detailMapHead+.detailMapWrap,.detailMapBlock .detailMapWrap{margin-top:0}
+.detailMapWrap{margin:12px 0 4px;position:relative}
+/* Full screen for the sheet map — same idea as .mapcard.isFull, one layer
+   higher so it clears the sheet itself (z-index 3000). The tabs come along:
+   flipping between Depth and Topo is most useful precisely when the map has
+   the whole screen. */
+.detailMapBlock.isFull{
+ position:fixed;inset:0;z-index:5000;margin:0;background:#fff;
+ display:flex;flex-direction:column;
+}
+.detailMapBlock.isFull .detailMapHead{
+ margin:0;padding:max(12px,env(safe-area-inset-top)) 12px 8px}
+.detailMapBlock.isFull .detailMapWrap{flex:1;min-height:0;margin:0}
+.detailMapBlock.isFull #detailMap{height:100%;border-radius:0}
+#detailMap{height:190px;border-radius:14px;background:#DCE5EC;overflow:hidden}
+#detailMap .leaflet-control-attribution{font-size:9px}
+@media(min-width:740px){#detailMap{height:240px}}
+
+/* Deleting a trip. Red, and two taps — a trip is a season of someone's
+   fishing, and there is no undo behind it. The card button is quieter than
+   the sheet's: on the list it sits under content you are usually scrolling
+   past, not under a decision you came to make. */
+.deleteTrip{width:100%;border:1px solid #a94442;background:#fff;color:#8a2927;
+ padding:12px;border-radius:10px;font-weight:900;margin-top:8px;font:inherit;
+ font-weight:900;min-height:44px;cursor:pointer}
+.deleteTripCard{margin-top:10px;border:1px solid #E3C4C2;background:#FCF3F2;
+ color:#8a2927;padding:8px 14px;border-radius:10px;font:inherit;font-weight:800;
+ font-size:12.5px;min-height:36px;cursor:pointer}
+.tripConfirm{margin-top:10px}
+.tripcard .confirmRow{margin-top:10px}
+
+/* "These results are stocked lakes only, for now." A partial list of lakes is
+   the one thing this app must never present as complete, so the note is amber
+   and sits above the results rather than under them. */
+.indexNote{background:#FFF9E8;border:1px solid #E6D3A3;color:#6B5510;
+ font-size:12.5px;line-height:1.5;font-weight:700;padding:12px 14px;cursor:default}
+.searchPrompt .stillLoading{font-size:12px;color:#6B5510;font-weight:700;margin-top:4px}
+
+/* "N lakes match your search, but the Brook Trout filter is hiding them."
+   The fix is one tap away rather than something to go hunting for. */
+.inlineClear{display:block;margin:10px auto 0;border:1px solid var(--line);
+ background:#fff;color:var(--green);padding:10px 18px;border-radius:11px;
+ font:inherit;font-weight:800;font-size:13px;min-height:40px;cursor:pointer}
+
+/* ---------------------------------------------------------------------------
+   The splash.
+
+   Requested after people were tapping half-loaded controls: the artwork
+   holds the screen until the merged lake database is ready, then fades. The
+   image is the header art at full size with the caption cropped off, so the
+   caption underneath can actually change ("Loading" is a lie the moment
+   loading fails) and the bar can actually move.
+   --------------------------------------------------------------------------- */
+/* The splash background is a GRADIENT, not a flat colour, and it is derived
+   rather than chosen.
+
+   The source mockup drew the splash as a phone-shaped card on a lighter
+   backdrop, so the artwork had a lighter frame baked into it — that inner
+   edge was the rectangle Richard could see, and no amount of matching the
+   CSS to the outer edge could fix it, because the mismatch was inside the
+   picture. The card's background is also a subtle vertical gradient, so a
+   single flat colour cannot meet it at every height.
+
+   Fix: a quadratic was fitted to the card's own background column using only
+   rows with no trout or text in them, that curve was painted into the
+   artwork's margins, and these stops come from the same curve. Fill and page
+   therefore cannot disagree — measured max deviation is under 2 levels per
+   channel down the whole height.
+
+   RE-DERIVE if the artwork is ever regenerated or re-saved; JPEG re-encoding
+   shifts these values, which is how it drifted in the first place. */
+#splash{position:fixed;inset:0;z-index:9000;background:linear-gradient(180deg,#020B1C 0%, #010D1F 25%, #010E20 50%, #010E21 75%, #010E20 100%);
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:18px;padding:28px;transition:opacity .45s ease}
+/* v4l: the caption is live HTML again (data-i18n="splashLoading"), not pixels.
+   The v4k artwork had "Loading 10,948 Lakes" baked into the JPEG, which is how
+   a stale count survived two releases of string fixes. Never bake text that
+   can change into the splash image. */
+#splash img{width:min(92vw,480px);max-height:80vh;object-fit:contain;
+ user-select:none;-webkit-user-select:none}
+#splash .splashMsg{color:#DCE8F4;font-size:16px;font-weight:700;margin:0}
+/* Sits directly under the artwork, where the static bar used to be printed.
+   Matched to the image's own width so it reads as part of the design rather
+   than a stray element beneath it. */
+#splash .splashBar{width:min(78vw,400px);height:8px;border-radius:4px;margin-top:-6px;
+ background:#ffffff22;overflow:hidden}
+#splash .splashBar i{display:block;height:100%;width:100%;border-radius:4px;
+ background:#3F8CFF;transform:scaleX(0);transform-origin:left;
+ animation:splashFill linear forwards}
+@keyframes splashFill{to{transform:scaleX(1)}}
+@keyframes splashSlide{from{transform:translateX(-30%)}to{transform:translateX(220%)}}
+@media (prefers-reduced-motion: reduce){#splash .splashBar i{animation:none;transform:scaleX(1)}}
+#splash.done{opacity:0;pointer-events:none}
+
+/* The same progress bar, reused in the results area while the datasets land.
+   The splash now leaves after a second, so this is the screen people watch —
+   it has to look like work in progress rather than an empty app. */
+.splashBar.mini{width:100%;max-width:260px;height:5px;border-radius:3px;
+ background:#0E1B2E14;overflow:hidden;margin:12px auto 2px}
+.splashBar.mini i{display:block;height:100%;width:38%;border-radius:3px;
+ background:var(--gold);animation:splashSlide 1.15s ease-in-out infinite alternate}
+@media (prefers-reduced-motion: reduce){.splashBar.mini i{animation:none;width:100%}}
+
+/* Build stamp on the splash. Small, dim, and out of the way — but readable if
+   you go looking, which is the whole point: it tells you which build is
+   actually running when a stale cache makes an update look like it failed. */
+.splashVer{position:absolute;right:14px;bottom:12px;font-size:11px;
+ color:#ffffff5c;letter-spacing:.04em;font-weight:700}
+
+/* Out-of-season regulations. Red rather than amber: an out-of-date season or
+   limit can put someone on the wrong side of the law, which is a different
+   class of problem from a slow-loading lake index. */
+.staleRegs{background:#FDF1F0;border:1px solid #E0B4B1;color:#7E2A26;
+ font-size:13px;line-height:1.55;font-weight:700;padding:13px 15px;
+ margin:10px 0;cursor:default}
+.zoneAction.stale{border-color:#E0B4B1;background:#FDF1F0;color:#7E2A26}
+
+/* The keep-the-app-open advice, repeated at the foot of Explore. The splash
+   carries it for five seconds at launch, which is easy to miss and easier to
+   forget; this sits where someone is standing when it starts to matter. Gold
+   on the app's own dark card so it reads as guidance rather than an error. */
+.offlineNote{background:#13263C;border:1px solid #2C4A6E;color:#E8C77A;
+ border-radius:14px;padding:14px 16px;margin:14px 0 4px;font-size:13px;
+ line-height:1.55;font-weight:700;text-align:center}
+
+/* Depth contour labels. Printed straight onto the line like a paper chart —
+   no box, no arrow, just the number, so a lake full of contours still reads
+   as a map rather than a cluster of speech bubbles. */
+.leaflet-tooltip.depthLabel{
+ background:none;border:none;box-shadow:none;padding:0;
+ color:#1D5FA0;font-size:10px;font-weight:700;
+ text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff;
+}
+.leaflet-tooltip.depthLabel::before{display:none}
+
+/* Full-screen map. Contour labels and the shape of a lake bottom need room a
+   card on a phone cannot give; this is the one screen anglers will want to
+   fill. Fixed rather than the Fullscreen API, which iOS Safari does not offer
+   for arbitrary elements and which a WKWebView wrapper handles unevenly —
+   position:fixed behaves identically in the browser and in the shipped app. */
+.mapWrap{position:relative}
+.mapExpand{
+ position:absolute;top:10px;right:10px;z-index:500;
+ width:34px;height:34px;padding:0;border-radius:8px;
+ border:1px solid rgba(19,38,60,.25);background:#fff;
+ display:flex;align-items:center;justify-content:center;
+ box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer;
+}
+.mapExpand svg{width:18px;height:18px;fill:none;stroke:#13263C;stroke-width:2;
+ stroke-linecap:round;stroke-linejoin:round}
+.mapcard.isFull{
+ position:fixed;inset:0;z-index:4000;margin:0;border-radius:0;
+ display:flex;flex-direction:column;background:#fff;
+}
+.mapcard.isFull .mapWrap{flex:1;min-height:0}
+.mapcard.isFull #map{height:100%}
+/* Clear of the notch and the home indicator when filling the screen. */
+.mapcard.isFull .maphead{padding-top:max(12px,env(safe-area-inset-top))}
+.mapcard.isFull .mapExpand{top:max(10px,calc(env(safe-area-inset-top) + 4px))}
+/* Location button on the map — sits in the bottom-left Leaflet control stack,
+   styled to match Leaflet's zoom buttons. Tapping toggles continuous tracking. */
+.mapLocationControl{background:none;border:none;box-shadow:none}
+/* The .leaflet-touch selector matches Leaflet's own touch stylesheet, whose
+   .leaflet-touch .leaflet-bar a rule outranks a plain class selector and was
+   clamping these to 30px squares -- which shoved the labels ("Trail: Off",
+   the ruler's distance) outside their buttons as loose text fragments. */
+.mapLocationControl a,
+.leaflet-touch .leaflet-bar.mapLocationControl a{background:#fff;border:1px solid rgba(19,38,60,.25);border-radius:8px;width:auto;min-width:34px;height:34px;line-height:1;padding:0 10px;display:flex;align-items:center;justify-content:center;gap:6px;color:#13263C;text-decoration:none;font-size:18px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25);transition:background 150ms}
+.mapLocationControl .locLabel{font-size:12.5px;font-weight:700;white-space:nowrap;font-family:inherit}
+.mapLocationControl a:hover,.leaflet-touch .leaflet-bar.mapLocationControl a:hover{background:#f4f4f4}
+.mapLocationControl a.tracking,.leaflet-touch .leaflet-bar.mapLocationControl a.tracking{background:#1976D2;color:#fff;border-color:#1976D2}
+.mapLocationControl a.tracking:hover,.leaflet-touch .leaflet-bar.mapLocationControl a.tracking:hover{background:#1565C0}
+.mapLocationControl svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+/* The live-location dot: solid blue centre with a white edge, and a ring that
+   swells and fades in a loop while tracking is on. */
+.userDotWrap{position:relative}
+.userDot{position:absolute;inset:0;margin:auto;width:14px;height:14px;border-radius:50%;
+ background:#1976D2;border:2.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.userDotPulse{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;
+ border-radius:50%;background:rgba(25,118,210,.45);animation:userPulse 2s ease-out infinite}
+@keyframes userPulse{
+ 0%{transform:scale(1);opacity:.7}
+ 70%{transform:scale(3.2);opacity:0}
+ 100%{transform:scale(3.2);opacity:0}
+}
+/* The Trails panel: a card pinned above the bottom-left map controls, high
+   enough (z-index) to sit over even the fullscreen sheet map. Same panel
+   serves both maps, since the trails themselves are shared. */
+.trailPanel{position:fixed;left:12px;bottom:130px;z-index:6000;width:min(320px,calc(100vw - 24px));
+ background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.25);
+ padding:12px;max-height:55vh;overflow:auto}
+.trailPanel.hidden{display:none}
+.tpHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tpHead b{font-size:15px}
+.tpHead button{border:0;background:none;font-size:22px;line-height:1;cursor:pointer;color:var(--ink);padding:2px 6px}
+.tpCurrent{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:10px}
+.tpRowTop{font-weight:800;font-size:13px;margin-bottom:8px}
+.tpCurrent input{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:9px;
+ padding:9px 10px;font:inherit;font-size:14px;margin-bottom:8px}
+.tpBtns{display:flex;gap:8px}
+.tpSave{flex:1;border:0;background:var(--accent);color:var(--green);border-radius:10px;
+ padding:9px 12px;font:inherit;font-weight:800;cursor:pointer}
+.tpDanger{border:1px solid #E4B6B0;background:#FBEDEB;color:#9C2B1F;border-radius:10px;
+ padding:9px 12px;font:inherit;font-weight:800;cursor:pointer}
+.tpDanger.armed{background:#C0392B;border-color:#C0392B;color:#fff}
+.tpList{display:flex;flex-direction:column;gap:6px}
+.tpRow{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.tpMeta{flex:1;min-width:0;display:flex;flex-direction:column}
+.tpName{font-weight:800;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tpSub{font-size:11.5px;color:var(--muted)}
+.tpRow button[data-act="toggle"]{border:1px solid var(--line);background:#fff;border-radius:9px;
+ padding:7px 10px;font:inherit;font-weight:800;font-size:12px;cursor:pointer}
+.tpRow button[data-act="toggle"].on{background:#7B3FA0;border-color:#7B3FA0;color:#fff}
+.tpNote{font-size:12.5px;color:var(--muted);padding:4px 2px}
+.spotPanel{position:fixed;left:12px;bottom:130px;z-index:6000;width:min(340px,calc(100vw - 24px));background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.25);padding:12px;max-height:55vh;overflow:auto}
+.spotPanel.hidden{display:none}
+.spHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.spHead b{font-size:15px}.spHead button{border:0;background:0;font-size:22px;line-height:1;cursor:pointer;color:var(--ink);padding:2px 6px}
+.spCreate{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:10px}.spCreate input{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:9px;padding:9px 10px;font:inherit;font-size:14px;margin-bottom:8px}
+.spColors{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.spColors label{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px}.spColors input{margin:0}.spColors span{width:16px;height:16px;border-radius:50%;display:inline-block;border:2px solid transparent}.spColors input:checked+span{border-color:var(--ink)}
+.spBtns{display:flex;gap:6px}.spSave{flex:1;border:0;background:var(--accent);color:var(--green);border-radius:10px;padding:9px 12px;font:inherit;font-weight:800;cursor:pointer}.spSave:active{filter:brightness(.95)}.spCancel{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;font:inherit;font-weight:800;cursor:pointer}
+.spList{display:flex;flex-direction:column;gap:6px}.spRow{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:8px}.spDot{width:16px;height:16px;border-radius:50%;flex-shrink:0}.spMeta{flex:1;min-width:0}.spName{font-weight:800;font-size:13.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spRow button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:6px 10px;font:inherit;font-weight:800;font-size:12px;cursor:pointer}.spRow button[data-act="toggle"].on{background:#27AE60;border-color:#27AE60;color:#fff}.spDanger{border:1px solid #E4B6B0;background:#FBEDEB;color:#9C2B1F}.spDanger.armed{background:#C0392B;border-color:#C0392B;color:#fff}
+.spNote{font-size:12.5px;color:var(--muted);padding:4px 2px}
+body.spotCreating{cursor:crosshair}
+body.spotCreating .leaflet-container{cursor:crosshair}
+.spHeadBtns{display:flex;align-items:center;gap:8px}
+.spNew{border:0;background:var(--accent);color:var(--green);border-radius:9px;padding:7px 12px;font:inherit;font-weight:800;font-size:13px;cursor:pointer}
+/* Colour choice as plain tappable circles: iOS native radios drew at their
+   own size on top of the swatches and clipped the labels. A ring marks the
+   selected one. */
+.spSwatch{width:36px;height:36px;border-radius:50%;border:3px solid transparent;padding:0;cursor:pointer;flex-shrink:0}
+.spSwatch.sel{border-color:#13263C;box-shadow:0 0 0 2px #fff inset}
+/* Top-anchored panel: bottom-anchored, the iOS keyboard covered the Save
+   button whenever the name field had focus -- the "no save button" bug. */
+.spotPanel{top:110px;bottom:auto}
+.spIconRow{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.spIcon{width:38px;height:38px;border-radius:10px;border:2px solid var(--line);background:#fff;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.spIcon.sel{border-color:#13263C;background:#EEF3F8}
+.spColorRow{display:flex;gap:8px;margin-bottom:8px}
+.spFilters{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.spFilters button[data-color=""]{border:1px solid var(--line);background:#fff;border-radius:9px;padding:6px 12px;font:inherit;font-weight:800;font-size:12.5px;cursor:pointer}
+.spFilters button[data-color=""].on{background:#13263C;border-color:#13263C;color:#fff}
+.spFilterDot{width:26px;height:26px;border-radius:50%;border:3px solid transparent;padding:0;cursor:pointer;flex-shrink:0}
+.spFilterDot.on{border-color:#13263C}
+.spRowIcon{flex-shrink:0;display:flex}
+.spotDiv{filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+/* The master Spots screen. Rows are tappable to open the lake; the pencil
+   expands an editor in place so tidying never costs a trip to the lake. */
+.asTools{margin:12px 0 10px}
+#allSpotsSearch{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;font-size:16px}
+.asFilters{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.asFilters button[data-asfilter=""]{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 14px;font:inherit;font-weight:800;font-size:13px;cursor:pointer}
+.asFilters button[data-asfilter=""].on{background:#13263C;border-color:#13263C;color:#fff}
+.asDot{width:30px;height:30px;border-radius:50%;border:3px solid transparent;padding:0;cursor:pointer}
+.asDot.on{border-color:#13263C}
+.asCount{font-size:13px;color:var(--muted);margin:0 0 8px}
+.asEmpty{font-size:14px;color:var(--muted);padding:18px 2px}
+.asList{display:flex;flex-direction:column;gap:8px}
+.asRow{display:flex;align-items:stretch;gap:8px}
+.asMain{flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-align:left;
+ border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px;cursor:pointer;font:inherit}
+.asMain:disabled{opacity:.6;cursor:default}
+.asIcon{flex-shrink:0;display:flex}
+.asMeta{min-width:0;display:flex;flex-direction:column}
+.asName{font-weight:800;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.asSub{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.asEdit{width:46px;border:1px solid var(--line);background:#fff;border-radius:14px;cursor:pointer;
+ display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.asRow.editing .asMain,.asRow.editing .asEdit{border-color:#13263C}
+.asEditor{border:1px solid #13263C;border-radius:14px;padding:12px;margin-top:-2px;background:#F7FAFC}
+.asRename{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:15px;margin-bottom:10px}
+.asColors,.asIcons{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.asSwatch{width:32px;height:32px;border-radius:50%;border:3px solid transparent;padding:0;cursor:pointer}
+.asSwatch.sel{border-color:#13263C}
+.asIconBtn{width:38px;height:38px;border-radius:10px;border:2px solid var(--line);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.asIconBtn.sel{border-color:#13263C;background:#EEF3F8}
+.asEditBtns{display:flex;gap:8px}
+.asSave{flex:1;border:0;background:var(--accent);color:var(--green);border-radius:10px;padding:10px;font:inherit;font-weight:800;cursor:pointer}
+.asDel{border:1px solid #E4B6B0;background:#FBEDEB;color:#9C2B1F;border-radius:10px;padding:10px 16px;font:inherit;font-weight:800;cursor:pointer}
+.asDel.armed{background:#C0392B;border-color:#C0392B;color:#fff}
+
+/* A soft fade at the right edge of the tab strip: the bar scrolls, and with
+   five tabs the last one sits off-screen with nothing to say so. */
+.tabstrip::after{content:"";position:absolute;top:0;right:0;bottom:0;width:26px;
+ pointer-events:none;background:linear-gradient(to right,transparent,var(--green))}
+/* Turning a logged catch into a marked spot, from the catch row itself. */
+.catchSpotRow{margin-top:6px}
+.catchSpotBtn{border:1px solid var(--line);background:#fff;border-radius:9px;
+ padding:6px 11px;font:inherit;font-weight:800;font-size:12px;cursor:pointer;color:var(--ink)}
+.catchSpotDone{font-size:12px;font-weight:800;color:#27AE60}
+.catchSpotRow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.catchNoLoc{font-size:11.5px;color:var(--muted)}
+/* .catchrow button turns everything into a 28px circle (the pencil and the
+   x); these two are labelled pills and must win that fight explicitly. */
+.catchrow .catchSpotRow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:7px}
+.catchrow button.catchSpotBtn{width:auto;height:auto;border:1px solid var(--line);background:#fff;
+ border-radius:9px;padding:6px 11px;font:inherit;font-weight:800;font-size:12px;
+ color:var(--ink);white-space:nowrap;line-height:1.2}
+.catchrow .catchSpotDone{display:inline;font-size:12px;font-weight:800;color:#27AE60;margin-top:0}
+.catchrow .catchNoLoc{display:inline;font-size:11.5px;color:var(--muted);margin-top:0}
+/* Lake section headers on the Spots screen: fold a lake away with a tap. */
+.asIconFilters{gap:6px}
+.asIconChip{width:34px;height:34px;border-radius:9px;border:2px solid var(--line);background:#fff;padding:5px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.asIconChip.on{border-color:#13263C;background:#EEF3F8}
+.asLakeHead{width:100%;display:flex;align-items:center;gap:10px;text-align:left;
+ border:0;background:none;padding:14px 2px 8px;cursor:pointer;font:inherit}
+.asLakeHead .asLakeName{font-weight:900;font-size:15.5px;color:var(--ink)}
+.asLakeHead .asLakeMeta{font-size:12.5px;color:var(--muted);flex:1}
+.asLakeHead .asChevron{font-size:14px;color:var(--muted)}
+.asLakeHead.folded{opacity:.75}
+
+/* Filter pills: two per row so French labels have room to breathe. */
+.fpill{flex:1 1 45%;min-width:45%}
+
+/* ---- Map bottom bar -----------------------------------------------------
+   The four map actions used to stack up the left edge, covering the water
+   and reaching awkwardly for a thumb. They now sit in one bar across the
+   bottom of the map: icon over label, even widths, state carried by colour
+   instead of the words "On"/"Off".
+   Leaflet's own bar/button rules clamp anchors to 30px squares, so every
+   dimension here is stated at matching-or-higher specificity. */
+.leaflet-bottom.leaflet-left{left:0;right:0;bottom:0;width:100%;display:flex;
+ pointer-events:none;padding:0;margin:0}
+.leaflet-touch .leaflet-bottom.leaflet-left .leaflet-bar.mapBarBtn,
+.leaflet-bottom.leaflet-left .leaflet-bar.mapBarBtn{
+ flex:1 1 0;margin:0;border:0;border-radius:0;box-shadow:none;pointer-events:auto;
+ background:#FFFFFFF2;border-top:1px solid var(--line);backdrop-filter:blur(6px)}
+.leaflet-touch .leaflet-bar.mapBarBtn a,
+.leaflet-bar.mapBarBtn a{
+ width:auto;height:auto;display:flex;flex-direction:column;align-items:center;
+ justify-content:center;gap:3px;padding:9px 2px 8px;border:0;border-radius:0;
+ background:transparent;color:var(--ink);font:inherit;line-height:1.1;
+ text-decoration:none}
+.leaflet-bar.mapBarBtn a svg{width:21px;height:21px;display:block}
+.leaflet-bar.mapBarBtn a .locLabel{font-size:10.5px;font-weight:800;letter-spacing:.1px;
+ white-space:nowrap;display:block}
+/* Divider between buttons, not on the first. */
+.leaflet-bar.mapBarBtn + .leaflet-bar.mapBarBtn{border-left:1px solid var(--line)}
+/* Active states. Blue = following you. Red = laying a trail: the one state
+   you must be able to read at a glance from the far end of the boat. */
+.leaflet-touch .leaflet-bar.mapBarBtn a.tracking,
+.leaflet-bar.mapBarBtn a.tracking{background:#2F6FB5;color:#fff}
+.leaflet-touch .leaflet-bar.mapBarBtn a.recording,
+.leaflet-bar.mapBarBtn a.recording{background:#C0392B;color:#fff}
+/* Leaflet reserves space at the bottom for attribution; nudge it clear. */
+
+/* Trails panel: say how a trail starts, and make saving the obvious action. */
+.tpHint{font-size:12.5px;color:var(--muted);padding:8px 2px;line-height:1.45}
+.tpReady{font-size:12px;font-weight:800;color:#2F6FB5;margin:2px 0 6px}
+/* In fullscreen the bar sits on the true bottom edge of the phone, where
+   iOS draws the home indicator across it. Pad the buttons by the device's
+   own safe-area inset (plus a hair) so labels sit clear of the line.
+   Inline maps are unaffected -- they never touch the screen edge. */
+.mapcard.isFull .leaflet-bar.mapBarBtn a,
+.detailMapBlock.isFull .leaflet-bar.mapBarBtn a{
+ padding-bottom:calc(10px + env(safe-area-inset-bottom, 8px))}
+
+/* Attribution moves off the bottom edge, where it collided with the map bar
+   (on iPad it landed straight on "My Spots"). It now rides the top of the
+   map, centred: zoom sits far left, expand/close far right, and the middle
+   strip is empty on both phone and tablet. Still on-map and legible, which
+   is what the OSM and NRCan licences ask for. */
+.leaflet-container .leaflet-bottom.leaflet-right{
+ top:0;bottom:auto;right:0;left:0;display:flex;justify-content:center;
+ pointer-events:none}
+.leaflet-container .leaflet-bottom.leaflet-right .leaflet-control-attribution{
+ margin:6px 0 0;pointer-events:auto;
+ background:#FFFFFFD9;border-radius:0 0 8px 8px;
+ padding:3px 9px;font-size:10.5px;line-height:1.3;
+ max-width:62vw;text-align:center;box-shadow:0 1px 3px #13263C1A}

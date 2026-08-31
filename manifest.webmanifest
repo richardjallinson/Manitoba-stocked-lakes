@@ -1,0 +1,45 @@
+{
+  "id": "./",
+  "name": "Manitoba Stocked Lakes",
+  "short_name": "Stocked Lakes",
+  "description": "Find Ontario stocked lakes by distance, species and stocking year, then check regulations, access points, weather and consumption advice.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "en-CA",
+  "dir": "ltr",
+  "background_color": "#EEF4F9",
+  "theme_color": "#13263C",
+  "categories": [
+    "navigation",
+    "travel",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

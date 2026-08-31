@@ -1,0 +1,14 @@
+.DS_Store
+*.zip
+__pycache__/
+*.pyc
+node_modules/
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Keep the built data files: they ARE the app offline.
+# Do not add manitoba-*.json here.
