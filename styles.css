@@ -1197,7 +1197,7 @@ body.filtering .searchAlt{display:flex}
 
    RE-DERIVE if the artwork is ever regenerated or re-saved; JPEG re-encoding
    shifts these values, which is how it drifted in the first place. */
-#splash{position:fixed;inset:0;z-index:9000;background:linear-gradient(180deg,#020B1C 0%, #010D1F 25%, #010E20 50%, #010E21 75%, #010E20 100%);
+#splash{position:fixed;inset:0;z-index:9000;background:linear-gradient(180deg,#000311 0%, #00071B 25%, #00091F 50%, #00081D 75%, #000516 100%);
  display:flex;flex-direction:column;align-items:center;justify-content:center;
  gap:18px;padding:28px;transition:opacity .45s ease}
 /* v4l: the caption is live HTML again (data-i18n="splashLoading"), not pixels.

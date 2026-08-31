@@ -3,7 +3,7 @@
    load isn't blocked on ~12 MB. Live government API calls always go to the
    network so regulations and advisories are never served stale. */
 
-const VERSION = "mb1d";
+const VERSION = "mb1e";
 const SHELL = `osl-shell-${VERSION}`;
 /* Deliberately NOT versioned. The data cache used to be osl-data-${VERSION},
    and activate deletes every cache that is not current — so every app update
