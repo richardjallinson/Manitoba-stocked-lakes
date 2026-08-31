@@ -701,7 +701,7 @@ function translateStaticUI(){
  const ox=$("onboardText");if(ox)ox.textContent=t("onboardText");
 }
 
-const APP_VERSION="mb1c";
+const APP_VERSION="mb1d";
 const API="https://services1.arcgis.com/TJH5KDher0W13Kgo/ArcGIS/rest/services/FishStockingDataForRecreationalPurposes/FeatureServer/0/query";
 const FMZ_API="https://ws.lioservices.lrc.gov.on.ca/arcgis2/rest/services/LIO_OPEN_DATA/LIO_Open07/MapServer/14/query";
 const REGS_BASE="https://www.ontario.ca/document/ontario-fishing-regulations-summary/fisheries-management-zone-";
@@ -2352,11 +2352,11 @@ async function loadWaterbodies(){
    Two optional files, both built once a year on a machine with a network and
    committed like the waterbody index:
 
-   ontario-places.json   tools/build-gazetteer.py — Ontario towns from
+   manitoba-places.json  tools/build-mb-gazetteer.py — Manitoba towns from
                          GeoNames (CC-BY). Lets the sheet say "12 km N of
                          Apsley" instead of leaving a coordinate to speak for
                          itself.
-   ontario-nearby.json   tools/build-nearby.py — campgrounds, motels, lodges
+   manitoba-nearby.json  tools/build-mb-nearby.py — campgrounds, motels, lodges
                          and cabins from OpenStreetMap (ODbL). The lake sheet
                          lists anything within NEARBY_KM.
 
@@ -2376,11 +2376,11 @@ let accessPoints=[],accessLoaded=false;
 
 async function loadTripData(){
  try{
-  const r=await fetch("ontario-places.json");
+  const r=await fetch("manitoba-places.json");
   if(r.ok){const j=await r.json();gazetteer=j.places||[]}
  }catch(e){ /* not built; the sheet just has no "where is this" line */ }
  try{
-  const r=await fetch("ontario-nearby.json");
+  const r=await fetch("manitoba-nearby.json");
   if(r.ok){const j=await r.json();nearbyStays=j.stays||[];nearbyLoaded=true}
  }catch(e){ /* not built; the lodging card just does not render */ }
  try{
@@ -2660,7 +2660,7 @@ let filtersDirty=false;
 let searched=false;
 
 /* A search can be centred on a town instead of on the person. The bundled
-   GeoNames gazetteer has 5,430 Ontario places with coordinates, so "Belleville"
+   GeoNames gazetteer has Manitoba places with coordinates, so "Brandon"
    is answerable entirely offline: the query becomes the centre, the radius
    applies from there, and distances are measured from there. Exact-name match
    only — "Rice" must keep finding Rice Lake, not the hamlet of Rice Point. */
