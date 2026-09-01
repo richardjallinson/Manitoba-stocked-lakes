@@ -10,12 +10,6 @@ const I18N={
   // reading as the same list twice: same lake, overlapping species, no stated
   // difference. Presence is Manitoba's summary of what lives in the waterbody;
   // this is what a crew actually pulled out of the water and counted.
-  netHead:"Counted in netting surveys",
-  netSub:"Fish ON-Line records the catch from individual survey nettings, with counts. Fewer species appear here than in the presence list above — a species can live in a lake without turning up in a netting.",
-  netCaught:"caught",
-  netNoCount:"count not recorded",
-  netNone:"No Fish ON-Line netting survey was matched to this waterbody identifier. That means no netting record, not an empty lake.",
-  netLoading:"Netting survey records are loading, or unavailable offline.",
   surveyNone:"No fish survey has been published for this waterbody. That means no data, not an empty lake.",
   surveyForageOnly:"This lake has been surveyed, but the only species recorded were baitfish and forage fish, which this app does not list. That is a record of what the crew netted, not a full picture of the lake.",
   surveyUnidentified:"This lake has been surveyed, but the records are not identified to species — only to a family or genus. There are fish here; Manitoba's data does not say which.",
@@ -178,7 +172,7 @@ const I18N={
   saveTripNotes:"Save trip notes",
   notesSaved:"Trip notes saved.",
   endTrip:"End fishing trip",
-  chk_licence:"Fishing licence / Outdoors Card",
+  chk_licence:"Manitoba angling licence",
   chk_rodReel:"Rods and reels",
   chk_tackle:"Tackle box",
   chk_lineHooks:"Spare line and hooks",
@@ -253,7 +247,7 @@ const I18N={
   regsOpenGuide:"Open the Manitoba Anglers\u2019 Guide",
   regsStamp:"Manitoba Anglers\u2019 Guide \u2022 new rules take effect 1 April each year",
   advMbNote:"Manitoba does not publish a per-lake consumption database, so this app shows no meal counts for this lake. Manitoba issues general mercury guidance plus advisories for specific waters.",
-  fishOnlineSub:"Government lake information",fishOnlineSub2:"Government lake information and maps",
+  fishOnlineSub:"Provincial fisheries information",fishOnlineSub2:"Provincial fisheries information",
   lakesNearYou:"Lakes near you",sortedByDrive:"Sorted by how far you'd have to drive.",within:"Within",
   myLakesSub:"Lakes you've saved. Tap \u2606 on any lake to keep it here.",filterSavedPh:"Filter your saved lakes",
   tripsCatches:"Trips & catches",logbookSub:"Your logbook, stored on this device.",
@@ -320,7 +314,7 @@ const I18N={
   officialSources:"Official Manitoba sources",
   regsSummaryNote:"Regulations in this app are a summary. These are the authoritative sources \u2014 open them before you fish.",
   regsSummaryTitle:"Fishing Regulations Summary",regsSummarySub:"Seasons, limits and slot sizes by zone",
-  licences:"Fishing licences",licencesSub:"Buy or renew an Outdoors Card and licence",
+  licences:"Fishing licences",licencesSub:"Buy or renew a Manitoba angling licence",
   eatingGuide:"Eating fish caught in Manitoba",eatingGuideSub:"Mercury and contaminant guidance",
   ecWeather:"Environment Canada weather",ecWeatherSub:"Forecasts and marine warnings",
   openData:"Manitoba Open Data",openDataSub:"The datasets behind this app",
@@ -342,12 +336,6 @@ const I18N={
   fishPresentSub:"Esp\u00e8ces r\u00e9pertori\u00e9es dans les donn\u00e9es sur les plans d'eau du Manitoba.",
   fishPresentSeparate:"Distinct de l'historique d'ensemencement ci-dessous.",
   fishPresentTap:"Touchez une esp\u00e8ce pour conna\u00eetre ses limites et sa saison.",
-  netHead:"D\u00e9nombr\u00e9s lors de p\u00eaches exp\u00e9rimentales",
-  netSub:"P\u00eache en direct r\u00e9pertorie les prises de chaque p\u00eache exp\u00e9rimentale, avec les d\u00e9nombrements. Moins d'esp\u00e8ces figurent ici que dans la liste des esp\u00e8ces pr\u00e9sentes ci-dessus \u2014 une esp\u00e8ce peut vivre dans un lac sans \u00eatre captur\u00e9e.",
-  netCaught:"captur\u00e9s",
-  netNoCount:"d\u00e9nombrement non consign\u00e9",
-  netNone:"Aucune p\u00eache exp\u00e9rimentale de P\u00eache en direct n'a \u00e9t\u00e9 associ\u00e9e \u00e0 cet identifiant de plan d'eau. Cela signifie qu'il n'y a pas de relev\u00e9 de capture, et non que le lac est vide.",
-  netLoading:"Les relev\u00e9s de p\u00eache exp\u00e9rimentale se chargent ou ne sont pas disponibles hors ligne.",
   surveyNone:"Aucun relev\u00e9 de poissons n'a \u00e9t\u00e9 publi\u00e9 pour ce plan d'eau. Cela signifie qu'il n'y a pas de donn\u00e9es, et non que le lac est vide.",
   surveyForageOnly:"Ce lac a fait l'objet d'un relev\u00e9, mais les seules esp\u00e8ces r\u00e9pertori\u00e9es \u00e9taient des poissons-app\u00e2ts et des poissons fourrages, que cette application ne r\u00e9pertorie pas. Il s'agit du relev\u00e9 des captures de l'\u00e9quipe, et non d'un portrait complet du lac.",
   surveyUnidentified:"Ce lac a fait l'objet d'un relev\u00e9, mais les donn\u00e9es ne pr\u00e9cisent pas l'esp\u00e8ce \u2014 seulement la famille ou le genre. Il y a des poissons ici; les donn\u00e9es du Manitoba ne disent pas lesquels.",
@@ -713,7 +701,7 @@ function translateStaticUI(){
  const ox=$("onboardText");if(ox)ox.textContent=t("onboardText");
 }
 
-const APP_VERSION="mb1i";
+const APP_VERSION="mb1j";
 const API="https://services1.arcgis.com/TJH5KDher0W13Kgo/ArcGIS/rest/services/FishStockingDataForRecreationalPurposes/FeatureServer/0/query";
 const FMZ_API="https://ws.lioservices.lrc.gov.on.ca/arcgis2/rest/services/LIO_OPEN_DATA/LIO_Open07/MapServer/14/query";
 const MB_ANGLERS_GUIDE="https://www.gov.mb.ca/nrnd/fish-wildlife/pubs/fish_wildlife/fish/angling-guide.pdf";
@@ -3575,7 +3563,7 @@ function detail(l){
  ${whereLine(l)}
  <div class="detailMapBlock"><div class="detailMapHead"><button type="button" id="offlineBtn" class="offlineBtn">${t("offlineSave")}</button><div class="baseSwitch detailBaseSwitch" role="group" aria-label="Basemap"><button type="button" data-dbase="map">${t("baseMap")}</button><button type="button" data-dbase="topo">${t("baseTopo")}</button><button type="button" data-dbase="depth">${t("baseDepth")}</button></div></div>
  <div class="detailMapWrap"><div id="detailMap" role="img" aria-label="${t('lakeMapLabel')}"></div><button type="button" class="mapExpand detailMapExpand" aria-label="${t("expandMap")}">${EXPAND_ICON}</button></div></div>
- <div class="detailgrid">${l.stocked?`<div><small>Latest stocking</small><b>${esc(l.latestYear||"—")}</b></div><div><small>Stocking records</small><b>${l.records.length}</b></div>`:`<div><small>Stocking</small><b>Not stocked</b></div>`}${userLoc?`<div><small>Distance from you</small><b>${esc(distanceLabel(l))}</b></div>`:""}${l.district?`<div><small>MNRF district</small><b>${esc(l.district)}</b></div>`:""}
+ <div class="detailgrid">${l.stocked?`<div><small>Latest stocking</small><b>${esc(l.latestYear||"—")}</b></div><div><small>Stocking records</small><b>${l.records.length}</b></div>`:`<div><small>Stocking</small><b>Not stocked</b></div>`}${userLoc?`<div><small>Distance from you</small><b>${esc(distanceLabel(l))}</b></div>`:""}${l.district?`<div><small>Fishing division</small><b>${esc(l.district)}</b></div>`:""}
  <div><small>Waterbody ID</small><b>${esc(l.waterbodyId||"—")}</b></div></div>
  <a class="zoneAction" target="_blank" rel="noopener" href="${MB_ANGLERS_GUIDE}">${t("regsOpenGuide")}</a>
  ${regsStaleNote()}
@@ -3584,9 +3572,7 @@ ${presentBlock(l)}
  <div id="lake-rules" class="tabAnchor"></div>${fullRegCard(l,l.species[0]||"Fish")}
  ${fishingConditionsCard(l)}
  <div id="lake-eating" class="tabAnchor"></div><div class="infoCard"><h3>\u{1F37D}\uFE0F ${t("eatingGuide")}</h3>${advisoryPanel(l)}</div>
- <div id="lake-species" class="tabAnchor"></div><div class="infoCard"><h3>${t("netHead")}</h3><p class="microcopy">${t("netSub")}</p>
- ${speciesLoaded?(l.observedSpecies&&l.observedSpecies.length?`<div class="specieschips netchips">${l.observedSpecies.map(s=>`<span>${esc(s.species)}<em>${s.caught>0?`${Number(s.caught).toLocaleString()} ${t("netCaught")}`:t("netNoCount")}</em></span>`).join("")}</div><p class="microcopy">Species shown come from Manitoba’s waterbody records and are not a guarantee of current abundance.</p>`:`<p>${t("netNone")}</p>`):`<p>${t("netLoading")}</p>`}
- </div>
+ <div id="lake-species" class="tabAnchor"></div>
  <div id="lake-depth" class="tabAnchor"></div><div class="infoCard"><h3>🌊 ${t("lakeDepth")}</h3><p>${l.depthMax?t("depthKnown").replace("{max}",esc(depthFt(l.depthMax))).replace("{mean}",depthFt(l.depthMean)?esc(depthFt(l.depthMean)):"—"):t("depthUnknown")}</p><p class="helpNote">${t("depthNotForNav")}</p></div>
  <div id="lake-stocking" class="tabAnchor"></div><h3>Recent Stocking History</h3><div class="history">${history}</div>
  ${accessCard(l)}
