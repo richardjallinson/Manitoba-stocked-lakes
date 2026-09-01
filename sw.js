@@ -1,9 +1,10 @@
 /* Ontario Stocked Lakes — service worker
    Shell is precached. Large datasets are cached on first use so the initial
    load isn't blocked on ~12 MB. Live government API calls always go to the
-   network so regulations and advisories are never served stale. */
+   network. MANITOBA: the Ontario regulations and advisory files are no longer
+   shipped -- Manitoba publishes neither as data, so the app links out. */
 
-const VERSION = "mb1h";
+const VERSION = "mb1i";
 const SHELL = `osl-shell-${VERSION}`;
 /* Deliberately NOT versioned. The data cache used to be osl-data-${VERSION},
    and activate deletes every cache that is not current — so every app update
@@ -48,8 +49,7 @@ const SHELL_FILES = [
 ];
 
 // Big local datasets: cached the first time they're requested, not on install.
-const DATA_FILES = ["fish-advisories-2025.json", "ontario-regulations-2026.json",
-                    "manitoba-waterbodies.json", "manitoba-nearby.json",
+const DATA_FILES = ["manitoba-waterbodies.json", "manitoba-nearby.json",
                     "manitoba-places.json", "manitoba-stocking.json", "manitoba-access.json",
                     "species-art/manifest.json"];
 

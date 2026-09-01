@@ -31,7 +31,7 @@ const I18N={
   // Status and progress lines
   loadingData:"Loading Manitoba data…",loadingRecords:"Loading…",searchingManitoba:"Searching Manitoba…",
   searchingAllLakes:"Searching all Manitoba lakes…",searchingFor:"Searching Manitoba for {sp}…",
-  loadingZones:"Loading Ontario FMZ boundaries…",zonesRetry:"Zone boundaries unavailable — retrying",
+  loadingZones:"Loading map…",zonesRetry:"Zone boundaries unavailable — retrying",
   zonesUnavailable:"Zone boundaries unavailable",loadingAccess:"Loading Manitoba access points…",
   accessUnavailable:"Access-point service unavailable",findingLocation:"Finding your location…",
   locationUnavailable:"Location unavailable",
@@ -48,7 +48,7 @@ const I18N={
   fishStocked:"fish stocked",kmAway:"km away",records:"records",
   explore:"Explore",nearMe:"Near Me",sections:"Sections",
   plateNote:"Illustration \u2014 not for identification",
-  regsStale:"These regulations are Ontario's {year} rules and {now} rules are now in force. Treat every season, limit and size below as out of date and check Ontario's current summary before you fish.",
+  regsStale:"Manitoba's regulations change every year, and new rules take effect 1 April. Open the current Anglers' Guide before you fish.",
   viewCurrentRegs:"View Current FMZ {zone} Regulations",
   checkRegsFor:"Check current FMZ {zone} regulations",
   illustrations:"Fish illustrations",
@@ -158,18 +158,18 @@ const I18N={
   saveCatchLocation:"Save current catch location",
   checkEatingAdvice:"Check the eating advice for this lake",
   advLoading:"Consumption-advisory data is loading.",
-  advMulti:"More than one Ontario Fish Guide location has this waterbody name, so this app will not guess which advisory applies.",
-  advNone:"No exact-name Ontario Fish Guide advisory location was matched to this lake.",
-  advVerifyLoc:"Use Ontario's official Fish Guide to verify the location.",
-  advOpenGuide:"Open Ontario Fish Guide",
+  advMulti:"",
+  advNone:"",
+  advVerifyLoc:"",
+  advOpenGuide:"Open Manitoba's fish consumption guidance",
   advSpeciesLabel:"Fish species",advLengthLabel:"Fish length (cm)",advLengthPh:"e.g. 42",
   advCheckBtn:"Check Eating Advice",
   advEnterLength:"Enter the fish length in centimetres.",
-  advNoRange:"No tested advisory range was found for a {len} cm {sp} at this location. Check the official Ontario Fish Guide.",
+  advNoRange:"",
   advGeneral:"General population",advSensitive:"Sensitive population",advMeals:"meals/month",advNA:"N/A",
-  advCause:"Advisory cause listed by Ontario: {c}",
-  advPlanNote:"This is planning information from Ontario's 2025 advisory database. Verify current advice in the official Fish Guide.",
-  advVerifyBtn:"Verify in Official Ontario Fish Guide",
+  advCause:"",
+  advPlanNote:"",
+  advVerifyBtn:"Open Manitoba's fish consumption guidance",
   checklistNote:"Saved with this trip. Add your own items — they stay on this device.",
   addItem:"Add",
   addItemPh:"Add an item…",
@@ -229,7 +229,7 @@ const I18N={
   onboardText:"Search by distance, species and stocking history, then check regulations, access, weather and eating advice before you go.",
   onboard1:"Choose a distance and species",onboard2:"Compare stocked lakes",onboard3:"Open a lake and verify the current rules",
   helpTitle:"Help & About",helpFind:"Find Fish",helpFindText:"Use your location, distance, species, stocking year and quantity filters to find stocked lakes.",
-  helpRules:"Regulations",helpRulesText:"The app imports Ontario's open regulation data for the season named on the Regulations tab, and warns you when that season has passed. Current official Ontario rules remain the final verification source.",
+  helpRules:"Regulations",helpRulesText:"This app does not show Manitoba catch limits, seasons or size restrictions. Manitoba publishes them in the Anglers’ Guide, a PDF organised by fishing division and by named waterbody, and it is not machine-readable. Rather than guess a limit, the app links you straight to the Guide.",
   helpTrips:"Trips & catches",helpTripsText:"Trip notes and catch logs are stored on this device. Save a backup below before you reset or change devices.",
   helpWeather:"Weather",helpWeatherText:"Weather alerts come from Environment and Climate Change Canada. Weather information is for trip planning and safety, not a bite prediction.",
   privacy:"Privacy",privacyText:"Location is requested only when you use a location feature, and is never sent anywhere. Your most recent position is kept on this device for two weeks so distances still show next time. Trips and catches stay on this device.",
@@ -246,7 +246,13 @@ const I18N={
   statLakesLbl:"Stocked lakes",statRecordsLbl:"Stocking records",statSpeciesLbl:"Species",statLatestLbl:"Latest year",
   recentlyStocked:"Recently Stocked",recentlyStockedSub:"Newest records first",
   recentNear:"Recent Near Me",recentNearSub:"Newest stocked lakes close to you",
-  regs2026:"Fishing Regulations",regs2026Sub:"Official Ontario fishing rules",
+  regs2026:"Fishing Regulations",regs2026Sub:"Manitoba Anglers’ Guide",
+  regsThisLake:"Limits & seasons",
+  regsGuideTag:"Manitoba Anglers\u2019 Guide",
+  regsNoNumbers:"This app does not show a catch limit, season or size restriction for this lake. Manitoba publishes them in the Anglers\u2019 Guide, organised by fishing division and by named waterbody, and many lakes carry their own exception. Rather than show a number that might be wrong, the app sends you to the Guide.",
+  regsOpenGuide:"Open the Manitoba Anglers\u2019 Guide",
+  regsStamp:"Manitoba Anglers\u2019 Guide \u2022 new rules take effect 1 April each year",
+  advMbNote:"Manitoba does not publish a per-lake consumption database, so this app shows no meal counts for this lake. Manitoba issues general mercury guidance plus advisories for specific waters.",
   fishOnlineSub:"Government lake information",fishOnlineSub2:"Government lake information and maps",
   lakesNearYou:"Lakes near you",sortedByDrive:"Sorted by how far you'd have to drive.",within:"Within",
   myLakesSub:"Lakes you've saved. Tap \u2606 on any lake to keep it here.",filterSavedPh:"Filter your saved lakes",
@@ -315,16 +321,16 @@ const I18N={
   regsSummaryNote:"Regulations in this app are a summary. These are the authoritative sources \u2014 open them before you fish.",
   regsSummaryTitle:"Fishing Regulations Summary",regsSummarySub:"Seasons, limits and slot sizes by zone",
   licences:"Fishing licences",licencesSub:"Buy or renew an Outdoors Card and licence",
-  eatingGuide:"Guide to Eating Ontario Fish",eatingGuideSub:"Consumption advisories by waterbody",
+  eatingGuide:"Eating fish caught in Manitoba",eatingGuideSub:"Mercury and contaminant guidance",
   ecWeather:"Environment Canada weather",ecWeatherSub:"Forecasts and marine warnings",
   openData:"Manitoba Open Data",openDataSub:"The datasets behind this app",
-  footerSources:"Fish stocking, regulations and advisory data: Government of Ontario. Weather alerts: Environment and Climate Change Canada.",
-  footerDisclaimer:"Not an official Government of Ontario application. Always confirm the current regulations before you fish.",
+  footerSources:"Stocking, waterbody and access data: Government of Manitoba. Weather alerts: Environment and Climate Change Canada.",
+  footerDisclaimer:"Not an official Government of Manitoba application. Always confirm the current regulations before you fish.",
   noSpeciesRecorded:"No species recorded",notStocked:"Not stocked",latestStocking:"Latest stocking",speciesUnavailable:"Species unavailable",
   exploreStocked:"Explore Manitoba lakes",stockedNearMe:"Stocked lakes near me",recentWithin100:"Recently stocked within 100 km",
   myFishingTrips:"My Fishing Trips",tripsCount:"trips",
   settings:"Settings",helpAbout:"Help and about",withinKm:"Within {n} km",
-  regsEnglishNote:"Ontario publishes its regulations, seasons and limits in English only in this dataset, so that text stays as the province wrote it.",
+  regsEnglishNote:"Manitoba publishes the Anglers’ Guide in English.",
   stockingData:"Stocking data",
   stockingDataNote:"Bundled with the app, so it opens without a network. Check Manitoba for newer records whenever you have a signal.",
   checkStockings:"Check for new stockings",checkingStockings:"Checking…",
@@ -358,7 +364,7 @@ const I18N={
   loadingData:"Chargement des donn\u00e9es du Manitoba\u2026",loadingRecords:"Chargement\u2026",
   searchingManitoba:"Recherche au Manitoba\u2026",
   searchingAllLakes:"Recherche dans tous les lacs du Manitoba\u2026",searchingFor:"Recherche de {sp} au Manitoba\u2026",
-  loadingZones:"Chargement des limites des ZGP de l'Ontario\u2026",zonesRetry:"Limites de zone non disponibles \u2014 nouvelle tentative",
+  loadingZones:"Chargement de la carte\u2026",zonesRetry:"Limites de zone non disponibles \u2014 nouvelle tentative",
   zonesUnavailable:"Limites de zone non disponibles",loadingAccess:"Chargement des points d'acc\u00e8s du Manitoba\u2026",
   accessUnavailable:"Service des points d'acc\u00e8s non disponible",findingLocation:"Localisation en cours\u2026",
   locationUnavailable:"Position non disponible",
@@ -485,17 +491,17 @@ const I18N={
   saveCatchLocation:"Enregistrer la position de la prise",
   checkEatingAdvice:"Consultez les conseils de consommation pour ce lac",
   advLoading:"Les donn\u00e9es sur les avis de consommation se chargent\u2026",
-  advMulti:"Plusieurs emplacements du Guide de consommation du poisson de l'Ontario portent ce nom de plan d'eau; l'application ne devinera pas quel avis s'applique.",
-  advNone:"Aucun emplacement du Guide de consommation du poisson de l'Ontario ne correspond exactement au nom de ce lac.",
+  advMulti:"",
+  advNone:"",
   advVerifyLoc:"Utilisez le guide officiel du Manitoba pour v\u00e9rifier l'emplacement.",
-  advOpenGuide:"Ouvrir le Guide de consommation de l'Ontario",
+  advOpenGuide:"Ouvrir les conseils du Manitoba sur la consommation de poisson",
   advSpeciesLabel:"Esp\u00e8ce de poisson",advLengthLabel:"Longueur du poisson (cm)",advLengthPh:"p. ex. 42",
   advCheckBtn:"V\u00e9rifier les conseils de consommation",
   advEnterLength:"Entrez la longueur du poisson en centim\u00e8tres.",
   advNoRange:"Aucune plage test\u00e9e n'a \u00e9t\u00e9 trouv\u00e9e pour un {sp} de {len} cm \u00e0 cet endroit. Consultez le guide officiel du Manitoba.",
   advGeneral:"Population g\u00e9n\u00e9rale",advSensitive:"Population sensible",advMeals:"repas/mois",advNA:"s.o.",
-  advCause:"Cause de l'avis indiqu\u00e9e par l'Ontario\u00a0: {c}",
-  advPlanNote:"Information de planification tir\u00e9e de la base de donn\u00e9es des avis de 2025 de l'Ontario. V\u00e9rifiez les conseils \u00e0 jour dans le guide officiel.",
+  advCause:"",
+  advPlanNote:"",
   advVerifyBtn:"V\u00e9rifier dans le guide officiel du Manitoba",
   checklistNote:"Enregistrée avec cette sortie. Ajoutez vos propres articles — ils restent sur cet appareil.",
   addItem:"Ajouter",
@@ -521,7 +527,7 @@ const I18N={
   chk_floatPlan:"Dire à quelqu’un où vous allez",
   chk_garbageBag:"Sac pour vos déchets",
   rightsNote:"Application, conception et textes. Les donn\u00e9es gouvernementales, OpenStreetMap et GeoNames qu'elle utilise demeurent sous leurs propres licences.",
-  plateAboutNote:"Elles vous aident \u00e0 visualiser le poisson, mais ne servent pas \u00e0 l'identifier. Plusieurs esp\u00e8ces de l'Ontario se confondent facilement et leurs limites diff\u00e8rent \u2014 v\u00e9rifiez la r\u00e8gle officielle avant de garder une prise.",
+  plateAboutNote:"Elles vous aident \u00e0 visualiser le poisson, mais ne servent pas \u00e0 l'identifier. Plusieurs esp\u00e8ces du Manitoba se confondent facilement et leurs limites diff\u00e8rent \u2014 v\u00e9rifiez la r\u00e8gle officielle avant de garder une prise.",
   noLakeWithSpecies:"Aucun lac dans un rayon de {r}\u00a0km n'a de {sp} au registre. Essayez une distance plus grande \u2014 ou l'esp\u00e8ce n'a simplement pas fait l'objet d'un relev\u00e9 \u00e0 proximit\u00e9.",
   noLakesWithin:"Aucun lac trouv\u00e9 dans un rayon de {r}\u00a0km.",
   weatherAlert:"Alerte m\u00e9t\u00e9o",lakeArea:"Secteur du lac",
@@ -556,7 +562,7 @@ const I18N={
   onboardText:"Recherchez par distance, espèce et historique d’ensemencement, puis vérifiez les règlements, l’accès, la météo et les conseils de consommation.",
   onboard1:"Choisissez une distance et une espèce",onboard2:"Comparez les lacs ensemencés",onboard3:"Ouvrez un lac et vérifiez les règles actuelles",
   helpTitle:"Aide et à propos",helpFind:"Trouver du poisson",helpFindText:"Utilisez votre position, la distance, l’espèce, l’année et la quantité d’ensemencement pour trouver des lacs.",
-  helpRules:"Règlements",helpRulesText:"L’application importe les données ouvertes du Manitoba pour la saison indiquée dans l’onglet Règlements et vous avertit lorsque cette saison est passée. Les règles officielles actuelles du Manitoba demeurent la source finale de vérification.",
+  helpRules:"Règlements",helpRulesText:"Cette application n’affiche pas les limites de prises, les saisons ni les restrictions de taille du Manitoba. Le Manitoba les publie dans son guide de pêche, un PDF organisé par division de pêche. L’application ne devine aucune limite : elle vous renvoie directement au guide.",
   helpTrips:"Sorties et prises",helpTripsText:"Les notes de sortie et les prises sont enregistrées sur cet appareil. Enregistrez une copie ci-dessous avant de changer d’appareil.",
   helpWeather:"Météo",helpWeatherText:"Les alertes météo proviennent d’Environnement et Changement climatique Canada. Elles servent à la planification et à la sécurité, pas à prédire les prises.",
   privacy:"Confidentialité",privacyText:"La position est demandée seulement lorsque vous utilisez une fonction géolocalisée et n’est jamais transmise. Votre position la plus récente est conservée sur cet appareil pendant deux semaines afin que les distances s’affichent à la prochaine ouverture. Les sorties et les prises restent sur cet appareil.",
@@ -573,7 +579,13 @@ const I18N={
   statLakesLbl:"Lacs ensemenc\u00e9s",statRecordsLbl:"Ensemencements",statSpeciesLbl:"Esp\u00e8ces",statLatestLbl:"Derni\u00e8re ann\u00e9e",
   recentlyStocked:"Ensemenc\u00e9s r\u00e9cemment",recentlyStockedSub:"Les plus r\u00e9cents d'abord",
   recentNear:"R\u00e9cents pr\u00e8s de moi",recentNearSub:"Lacs ensemenc\u00e9s r\u00e9cemment, pr\u00e8s de vous",
-  regs2026:"R\u00e8glements de p\u00eache",regs2026Sub:"R\u00e8gles de p\u00eache officielles de l'Ontario",
+  regs2026:"R\u00e8glements de p\u00eache",regs2026Sub:"Guide de p\u00eache du Manitoba",
+  regsThisLake:"Limites et saisons",
+  regsGuideTag:"Guide de p\u00eache du Manitoba",
+  regsNoNumbers:"Cette application n\u2019affiche ni limite de prises, ni saison, ni restriction de taille pour ce lac. Le Manitoba les publie dans son guide de p\u00eache, organis\u00e9 par division de p\u00eache et par plan d\u2019eau nomm\u00e9, et de nombreux lacs ont leur propre exception. Plut\u00f4t que d\u2019afficher un chiffre possiblement erron\u00e9, l\u2019application vous renvoie au guide.",
+  regsOpenGuide:"Ouvrir le guide de p\u00eache du Manitoba",
+  regsStamp:"Guide de p\u00eache du Manitoba \u2022 les nouvelles r\u00e8gles entrent en vigueur le 1er avril",
+  advMbNote:"Le Manitoba ne publie pas de base de donn\u00e9es de consommation par lac; cette application n\u2019affiche donc aucun nombre de repas pour ce lac. Le Manitoba diffuse des conseils g\u00e9n\u00e9raux sur le mercure ainsi que des avis pour certains plans d\u2019eau.",
   fishOnlineSub:"Renseignements gouvernementaux sur les lacs",fishOnlineSub2:"Renseignements et cartes du gouvernement",
   lakesNearYou:"Lacs pr\u00e8s de vous",sortedByDrive:"Tri\u00e9s selon la distance \u00e0 parcourir.",within:"Dans un rayon de",
   myLakesSub:"Vos lacs enregistr\u00e9s. Touchez \u2606 sur un lac pour l'ajouter ici.",filterSavedPh:"Filtrer vos lacs enregistr\u00e9s",
@@ -641,16 +653,16 @@ const I18N={
   regsSummaryNote:"Les r\u00e8glements pr\u00e9sent\u00e9s ici sont un r\u00e9sum\u00e9. Voici les sources officielles \u2014 consultez-les avant de p\u00eacher.",
   regsSummaryTitle:"R\u00e9sum\u00e9 des r\u00e8glements de p\u00eache",regsSummarySub:"Saisons, limites et fourchettes de taille par zone",
   licences:"Permis de p\u00eache",licencesSub:"Acheter ou renouveler une Carte Plein air et un permis",
-  eatingGuide:"Guide de consommation du poisson de l'Ontario",eatingGuideSub:"Avis de consommation par plan d'eau",
+  eatingGuide:"Consommation du poisson p\u00each\u00e9 au Manitoba",eatingGuideSub:"Conseils sur le mercure et les contaminants",
   ecWeather:"M\u00e9t\u00e9o d'Environnement Canada",ecWeatherSub:"Pr\u00e9visions et avertissements maritimes",
   openData:"Donn\u00e9es ouvertes du Manitoba",openDataSub:"Les jeux de donn\u00e9es derri\u00e8re cette application",
-  footerSources:"Donn\u00e9es d'ensemencement, de r\u00e9glementation et d'avis de consommation\u00a0: gouvernement de l'Ontario. Alertes m\u00e9t\u00e9o\u00a0: Environnement et Changement climatique Canada.",
-  footerDisclaimer:"Application non officielle du gouvernement de l'Ontario. V\u00e9rifiez toujours les r\u00e8glements en vigueur avant de p\u00eacher.",
+  footerSources:"Donn\u00e9es d'ensemencement, de plans d'eau et d'acc\u00e8s\u00a0: gouvernement du Manitoba. Alertes m\u00e9t\u00e9o\u00a0: Environnement et Changement climatique Canada.",
+  footerDisclaimer:"Application non officielle du gouvernement du Manitoba. V\u00e9rifiez toujours les r\u00e8glements en vigueur avant de p\u00eacher.",
   noSpeciesRecorded:"Aucune esp\u00e8ce r\u00e9pertori\u00e9e",notStocked:"Non ensemenc\u00e9",latestStocking:"Dernier ensemencement",speciesUnavailable:"Esp\u00e8ce non disponible",
   exploreStocked:"Explorer les lacs du Manitoba",stockedNearMe:"Lacs ensemenc\u00e9s pr\u00e8s de moi",recentWithin100:"Ensemenc\u00e9s r\u00e9cemment dans un rayon de 100\u00a0km",
   myFishingTrips:"Mes sorties de p\u00eache",tripsCount:"sorties",
   settings:"Param\u00e8tres",helpAbout:"Aide et \u00e0 propos",withinKm:"Dans un rayon de {n}\u00a0km",
-  regsEnglishNote:"L'Ontario ne publie ce jeu de donn\u00e9es \u2014 r\u00e8glements, saisons et limites \u2014 qu'en anglais. Ce texte demeure donc tel que r\u00e9dig\u00e9 par la province.",
+  regsEnglishNote:"Le Manitoba publie son guide de p\u00eache en anglais.",
   stockingData:"Donn\u00e9es d'ensemencement",
   stockingDataNote:"Incluses dans l'application, qui s'ouvre donc sans réseau. Vérifiez auprès du Manitoba s'il y a de nouvelles données lorsque vous avez du signal.",
   checkStockings:"Vérifier les nouveaux ensemencements",checkingStockings:"Vérification…",
@@ -701,10 +713,13 @@ function translateStaticUI(){
  const ox=$("onboardText");if(ox)ox.textContent=t("onboardText");
 }
 
-const APP_VERSION="mb1h";
+const APP_VERSION="mb1i";
 const API="https://services1.arcgis.com/TJH5KDher0W13Kgo/ArcGIS/rest/services/FishStockingDataForRecreationalPurposes/FeatureServer/0/query";
 const FMZ_API="https://ws.lioservices.lrc.gov.on.ca/arcgis2/rest/services/LIO_OPEN_DATA/LIO_Open07/MapServer/14/query";
-const REGS_BASE="https://www.ontario.ca/document/ontario-fishing-regulations-summary/fisheries-management-zone-";
+const MB_ANGLERS_GUIDE="https://www.gov.mb.ca/nrnd/fish-wildlife/pubs/fish_wildlife/fish/angling-guide.pdf";
+const MB_FISHING_HOME="https://www.gov.mb.ca/nrnd/fish-wildlife/fish/angling/index.html";
+const MB_CONTAM_FISH="https://www.manitoba.ca/sd/water/lakes-beaches-rivers/contam-fish/index.html";
+const MB_LICENCE="https://www.manitobaelicensing.ca/";
 const SURVEY_API="https://ws.lioservices.lrc.gov.on.ca/arcgis2/rest/services/LIO_OPEN_DATA/LIO_Open10/MapServer/18/query";
 const CAUGHT_API="https://ws.lioservices.lrc.gov.on.ca/arcgis2/rest/services/LIO_OPEN_DATA/LIO_Open10/MapServer/16/query";
 const BATHY_URL="https://ws.lioservices.lrc.gov.on.ca/arcgis2/rest/services/LIO_OPEN_DATA/LIO_Open01/MapServer";
@@ -1499,7 +1514,7 @@ function showDetailMap(l){
 }
 const fmzLayer=L.geoJSON(null,{
  style:()=>({weight:2,fillOpacity:.06}),
- onEachFeature:(f,l)=>{const z=f.properties&&f.properties.FISHERIES_MANAGEMENT_ZONE_ID;l.bindPopup(`<b>Fisheries Management Zone ${z}</b><br><a target="_blank" rel="noopener" href="${REGS_BASE}${z}">View current Zone ${z} regulations</a>`)}
+ onEachFeature:(f,l)=>{l.bindPopup(`<a target="_blank" rel="noopener" href="${MB_ANGLERS_GUIDE}">Manitoba Anglers\u2019 Guide</a>`)}
 }).addTo(map);
 
 /* ---------------------------------------------------------------------------
@@ -1945,25 +1960,16 @@ function fmzForLake(l){
  const f=fmzFeatures.find(f=>pointInGeometry(l.lon,l.lat,f.geometry));
  return f&&f.properties?Number(f.properties.FISHERIES_MANAGEMENT_ZONE_ID):null;
 }
-function assignFMZ(){
- lakes.forEach(l=>{
-  if(l.fmz)return;
-  if(fmzLoaded){const z=fmzForLake(l);if(z){l.fmz=z;return}}
-  // The regulation package records a zone against every waterbody that has an
-  // exception or an additional opportunity. Free, offline, and exact.
-  const wli=String(l.waterbodyId||"").trim();
-  if(wli){
-   const hit=(exceptionIndex.get(wli)||[]).concat(additionalIndex.get(wli)||[])[0];
-   if(hit&&hit.zone){l.fmz=Number(hit.zone);return}
-  }
- });
-}
+/* MANITOBA: disabled. This backfilled an Ontario FMZ number onto every lake.
+   Manitoba does not use Ontario's zones and nothing in this app reads fmz
+   any more. */
+function assignFMZ(){return}
 async function loadFMZ(show=true){
- // MANITOBA: disabled. FMZ_API serves ONTARIO zone boundaries, which are
- // the wrong shapes on a Manitoba map. Manitoba lakes already carry a
- // real zone number from the waterbody layer (ZONE -> fmz), so the pill
- // on each lake is correct without this; only the map overlay is gone.
- // Restore by deleting these lines if Manitoba publishes zone polygons.
+ // MANITOBA: disabled. FMZ_API serves ONTARIO zone boundaries, the wrong
+ // shapes on a Manitoba map. NOTE: an earlier version of this comment said
+ // Manitoba lakes "already carry a real zone number ... so the pill is
+ // correct". That was wrong and it is what let Ontario limits through --
+ // Manitoba ZONE 14/15 collided with Ontario FMZ 14/15. The pill is gone.
  return;
  if(fmzLoaded){if(show)renderFMZ();return}
  $("fmzStatus").textContent=t("loadingZones");
@@ -1980,7 +1986,7 @@ async function loadFMZ(show=true){
   const j=await fetch(FMZ_API+"?"+p).then(r=>r.json());
   if(j.error)throw Error(j.error.message);
   fmzFeatures=j.features||[];fmzLoaded=true;assignFMZ();apply();
-  $("fmzStatus").textContent=`20 Ontario Fisheries Management Zones loaded`;
+  $("fmzStatus").textContent="";
   if(show)renderFMZ();
  }catch(e){
   $("fmzStatus").textContent=t("zonesRetry");
@@ -2057,54 +2063,31 @@ function normName(s){return String(s||"").toLowerCase().replace(/\([^)]*\)/g," "
    file is no longer fetched at startup at all: nothing on the search screen
    uses it. It is only needed by the advisory panel inside a lake sheet, so it
    loads the first time someone opens one. */
+/* MANITOBA: consumption advisories are GONE, not relabelled.
+
+   Ontario's Guide to Eating Ontario Fish ships a per-waterbody database with
+   meal counts by species and fish length. This app matched a lake to it by
+   EXACT NAME. 123 Manitoba lake names collide with an Ontario advisory
+   location -- Manitoba's Clear Lake was being given the advisory for Clear
+   Lake in Peterborough County, 1,500 km away, complete with meals-per-month
+   numbers. Nobody could have told from the screen that it was the wrong lake.
+
+   Manitoba has no equivalent per-waterbody database. It publishes general
+   mercury guidance and named advisories (Schist Lake selenium, the Nelson and
+   Winnipeg river systems) as prose, not as data. So this app gives no per-lake
+   consumption number at all and sends people to Manitoba's own page. */
 let advisoryPromise=null;
 function ensureAdvisories(){
  if(advisoryPromise)return advisoryPromise;
- advisoryPromise=fetch("fish-advisories-2025.json")
-  .then(r=>r.json())
-  .then(list=>{
-   advisoryLocations=list;advisoriesLoaded=true;
-   // Index once by normalised name, then one lookup per lake.
-   const byName=new Map();
-   for(const a of advisoryLocations){
-    const k=normName(a.name);
-    if(!byName.has(k))byName.set(k,[]);
-    byName.get(k).push(a);
-   }
-   for(const l of lakes)l.advisoryMatches=byName.get(normName(l.name))||[];
-   return true;
-  })
-  .catch(e=>{console.warn("Fish consumption advisory data unavailable",e);return false});
+ advisoryPromise=Promise.resolve(false);
  return advisoryPromise;
 }
-function parseRange(s){
- const m=String(s||"").match(/(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)/);return m?[Number(m[1]),Number(m[2])]:null;
+function advisoryPanel(){
+ return `<p>${t("advMbNote")}</p>
+  <a class="secondaryAction" target="_blank" rel="noopener" href="${MB_CONTAM_FISH}">${t("advOpenGuide")}</a>`;
 }
-function adviceFor(loc,species,length){
- const rows=loc.advisories.filter(a=>a.species===species),byPop={};
- rows.forEach(a=>{const rg=parseRange(a.length);if(rg&&length>=rg[0]&&length<rg[1])byPop[a.population]=a});
- return byPop;
-}
-function advisoryPanel(l){
- /* v4o: this panel was the one screen still hardcoded in English — every
-    other string in the app is bilingual. Labels now go through t(); species
-    options show speciesLabel() but keep the dataset's English name as the
-    value so adviceFor() still matches. */
- if(!advisoriesLoaded)return `<div class="historynote">${t("advLoading")}</div>`;
- const matches=l.advisoryMatches||[];
- if(matches.length!==1)return `<div class="historynote">${matches.length>1?t("advMulti"):t("advNone")} ${t("advVerifyLoc")}</div><a class="secondaryAction" target="_blank" rel="noopener" href="https://www.ontario.ca/page/fish-consumption-report">${t("advOpenGuide")}</a>`;
- const loc=matches[0],species=[...new Set(loc.advisories.map(a=>a.species))].sort();
- return `<div class="advisorybox"><b>${esc(loc.name)}</b>${loc.desc?`<span>${esc(loc.desc)}</span>`:""}<label>${t("advSpeciesLabel")}<select id="advSpecies">${species.map(s=>`<option value="${esc(s)}">${esc(speciesLabel(s))}</option>`).join("")}</select></label><label>${t("advLengthLabel")}<input id="advLength" type="number" inputmode="numeric" min="1" step="1" placeholder="${t("advLengthPh")}"></label><button id="checkAdvice">${t("advCheckBtn")}</button><div id="adviceResult"></div></div><a class="secondaryAction" target="_blank" rel="noopener" href="https://www.ontario.ca/page/fish-consumption-report">${t("advVerifyBtn")}</a>`;
-}
-function wireAdvisory(l){
- const btn=$("checkAdvice");if(!btn)return;
- btn.onclick=()=>{const loc=(l.advisoryMatches||[])[0],sp=$("advSpecies").value,len=Number($("advLength").value),out=$("adviceResult");if(!len){out.innerHTML=`<p>${t("advEnterLength")}</p>`;return}
-  const a=adviceFor(loc,sp,len),g=a.General,s=a.Sensitive;
-  if(!g&&!s){out.innerHTML=`<div class="historynote">${t("advNoRange").replace("{len}",String(len)).replace("{sp}",esc(speciesLabel(sp)))}</div>`;return}
-  const cause=[g&&g.cause,s&&s.cause].filter(Boolean)[0]||"";
-  out.innerHTML=`<div class="mealgrid"><div><small>${t("advGeneral")}</small><b>${g?esc(g.meals):t("advNA")}</b><span>${t("advMeals")}</span></div><div><small>${t("advSensitive")}</small><b>${s?esc(s.meals):t("advNA")}</b><span>${t("advMeals")}</span></div></div>${cause?`<p class="microcopy">${t("advCause").replace("{c}",esc(cause))}</p>`:""}<p class="microcopy">${t("advPlanNote")}</p>`;
- };
-}
+function wireAdvisory(){}
+
 /* ---------------------------------------------------------------------------
    Where the stocking table comes from.
 
@@ -2241,7 +2224,7 @@ async function load(){
   try{ all=await loadBundledStocking(); }
   catch(e){ all=await loadLiveStocking(); }
   const fullIndex=await waterPromise;
-  if(!fullIndex||!fullIndex.length)throw new Error("Ontario lake database unavailable");
+  if(!fullIndex||!fullIndex.length)throw new Error("Manitoba lake database unavailable");
   rows=all.filter(x=>x.Latitude&&x.Longitude);
   waterbodies=fullIndex;
   waterbodiesLoaded=true;waterbodiesState="ready";
@@ -2256,7 +2239,7 @@ async function load(){
   $("results").innerHTML=`<div class="error"><b>${t("dbLoadErrTitle")}</b><br>${t("dbLoadErrBody")}</div>`;
   $("count").textContent="Unavailable";
   ["statLakes","statRecords","statSpecies","statLatest"].forEach(id=>{const el=$(id);if(el)el.textContent="—"});
-  toast("Ontario lake database didn't load. Reload the app.");
+  toast("Manitoba lake database didn’t load. Reload the app.");
   hideSplash();   // the failure screen is the thing to show, not the artwork
  }
 }
@@ -2273,10 +2256,10 @@ async function refreshStockingFromAPI(){
   rows=fresh;
   afterStockingLoaded();
   toast(added>0?`${num(added)} new stocking records.`
-       :added<0?"Ontario's records changed. Updated."
+       :added<0?"Manitoba’s records changed. Updated."
        :"No new stocking records.");
  }catch(e){
-  toast("Couldn't reach Ontario's stocking service.");
+  toast("Couldn’t reach Manitoba’s stocking service.");
  }finally{
   if(btn){btn.disabled=false;btn.textContent=t("checkStockings")}
  }
@@ -3194,7 +3177,6 @@ function render(){
   // detail — with three Rice Lakes on screen these three are the answer.
   const where=[
 
-   l.fmz?`<span class="zone">FMZ ${esc(l.fmz)}</span>`:"",
    searchCentre()?`<span class="dist">${esc(distanceLabel(l))}</span>`:""
   ].join("");
   const meta=where+(l.stocked
@@ -3331,57 +3313,32 @@ function emptyMessage(){
 }
 function toggleFav(key){favoriteKeys.has(key)?favoriteKeys.delete(key):favoriteKeys.add(key);localStorage.setItem("osl-favorites",JSON.stringify([...favoriteKeys]));persistDurable();apply()}
 
-function regulationUrl(l){return l.fmz?`${REGS_BASE}${l.fmz}`:"https://www.ontario.ca/document/ontario-fishing-regulations-summary"}
+/* MANITOBA: there is no per-zone regulations URL. Manitoba publishes one
+   Anglers' Guide PDF for the whole province. Every regulation link in this app
+   points at it. */
+function regulationUrl(){return MB_ANGLERS_GUIDE}
 
 
-const ONTARIO_REGS_SUMMARY_URL="https://www.ontario.ca/document/ontario-fishing-regulations-summary";
-const ONTARIO_REGS_UPDATED="2026-08-04";
+const MB_REGS_UPDATED="2026-04-01";
 const ECCC_ALERTS_API="https://api.weather.gc.ca/collections/weather-alerts/items";
 const ECCC_WEATHER_HOME="https://weather.gc.ca/";
 
 
-function officialRuleSource(l){
- return l&&l.fmz?`${REGS_BASE}${l.fmz}`:ONTARIO_REGS_SUMMARY_URL;
-}
-function regulationConfidence(l,species){
- const r=resolveVerifiedRule(l,species);
- if(r.status==="zone") return {level:"verified",label:"Verified 2026 zone rule"};
- if(r.status==="exception") return {level:"exception",label:"Waterbody exception — verify exact rule"};
- return {level:"official",label:"Official Ontario rule required"};
-}
-const VERIFIED_ZONE_RULES={
-  "11":{
-    "Brook Trout":{season:"Feb 15 – Sep 30",sport:"5",conservation:"2",size:"Sport: max 1 over 31 cm • Conservation: none over 31 cm",source:"Ontario 2026 FMZ 11"}
-  },
-  "17":{
-    "Brook Trout":{season:"4th Saturday in Apr – Sep 30",sport:"2",conservation:"1",size:"No zone-wide size restriction stated",source:"Ontario 2026 FMZ 17"},
-    "Brown Trout":{season:"4th Saturday in Apr – Sep 30",sport:"5",conservation:"2",size:"No zone-wide size restriction stated",source:"Ontario 2026 FMZ 17"}
-  },
-  "10":{
-    "Brook Trout":{season:"Jan 1 – Sep 30",sport:"5",conservation:"2",size:"No zone-wide size restriction stated",source:"Ontario 2026 FMZ 10"},
-    "Brown Trout":{season:"Open all year",sport:"5",conservation:"2",size:"No zone-wide size restriction stated",source:"Ontario 2026 FMZ 10"},
-    "Channel Catfish":{season:"Open all year",sport:"12",conservation:"6",size:"No zone-wide size restriction stated",source:"Ontario 2026 FMZ 10"}
-  }
-};
-const KNOWN_WATERBODY_EXCEPTION_NAMES={
- "11":["cut lake","french river provincial park","green lake","lake nipissing","lake temagami","mcconnell lake","shanty lake","surecatch lake","trout lake"],
- "17":["lake scugog","trent river"]
-};
-function canonicalSpecies(s){
- const x=String(s||"").trim().toLowerCase();
- const map={"brook trout":"Brook Trout","brown trout":"Brown Trout","channel catfish":"Channel Catfish"};
- return map[x]||String(s||"").trim();
-}
-function hasKnownWaterbodyException(l){
- const names=KNOWN_WATERBODY_EXCEPTION_NAMES[String(l.fmz)]||[];
- return names.includes(String(l.name||"").trim().toLowerCase());
-}
-function resolveVerifiedRule(l,species){
- const sp=canonicalSpecies(species),zone=VERIFIED_ZONE_RULES[String(l.fmz)]||{},rule=zone[sp]||null;
- if(!rule)return {status:"unverified",species:sp};
- if(hasKnownWaterbodyException(l))return {status:"exception",species:sp,rule};
- return {status:"zone",species:sp,rule};
-}
+function officialRuleSource(){return MB_ANGLERS_GUIDE}
+/* MANITOBA: the Ontario zone-rule engine is GONE, not disabled.
+
+   It keyed catch limits on l.fmz. Manitoba's waterbody layer publishes a ZONE
+   number (14 or 15) that the build script used to write into fmz. Ontario also
+   has an FMZ 14 and 15, so every lookup SUCCEEDED and the app rendered Ontario
+   limits under a zone number the Manitoba angler recognised as their own.
+   Ontario FMZ 14 is the Lake Simcoe area. Nothing about it applies here.
+
+   Manitoba publishes one Anglers' Guide PDF for the province, keyed to named
+   fishing divisions, not numbered zones, and it is not machine-readable. So
+   this app shows NO numeric limit for Manitoba and links to the Guide. A blank
+   is honest; a wrong number gets somebody charged or a fishery damaged. */
+function canonicalSpecies(s){return String(s||"").trim()}
+function regulationConfidence(){return {level:"official",label:"Official Manitoba rule required"}}
 
 let fullRegs=null,fullRegsLoaded=false,zoneRuleIndex=new Map(),exceptionIndex=new Map(),additionalIndex=new Map();
 
@@ -3415,16 +3372,10 @@ function regsStaleNote(){
    .replace("{year}",regsYear())
    .replace("{now}",new Date().getFullYear())}</div>`;
 }
-async function loadFullRegulations(){
- try{
-  fullRegs=await fetch("ontario-regulations-2026.json").then(r=>r.json());
-  fullRegs.zoneRules.forEach(r=>zoneRuleIndex.set(`${r.zone}|${canonicalSpecies(r.species)}`,r));
-  const add=(map,k,v)=>{if(!map.has(k))map.set(k,[]);map.get(k).push(v)};
-  fullRegs.exceptions.forEach(r=>{if(r.wli)add(exceptionIndex,String(r.wli),r)});
-  fullRegs.additional.forEach(r=>{if(r.wli)add(additionalIndex,String(r.wli),r)});
-  fullRegsLoaded=true;assignFMZ();apply();
- }catch(e){console.warn("Full 2026 regulations unavailable",e)}
-}
+/* MANITOBA: disabled. This loaded ontario-regulations-2026.json, which is no
+   longer shipped. Left as an early return rather than deleted so the two
+   provincial apps still diff cleanly. */
+async function loadFullRegulations(){return}
 function fullRuleFor(l,species){
  const sp=canonicalSpecies(species), wli=String(l.waterbodyId||"");
  const ex=(exceptionIndex.get(wli)||[]).filter(r=>!r.species||canonicalSpecies(r.species)===sp);
@@ -3432,58 +3383,23 @@ function fullRuleFor(l,species){
  const zone=zoneRuleIndex.get(`${l.fmz}|${sp}`)||null;
  return {sp,zone,exceptions:ex,additional:add,general:fullRegs&&fullRegs.zoneGeneral?fullRegs.zoneGeneral[String(l.fmz)]||{}:{}};
 }
+/* MANITOBA: one card, no numbers.
+
+   Ontario's version had three tiers — imported workbook rule, verified zone
+   rule, unverified fallback — all keyed on FMZ. None of that exists here.
+   Manitoba's Guide is a PDF organised by fishing division and by named
+   waterbody exception, so the app cannot resolve a limit for a given lake and
+   species without guessing. It does not guess. */
 function fullRegCard(l,species){
- if(!fullRegsLoaded)return exactRuleCard(l,species);
- const r=fullRuleFor(l,species);
- if(r.exceptions.length||r.additional.length){
-  const rows=[...r.exceptions.map(x=>({kind:"Waterbody exception",...x})),...r.additional.map(x=>({kind:"Additional fishing opportunity",...x}))];
-  return `<div class="regCard exception"><div class="regTitle"><b>⚠️ ${esc(r.sp)} — FMZ ${l.fmz}</b><span>Exact waterbody rule found</span></div>
-   ${rows.map(x=>`<div class="exactException"><b>${esc(x.kind)}</b>${x.season?`<span>Season: ${esc(x.season)}</span>`:""}${x.limit?`<span>Limit: ${esc(x.limit)}</span>`:""}${x.size?`<span>Size: ${esc(x.size)}</span>`:""}${x.bait?`<span>Bait: ${esc(x.bait)}</span>`:""}${x.gear?`<span>Gear: ${esc(x.gear)}</span>`:""}${x.time?`<span>Time: ${esc(x.time)}</span>`:""}</div>`).join("")}
-   <a target="_blank" rel="noopener" href="${officialRuleSource(l)}">${t("verify")}</a></div>`;
- }
- if(r.zone){
-  const g=r.general||{};
-  return `<div class="regCard verified"><div class="regTitle"><b>🎣 ${esc(r.sp)} — FMZ ${l.fmz}</b><span>Imported 2026 Ontario data</span></div>
-   <div class="regGrid exact"><div><small>${t("sportLimit")}</small><b>${esc(r.zone.sport||"—")}</b></div><div><small>${t("conservationLimit")}</small><b>${esc(r.zone.conservation||"—")}</b></div><div><small>${t("season")}</small><b>${esc(r.zone.season||"—")}</b></div><div><small>Aggregate trout/salmon</small><b>${esc(r.zone.aggregate||"—")}</b></div></div>
-   ${g.bait?`<p class="ruleNote"><b>Bait:</b> ${esc(g.bait)}</p>`:""}${g.gear?`<p class="ruleNote"><b>Gear:</b> ${esc(g.gear)}</p>`:""}${g.general?`<p class="ruleNote">${esc(g.general)}</p>`:""}
-   <p class="regWarning">Imported from Ontario's 2026 open regulation workbook. Ontario states the dataset is not a complete legal representation; variation orders may supersede it.</p>
-   <a target="_blank" rel="noopener" href="${officialRuleSource(l)}">${t("verify")}</a></div>`;
- }
- return regulationCard(l,r.sp);
-}
-
-function exactRuleCard(l,species){
- const r=resolveVerifiedRule(l,species);
- if(r.status==="zone"){
-  return `<div class="regCard verified"><div class="regTitle"><b>🎣 ${esc(r.species)} — FMZ ${l.fmz}</b><span>Verified zone-wide 2026 rule</span></div>
-  <div class="regGrid exact"><div><small>${t("sportLimit")}</small><b>${esc(r.rule.sport)}</b></div><div><small>${t("conservationLimit")}</small><b>${esc(r.rule.conservation)}</b></div><div><small>Slot / size</small><b>${esc(r.rule.size)}</b></div><div><small>${t("season")}</small><b>${esc(r.rule.season)}</b></div></div>
-  <p class="regWarning">These are catch/possession limits for the selected licence type. Zone-wide rule shown only when the app has not identified a packaged waterbody exception. Fish sanctuaries, bait/gear rules and variation orders can still override normal rules.</p>
-  <div class="sourceStamp">Ontario 2026 regulations • current-summary check: Aug. 4, 2026</div>
-  <a target="_blank" rel="noopener" href="${officialRuleSource(l)}">Verify Current FMZ ${l.fmz} Regulations</a></div>`;
- }
- if(r.status==="exception"){
-  return `<div class="regCard exception"><div class="regTitle"><b>⚠️ ${esc(r.species)} — special waterbody</b><span>Exception check required</span></div>
-  <p>This lake is identified in the packaged Ontario waterbody-exception index for FMZ ${l.fmz}. The app will not substitute the normal zone-wide limit, season or slot size.</p><div class="exceptionChecklist"><span>✓ Zone identified</span><span>✓ Species identified</span><span>⚠ Waterbody exception applies</span></div><a target="_blank" rel="noopener" href="${officialRuleSource(l)}">Open Exact Ontario Exception</a></div>`;
- }
- return regulationCard(l,r.species);
-}
-
-function regulationCard(l,species){
- const sp=species||"selected species";
- if(!l.fmz)return `<div class="regCard warning"><b>Limits &amp; slot sizes</b><p>FMZ could not be determined for this lake. Open Ontario's current regulations before fishing.</p><a target="_blank" rel="noopener" href="${regulationUrl(l)}">Check Official Regulations</a></div>`;
+ const sp=species&&species!=="Fish"?esc(speciesLabel(species)):t("regsThisLake");
  return `<div class="regCard">
-   <div class="regTitle"><b>🎣 ${esc(sp)} — FMZ ${l.fmz}</b><span>2026 rules</span></div>
-   <div class="regGrid">
-     <div><small>${t("sportLimit")}</small><b>See official rule</b></div>
-     <div><small>${t("conservationLimit")}</small><b>See official rule</b></div>
-     <div><small>Slot / size</small><b>Check zone + exception</b></div>
-     <div><small>${t("season")}</small><b>Check current dates</b></div>
-   </div>
-   <p class="regWarning">This species/FMZ combination has not yet been packaged as a verified numeric rule. Ontario rules can also be overridden by species exceptions, waterbody exceptions, fish sanctuaries and variation orders. The app will not display a guessed legal limit.</p>
-   <div class="regActions"><a target="_blank" rel="noopener" href="${officialRuleSource(l)}">Open FMZ ${l.fmz} Current Rules</a></div>
+   <div class="regTitle"><b>\u{1F3A3} ${sp}</b><span>${t("regsGuideTag")}</span></div>
+   <p class="regWarning">${t("regsNoNumbers")}</p>
+   <div class="regActions"><a target="_blank" rel="noopener" href="${MB_ANGLERS_GUIDE}">${t("regsOpenGuide")}</a></div>
+   <div class="sourceStamp">${t("regsStamp")}</div>
  </div>`;
 }
-
+const exactRuleCard=fullRegCard, regulationCard=fullRegCard;
 
 /* ---------------------------------------------------------------------------
    Per-species limits, from tapping a species.
@@ -3578,49 +3494,16 @@ function speciesRule(l,species){
  return {species,category:cat,zone,exceptions:ex,additional:extra};
 }
 
+/* MANITOBA: the species drawer no longer resolves a limit. Same reason as the
+   lake card — Manitoba's limits live in a PDF keyed to fishing divisions and
+   named waterbody exceptions, and a guessed limit is the worst thing this app
+   could show. The drawer still opens; it just sends people to the Guide. */
 function speciesRuleCard(l,species){
- if(!fullRegsLoaded)
-  return `<div class="ruleDrawer"><p class="setNote">Regulations are still loading.</p></div>`;
- if(!l.fmz)
-  return `<div class="ruleDrawer"><p class="setNote">This lake's Fisheries Management Zone could not be determined, so no zone limit can be shown.</p>
-   <a class="ruleLink" target="_blank" rel="noopener" href="${regulationUrl(l)}">Open the official regulations</a></div>`;
-
- const r=speciesRule(l,species);
- let body="";
-
- if(r.zone){
-  body+=`<div class="ruleGrid">
-   <div><small>Sport licence</small><b>${esc(r.zone.sport||"—")}</b></div>
-   <div><small>Conservation licence</small><b>${esc(r.zone.conservation||"—")}</b></div>
-   <div class="wide"><small>Season</small><b>${esc(r.zone.season||"—")}</b></div>
-  </div>`;
-  if(r.zone.aggregate==="Yes")
-   body+=`<p class="setNote">This limit is aggregate — it is shared across the species grouped with it, not counted separately.</p>`;
-  if(r.category&&r.category.toLowerCase()!==String(species).toLowerCase())
-   body+=`<p class="setNote">Listed by Ontario under "${esc(r.category)}".</p>`;
- }else{
-  body+=`<p class="setNote">Ontario's FMZ ${esc(l.fmz)} table does not list a catch limit under this species' name. That does not mean there is no rule — check the official summary before keeping one.</p>`;
- }
-
- if(r.exceptions.length){
-  body+=`<div class="ruleAlert"><b>This waterbody has its own rule</b>
-   <p>A waterbody exception is listed for this lake, and it overrides the zone limit above.</p>
-   ${r.exceptions.slice(0,3).map(e=>`<div class="exRow">
-     ${e.season?`<span><small>Season</small>${esc(e.season)}</span>`:""}
-     ${e.limit?`<span><small>Limit</small>${esc(e.limit)}</span>`:""}
-     ${e.size?`<span><small>Size</small>${esc(e.size)}</span>`:""}
-   </div>`).join("")}</div>`;
- }
- if(r.additional.length){
-  body+=`<p class="setNote">An additional fishing opportunity is also listed for this waterbody.</p>`;
- }
-
  return `<div class="ruleDrawer">
   ${plateFor(species,"plate")}
-  <div class="ruleHead"><b>${esc(speciesLabel(species))}</b><span>FMZ ${esc(l.fmz)} • 2026</span></div>
-  ${body}
-  <p class="ruleFine">Summary only. Sanctuaries, bait and gear restrictions and in-season variation orders can all change this.</p>
-  <a class="ruleLink" target="_blank" rel="noopener" href="${officialRuleSource(l)}">Verify on Ontario's official FMZ ${esc(l.fmz)} page</a>
+  <div class="ruleHead"><b>${esc(speciesLabel(species))}</b><span>${t("regsGuideTag")}</span></div>
+  <p class="setNote">${t("regsNoNumbers")}</p>
+  <a class="ruleLink" target="_blank" rel="noopener" href="${MB_ANGLERS_GUIDE}">${t("regsOpenGuide")}</a>
  </div>`;
 }
 
@@ -3693,27 +3576,25 @@ function detail(l){
  <div class="detailMapBlock"><div class="detailMapHead"><button type="button" id="offlineBtn" class="offlineBtn">${t("offlineSave")}</button><div class="baseSwitch detailBaseSwitch" role="group" aria-label="Basemap"><button type="button" data-dbase="map">${t("baseMap")}</button><button type="button" data-dbase="topo">${t("baseTopo")}</button><button type="button" data-dbase="depth">${t("baseDepth")}</button></div></div>
  <div class="detailMapWrap"><div id="detailMap" role="img" aria-label="${t('lakeMapLabel')}"></div><button type="button" class="mapExpand detailMapExpand" aria-label="${t("expandMap")}">${EXPAND_ICON}</button></div></div>
  <div class="detailgrid">${l.stocked?`<div><small>Latest stocking</small><b>${esc(l.latestYear||"—")}</b></div><div><small>Stocking records</small><b>${l.records.length}</b></div>`:`<div><small>Stocking</small><b>Not stocked</b></div>`}${userLoc?`<div><small>Distance from you</small><b>${esc(distanceLabel(l))}</b></div>`:""}${l.district?`<div><small>MNRF district</small><b>${esc(l.district)}</b></div>`:""}
- <div><small>Fisheries Management Zone</small><b>${l.fmz?`FMZ ${l.fmz}`:"Loading / unavailable"}</b></div><div><small>Waterbody ID</small><b>${esc(l.waterbodyId||"—")}</b></div></div>
- ${l.fmz?`<a class="zoneAction${regsStale()?" stale":""}" target="_blank" rel="noopener" href="${REGS_BASE}${l.fmz}">${
-   regsStale()?t("checkRegsFor").replace("{zone}",l.fmz)
-              :t("viewCurrentRegs").replace("{zone}",l.fmz)}</a>`:""}
+ <div><small>Waterbody ID</small><b>${esc(l.waterbodyId||"—")}</b></div></div>
+ <a class="zoneAction" target="_blank" rel="noopener" href="${MB_ANGLERS_GUIDE}">${t("regsOpenGuide")}</a>
  ${regsStaleNote()}
 ${presentBlock(l)}
  <button class="tripStart" id="startTrip">Start a fishing trip</button>
  <div id="lake-rules" class="tabAnchor"></div>${fullRegCard(l,l.species[0]||"Fish")}
  ${fishingConditionsCard(l)}
- <div id="lake-eating" class="tabAnchor"></div><div class="infoCard"><h3>🍽️ Eating Ontario Fish</h3><p>Ontario consumption advice depends on the exact waterbody, fish species and fish length.</p>${advisoryPanel(l)}</div>
+ <div id="lake-eating" class="tabAnchor"></div><div class="infoCard"><h3>\u{1F37D}\uFE0F ${t("eatingGuide")}</h3>${advisoryPanel(l)}</div>
  <div id="lake-species" class="tabAnchor"></div><div class="infoCard"><h3>${t("netHead")}</h3><p class="microcopy">${t("netSub")}</p>
- ${speciesLoaded?(l.observedSpecies&&l.observedSpecies.length?`<div class="specieschips netchips">${l.observedSpecies.map(s=>`<span>${esc(s.species)}<em>${s.caught>0?`${Number(s.caught).toLocaleString()} ${t("netCaught")}`:t("netNoCount")}</em></span>`).join("")}</div><p class="microcopy">Species shown come from Fish ON-Line survey records and are not a guarantee of current abundance.</p>`:`<p>${t("netNone")}</p>`):`<p>${t("netLoading")}</p>`}
+ ${speciesLoaded?(l.observedSpecies&&l.observedSpecies.length?`<div class="specieschips netchips">${l.observedSpecies.map(s=>`<span>${esc(s.species)}<em>${s.caught>0?`${Number(s.caught).toLocaleString()} ${t("netCaught")}`:t("netNoCount")}</em></span>`).join("")}</div><p class="microcopy">Species shown come from Manitoba’s waterbody records and are not a guarantee of current abundance.</p>`:`<p>${t("netNone")}</p>`):`<p>${t("netLoading")}</p>`}
  </div>
  <div id="lake-depth" class="tabAnchor"></div><div class="infoCard"><h3>🌊 ${t("lakeDepth")}</h3><p>${l.depthMax?t("depthKnown").replace("{max}",esc(depthFt(l.depthMax))).replace("{mean}",depthFt(l.depthMean)?esc(depthFt(l.depthMean)):"—"):t("depthUnknown")}</p><p class="helpNote">${t("depthNotForNav")}</p></div>
  <div id="lake-stocking" class="tabAnchor"></div><h3>Recent Stocking History</h3><div class="history">${history}</div>
  ${accessCard(l)}
  ${nearbyStaysCard(l)}
- <div class="infoCard"><h3>Fishing information</h3><p>Stocking records are useful planning information, but fishing seasons, limits and exceptions can change. Check Ontario's current regulations before fishing.</p>
+ <div class="infoCard"><h3>Fishing information</h3><p>Stocking records are useful planning information, but fishing seasons, limits and exceptions can change. Check Manitoba’s current regulations before fishing.</p>
  <div class="actionstack">
- <a class="secondaryAction" target="_blank" rel="noopener" href="https://www.ontario.ca/document/ontario-fishing-regulations-summary">Check 2026 Fishing Regulations</a>
- <a class="secondaryAction" target="_blank" rel="noopener" href="https://www.ontario.ca/fishonline">Open Ontario Fish ON-Line</a>
+ <a class="secondaryAction" target="_blank" rel="noopener" href="${MB_ANGLERS_GUIDE}">${t("regsOpenGuide")}</a>
+ <a class="secondaryAction" target="_blank" rel="noopener" href="${MB_LICENCE}">Buy a Manitoba angling licence</a>
  </div></div>
  <a class="directions" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${l.lat},${l.lon}">Get Directions</a>`;
  wireSpeciesChips();
@@ -3721,17 +3602,8 @@ ${presentBlock(l)}
  $("sheet").classList.remove("hidden");$("detailFav").onclick=()=>{toggleFav(l.key);detail(l)};
  showDetailMap(l);
 
- /* The advisory panel is the only consumer of the 11 MB advisory file, so it
-    is fetched here rather than at startup. If it was not already in hand, the
-    panel says it is loading; redraw the sheet once it lands so the eating
-    advice appears without the person having to close and reopen the lake. */
- if(!advisoriesLoaded){
-  const openFor=l.key;
-  ensureAdvisories().then(ok=>{
-   const sheet=$("sheet");
-   if(ok&&sheet&&!sheet.classList.contains("hidden")&&detailLakeKey===openFor)detail(l);
-  });
- }
+ /* MANITOBA: nothing to fetch. The advisory panel is static prose and a link.
+    The 11 MB Ontario advisory file is no longer shipped. */
  const st=$("startTrip");if(st)st.onclick=()=>startTrip(l);wireAdvisory(l);wireWeather(l);
  document.querySelectorAll("[data-laketab]").forEach(b=>b.onclick=()=>{
   document.querySelectorAll("[data-laketab]").forEach(x=>x.classList.remove("active"));b.classList.add("active");
@@ -3987,7 +3859,7 @@ function openTrip(id){
        <span>${t("latestStocking")}: ${esc(l.latestYear||"—")}</span>`
      :`<span>${t("notStocked")}</span>`}
    ${l.observedSpecies&&l.observedSpecies.length?`<span>${t("observed")}: ${esc(l.observedSpecies.map(s=>s.species).join(", "))}</span>`:""}</div>`:""}
- ${trip.fmz?`<a class="zoneAction" target="_blank" rel="noopener" href="${REGS_BASE}${trip.fmz}">${t("checkFmzRegs")} ${trip.fmz}</a>`:""}
+ <a class="zoneAction" target="_blank" rel="noopener" href="${MB_ANGLERS_GUIDE}">${t("regsOpenGuide")}</a>
  <div class="tripTabs" role="tablist" aria-label="${t("tripSections")}">
   <button type="button" role="tab" data-triptab="catches" class="${tab==="catches"?"on":""}">${t("catchLog")} (${trip.catches.length})</button>
   <button type="button" role="tab" data-triptab="checklist" class="${tab==="checklist"?"on":""}">${t("checklist")}</button>
@@ -4542,8 +4414,9 @@ function helpMarkup(){
   <section><h3>${t("privacy")}</h3><p>${t("privacyText")}</p></section>
  </div>
  <div class="aboutBlock"><h3>${t("dataSources")}</h3>
-  <a target="_blank" rel="noopener" href="https://www.ontario.ca/fishonline">Ontario Fish ON-Line / ON-Pêche</a>
-  <a target="_blank" rel="noopener" href="https://www.ontario.ca/document/ontario-fishing-regulations-summary">2026 Ontario Fishing Regulations Summary</a>
+  <a target="_blank" rel="noopener" href="${MB_FISHING_HOME}">Manitoba Fish and Wildlife</a>
+  <a target="_blank" rel="noopener" href="${MB_ANGLERS_GUIDE}">Manitoba Anglers’ Guide</a>
+  <a target="_blank" rel="noopener" href="${MB_CONTAM_FISH}">Contaminants in Manitoba fish</a>
   <a target="_blank" rel="noopener" href="https://weather.gc.ca/">Environment Canada Weather</a>
  </div>
  ${speciesArtCredit?`<div class="aboutBlock"><h3>${t("illustrations")}</h3>
