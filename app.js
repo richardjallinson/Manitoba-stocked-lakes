@@ -260,8 +260,7 @@ const I18N={
   showAccess:"Show fishing access points",showFMZ:"Show Fisheries Management Zones",
   showDepth:"Show lake depth contours",accessStatus:"Boat launches \u2022 shore access \u2022 docks/piers",
   depthStatus:"Government bathymetry \u2022 not for navigation",
-  lakeMap:"Lake map",baseMap:"Map",baseTopo:"Topo",baseDepth:"Depth",
-  depthZoomIn:"Zoom in to a lake to see depth contours.",
+  lakeMap:"Lake map",baseMap:"Map",baseTopo:"Topo",
   expandMap:"Expand map",closeMap:"Close full screen",
   tilesOffline:"Map tiles unavailable offline \u2014 everything else still works.",tapMarker:"Tap a marker for details",loading:"Loading\u2026",
   baseHint:"Tap Map, Topo or Depth to change the view.",
@@ -587,8 +586,7 @@ const I18N={
   showAccess:"Afficher les acc\u00e8s de p\u00eache",showFMZ:"Afficher les zones de gestion des p\u00eaches",
   showDepth:"Afficher les courbes de profondeur",accessStatus:"Mises \u00e0 l'eau \u2022 acc\u00e8s riverain \u2022 quais",
   depthStatus:"Bathym\u00e9trie gouvernementale \u2022 pas pour la navigation",
-  lakeMap:"Carte du lac",baseMap:"Carte",baseTopo:"Topo",baseDepth:"Profondeur",
-  depthZoomIn:"Zoomez sur un lac pour voir les courbes de profondeur.",
+  lakeMap:"Carte du lac",baseMap:"Carte",baseTopo:"Topo",
   expandMap:"Agrandir la carte",closeMap:"Quitter le plein \u00e9cran",
   tilesOffline:"Tuiles de carte indisponibles hors ligne \u2014 tout le reste fonctionne.",tapMarker:"Touchez un rep\u00e8re pour les d\u00e9tails",loading:"Chargement\u2026",
   baseHint:"Touchez Carte, Topo ou Profondeur pour changer l'affichage.",
@@ -701,7 +699,7 @@ function translateStaticUI(){
  const ox=$("onboardText");if(ox)ox.textContent=t("onboardText");
 }
 
-const APP_VERSION="mb1j";
+const APP_VERSION="mb1k";
 const API="https://services1.arcgis.com/TJH5KDher0W13Kgo/ArcGIS/rest/services/FishStockingDataForRecreationalPurposes/FeatureServer/0/query";
 const FMZ_API="https://ws.lioservices.lrc.gov.on.ca/arcgis2/rest/services/LIO_OPEN_DATA/LIO_Open07/MapServer/14/query";
 const MB_ANGLERS_GUIDE="https://www.gov.mb.ca/nrnd/fish-wildlife/pubs/fish_wildlife/fish/angling-guide.pdf";
@@ -1360,85 +1358,28 @@ function depthFt(m){
 }
 let detailContours=null,contourToken=0;
 const contourCache=new Map();
-async function loadDetailContours(l){
+/* MANITOBA: no-op since mb1k. Fetched contours from BATHY_URL, Ontario's
+   bathymetry service, which returns nothing at Manitoba coordinates. */
+async function loadDetailContours(){
  if(detailContours){try{detailMap.removeLayer(detailContours)}catch(e){}detailContours=null}
- const key=l.id||`${l.lat},${l.lon}`,token=++contourToken;
- let gj=contourCache.get(key);
- if(gj===undefined){
-  try{
-   /* Envelope ~4 km around the lake centre. Big enough for most inland lakes,
-      small enough that the 5000-record cap is rarely a concern; a giant lake
-      truncates gracefully to its central contours. */
-   const dx=0.05,dy=0.036,
-   bbox=`${l.lon-dx},${l.lat-dy},${l.lon+dx},${l.lat+dy}`,
-   u=`${BATHY_URL}/${BATHY_LAYER}/query?geometry=${bbox}`+
-     "&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects"+
-     "&outFields=DEPTH&returnGeometry=true&outSR=4326&f=geojson";
-   const r=await fetch(u);
-   gj=r.ok?await r.json():null;
-  }catch(e){gj=null}
-  contourCache.set(key,gj);
-  if(contourCache.size>30)contourCache.delete(contourCache.keys().next().value);
- }
- /* The user may have opened a different lake while the fetch was in flight. */
- if(token!==contourToken||!detailMap)return;
- if(!gj||!gj.features||!gj.features.length)return;
- /* Labels, not just popups. A 1.2px line is close to untappable on a phone,
-    so the depth is printed on the line the way a paper chart does it, and the
-    line also carries a fat transparent twin underneath purely as a tap target
-    for the popup. Labels are thinned to one per distinct depth per lake:
-    a lake with forty 3 m segments should say "3 m" once, not forty times. */
- /* The raw DEPTH values need cleaning before anyone sees them. Real Moira
-    Lake responses contained -9.100000381469727 (negative, with float noise),
-    -3 from a neighbouring pond caught by the envelope, and a 2568 that no
-    Ontario lake can justify — a junk record. So: absolute value, one decimal,
-    and anything deeper than 250 m is treated as data error and skipped.
-    De-duplication keys on the ROUNDED value, otherwise five floats that all
-    mean 9.1 m each earn their own label. */
- const cleanDepth=cleanContourDepth;
-
- const labelled=new Set();
- detailContours=L.geoJSON(gj,{
-  style:()=>({color:"#1D5FA0",weight:1.2,opacity:.85}),
-  onEachFeature:(f,ly)=>{
-   const v=cleanDepth(f.properties&&f.properties.DEPTH);
-   if(v==null)return;
-   ly.bindPopup(`${t("depth")}: ${v} ft`);
-   if(!labelled.has(v)){
-    labelled.add(v);
-    ly.bindTooltip(`${v} ft`,{permanent:true,direction:"center",
-                             className:"depthLabel",opacity:1});
-   }
-  }
- }).addTo(detailMap);
- /* The transparent tap targets sit under the visible lines. */
- L.geoJSON(gj,{style:()=>({color:"#1D5FA0",weight:14,opacity:0})})
-  .addTo(detailContours)
-  .eachLayer(ly=>{
-   const f=ly.feature,v=cleanDepth(f&&f.properties&&f.properties.DEPTH);
-   if(v!=null)ly.bindPopup(`${t("depth")}: ${v} ft`);
-  });
- try{detailMap.attributionControl.addAttribution(t("bathyNote"))}catch(e){}
+ return;
 }
-/* The sheet's own basemap choice, independent of the main map's. Defaults to
-   Depth because contours are the reason the sheet map exists; remembered
-   across lakes and launches. "Same three tabs as the main map" was a direct
-   request -- Map and Topo without contours, Depth with them. */
 let detailLakeObj=null;
-let detailBaseKey=localStorage.getItem("osl-sheet-basemap")||"depth";
+let detailBaseKey=localStorage.getItem("osl-sheet-basemap")||"map";
 function applyDetailBase(){
  document.querySelectorAll(".detailBaseSwitch button").forEach(x=>x.classList.toggle("on",x.dataset.dbase===detailBaseKey));
  if(!detailMap)return;
  if(detailBase){try{detailMap.removeLayer(detailBase)}catch(e){}detailBase=null}
- const b=BASEMAPS[detailBaseKey]||BASEMAPS.depth;
+ const b=BASEMAPS[detailBaseKey]||BASEMAPS.map;
  if(b.url){
   detailBase=b.wms?L.tileLayer.wms(b.url,b.opts):L.tileLayer(b.url,b.opts);
   detailBase.addTo(detailMap);
   detailBase.bringToBack&&detailBase.bringToBack();
  }
 }
+// A stored "depth" preference from before mb1k falls through to Map here.
 function setDetailBasemap(key){
- if(!BASEMAPS[key])key="depth";
+ if(!BASEMAPS[key])key="map";
  detailBaseKey=key;localStorage.setItem("osl-sheet-basemap",key);
  applyDetailBase();
  if((BASEMAPS[key]||{}).contours){
@@ -1552,18 +1493,20 @@ const BASEMAPS={
   opts:{layers:"WMS-Toporama",format:"image/png",transparent:false,
         maxZoom:17,attribution:'Toporama &copy; Natural Resources Canada'}
  },
- depth:{
-  /* Depth is the Map basemap plus live contours; the contour lines alone,
-     floating on nothing, give an angler no way to tell which lake they are
-     looking at. Contours are fetched for the visible extent rather than
-     bundled: the province holds ~239k lines, far too many to ship or to draw
-     at once, so they load only once zoomed into lake level. */
-  label:"Depth",
-  url:"https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-  opts:{maxZoom:19,
-        attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'},
-  contours:true
- }
+ /* MANITOBA: the "Depth" basemap was REMOVED in mb1k.
+
+    It was the Map tiles plus contour lines fetched live from BATHY_URL --
+    Ontario's LIO bathymetry service. At Manitoba coordinates that service
+    returns nothing, so Depth rendered identically to Map except that below
+    zoom 12 it told the angler to zoom in for depth and then showed nothing
+    when they did. The lake sheet also DEFAULTED to it, so every lake opened
+    on the dead basemap.
+
+    Manitoba does publish contours, as Manitoba_Waterbody_Contours_VectorTile
+    -- but that is a vector tile service, not a queryable table, so it is a
+    map LAYER rather than a per-extent query. Different code path from
+    Ontario's. If depth is wanted back, that is the way in; it is not a
+    matter of swapping the URL. */
  /* "Plain" — no tile layer at all — was removed in v4z. It was meant as the
     offline fallback, but the app already bundles its data offline: search,
     stocking history, regulations, access points and catch logs all work with
@@ -1574,6 +1517,8 @@ const BASEMAPS={
     by the notice below when tiles fail. */
 };
 let baseLayer=null,baseKey=localStorage.getItem("osl-basemap")||"map";
+// A stored "depth" preference from before mb1k is no longer a valid basemap.
+if(!BASEMAPS[baseKey])baseKey="map";
 
 /* Contours on the main map. Same source as the lake sheet's, but driven by the
    visible extent instead of one lake, so it needs a zoom floor: below z12 the
@@ -1590,40 +1535,12 @@ function mapNotice(msg){
  if(msg){n.textContent=msg;n.classList.remove("hidden")}
  else n.classList.add("hidden");
 }
-async function refreshMainContours(){
- if(!mapAvailable||!(BASEMAPS[baseKey]||{}).contours){clearMainContours();mapNotice("");return}
- if(map.getZoom()<MAIN_CONTOUR_MIN_ZOOM){
-  clearMainContours();mapNotice(t("depthZoomIn"));return;
- }
- mapNotice("");
- const token=++mainContourToken,b=map.getBounds();
- let gj=null;
- try{
-  const u=`${BATHY_URL}/${BATHY_LAYER}/query`+
-   `?geometry=${b.getWest()},${b.getSouth()},${b.getEast()},${b.getNorth()}`+
-   "&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects"+
-   "&outFields=DEPTH&returnGeometry=true&outSR=4326&f=geojson";
-  const r=await fetch(u);
-  gj=r.ok?await r.json():null;
- }catch(e){gj=null}
- if(token!==mainContourToken||!(BASEMAPS[baseKey]||{}).contours)return;
- clearMainContours();
- if(!gj||!gj.features||!gj.features.length)return;
- const labelled=new Set();
- mainContours=L.geoJSON(gj,{
-  style:()=>({color:"#1D5FA0",weight:1.2,opacity:.85}),
-  onEachFeature:(f,ly)=>{
-   const v=cleanContourDepth(f.properties&&f.properties.DEPTH);
-   if(v==null)return;
-   ly.bindPopup(`${t("depth")}: ${v} ft`);
-   if(!labelled.has(v)){
-    labelled.add(v);
-    ly.bindTooltip(`${v} ft`,{permanent:true,direction:"center",
-                              className:"depthLabel",opacity:1});
-   }
-  }
- }).addTo(map);
-}
+/* MANITOBA: no-op since mb1k. No basemap sets contours:true any more, so this
+   could never fire, but it referenced a translation key that was deleted with
+   the Depth button -- and t() falls back to the KEY NAME on a miss, which
+   would have printed "depthZoomIn" on the map. Left as an early return rather
+   than deleted so the two provincial apps still diff cleanly. */
+async function refreshMainContours(){clearMainContours();mapNotice("");return}
 function setBasemap(key){
  if(!BASEMAPS[key])key="map";
  baseKey=key;localStorage.setItem("osl-basemap",key);
@@ -3561,7 +3478,7 @@ function detail(l){
  const fav=favoriteKeys.has(l.key),history=l.records.map(r=>`<div class="historyrow"><div><b>${esc(r.Stocking_Year||"—")}</b><span>${esc(r.Species?speciesLabel(r.Species):t("speciesUnavailable"))}</span></div><div class="historyright"><b>${num(r.Number_of_Fish_Stocked)}</b><span>${esc(r.Developmental_Stage?stageLabel(r.Developmental_Stage):"")}</span></div></div>`).join("");
  $("detail").innerHTML=`<div class="detailhead"><div><h2>${esc(l.name)}</h2><div class="species">${esc(displaySpecies(l).slice(0,6).map(speciesLabel).join(" • "))}${displaySpecies(l).length>6?` <span class="more">+${displaySpecies(l).length-6}</span>`:""}</div></div><button class="bigstar ${fav?"saved":""}" id="detailFav">${fav?"★":"☆"}</button></div>
  ${whereLine(l)}
- <div class="detailMapBlock"><div class="detailMapHead"><button type="button" id="offlineBtn" class="offlineBtn">${t("offlineSave")}</button><div class="baseSwitch detailBaseSwitch" role="group" aria-label="Basemap"><button type="button" data-dbase="map">${t("baseMap")}</button><button type="button" data-dbase="topo">${t("baseTopo")}</button><button type="button" data-dbase="depth">${t("baseDepth")}</button></div></div>
+ <div class="detailMapBlock"><div class="detailMapHead"><button type="button" id="offlineBtn" class="offlineBtn">${t("offlineSave")}</button><div class="baseSwitch detailBaseSwitch" role="group" aria-label="Basemap"><button type="button" data-dbase="map">${t("baseMap")}</button><button type="button" data-dbase="topo">${t("baseTopo")}</button></div></div>
  <div class="detailMapWrap"><div id="detailMap" role="img" aria-label="${t('lakeMapLabel')}"></div><button type="button" class="mapExpand detailMapExpand" aria-label="${t("expandMap")}">${EXPAND_ICON}</button></div></div>
  <div class="detailgrid">${l.stocked?`<div><small>Latest stocking</small><b>${esc(l.latestYear||"—")}</b></div><div><small>Stocking records</small><b>${l.records.length}</b></div>`:`<div><small>Stocking</small><b>Not stocked</b></div>`}${userLoc?`<div><small>Distance from you</small><b>${esc(distanceLabel(l))}</b></div>`:""}${l.district?`<div><small>Fishing division</small><b>${esc(l.district)}</b></div>`:""}
  <div><small>Waterbody ID</small><b>${esc(l.waterbodyId||"—")}</b></div></div>

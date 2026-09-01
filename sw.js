@@ -4,7 +4,7 @@
    network. MANITOBA: the Ontario regulations and advisory files are no longer
    shipped -- Manitoba publishes neither as data, so the app links out. */
 
-const VERSION = "mb1j";
+const VERSION = "mb1k";
 const SHELL = `osl-shell-${VERSION}`;
 /* Deliberately NOT versioned. The data cache used to be osl-data-${VERSION},
    and activate deletes every cache that is not current — so every app update
