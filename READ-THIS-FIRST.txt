@@ -1,0 +1,25 @@
+mtb-github-v1m — GitHub files only
+==================================
+Everything here goes into web/ (the repo root). Flat; species-art/ is the
+only subfolder and it exists in the repo already.
+
+  app.js, sw.js, styles.css       the mtb-v1m app
+  manitoba-waterbodies.json       fmz stripped again (mb1l had let it back in),
+                                  species typos corrected, 920 records
+  species-art/splake.webp         new plate, 35 Manitoba lakes
+  species-art/manifest.json       Splake added
+
+index.html and manifest.webmanifest are unchanged since mb1k and are not
+included.
+
+  cd ~/Documents/"Manitoba Stocked Lakes"
+  unzip -o ~/Desktop/mtb-github-v1m.zip -d /tmp/gh
+  cp /tmp/gh/app.js /tmp/gh/sw.js /tmp/gh/styles.css /tmp/gh/manitoba-waterbodies.json web/
+  cp /tmp/gh/species-art/* web/species-art/
+  cd web
+  grep -n 'APP_VERSION="' app.js | head -1        # mtb-v1m
+  git add -A
+  git commit -m "mtb-v1m: port Ontario v7n — share, sun/moon, review, tap-hold, Toporama fix"
+  git push
+
+Full details of what changed: CHANGELOG.md in mtb-appstore-v1m.zip.

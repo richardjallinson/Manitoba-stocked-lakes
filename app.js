@@ -241,6 +241,22 @@ const I18N={
   recentlyStocked:"Recently Stocked",recentlyStockedSub:"Newest records first",
   recentNear:"Recent Near Me",recentNearSub:"Newest stocked lakes close to you",
   regs2026:"Fishing Regulations",regs2026Sub:"Manitoba Anglers’ Guide",
+  sunrise:"Sunrise",
+  sunset:"Sunset",
+  moon:"Moon",
+  moonNew:"New",
+  moonWaxCres:"Waxing crescent",
+  moonFirst:"First quarter",
+  moonWaxGib:"Waxing gibbous",
+  moonFull:"Full",
+  moonWanGib:"Waning gibbous",
+  moonLast:"Last quarter",
+  moonWanCres:"Waning crescent",
+  shareLake:"Share this lake",
+  shareCopied:"Link copied \u2713",
+  shareFail:"Could not share \u2014 copy the link from the address bar",
+  stockedWord:"Stocked",
+  notStockedLine:"Not a stocked lake. Fish here are wild or from stocking too old to be on record.",
   regsThisLake:"Limits & seasons",
   regsGuideTag:"Manitoba Anglers\u2019 Guide",
   regsNoNumbers:"This app does not show a catch limit, season or size restriction for this lake. Manitoba publishes them in the Anglers\u2019 Guide, organised by fishing division and by named waterbody, and many lakes carry their own exception. Rather than show a number that might be wrong, the app sends you to the Guide.",
@@ -567,6 +583,22 @@ const I18N={
   recentlyStocked:"Ensemenc\u00e9s r\u00e9cemment",recentlyStockedSub:"Les plus r\u00e9cents d'abord",
   recentNear:"R\u00e9cents pr\u00e8s de moi",recentNearSub:"Lacs ensemenc\u00e9s r\u00e9cemment, pr\u00e8s de vous",
   regs2026:"R\u00e8glements de p\u00eache",regs2026Sub:"Guide de p\u00eache du Manitoba",
+  sunrise:"Lever du soleil",
+  sunset:"Coucher du soleil",
+  moon:"Lune",
+  moonNew:"Nouvelle",
+  moonWaxCres:"Premier croissant",
+  moonFirst:"Premier quartier",
+  moonWaxGib:"Gibb. croissante",
+  moonFull:"Pleine",
+  moonWanGib:"Gibb. d\u00e9croissante",
+  moonLast:"Dernier quartier",
+  moonWanCres:"Dernier croissant",
+  shareLake:"Partager ce lac",
+  shareCopied:"Lien copi\u00e9 \u2713",
+  shareFail:"Partage impossible \u2014 copiez le lien depuis la barre d'adresse",
+  stockedWord:"Ensemenc\u00e9",
+  notStockedLine:"Lac non ensemenc\u00e9. Les poissons pr\u00e9sents sont sauvages ou issus d'ensemencements trop anciens pour figurer au registre.",
   regsThisLake:"Limites et saisons",
   regsGuideTag:"Guide de p\u00eache du Manitoba",
   regsNoNumbers:"Cette application n\u2019affiche ni limite de prises, ni saison, ni restriction de taille pour ce lac. Le Manitoba les publie dans son guide de p\u00eache, organis\u00e9 par division de p\u00eache et par plan d\u2019eau nomm\u00e9, et de nombreux lacs ont leur propre exception. Plut\u00f4t que d\u2019afficher un chiffre possiblement erron\u00e9, l\u2019application vous renvoie au guide.",
@@ -699,7 +731,7 @@ function translateStaticUI(){
  const ox=$("onboardText");if(ox)ox.textContent=t("onboardText");
 }
 
-const APP_VERSION="mb1k";
+const APP_VERSION="mtb-v1m";
 const API="https://services1.arcgis.com/TJH5KDher0W13Kgo/ArcGIS/rest/services/FishStockingDataForRecreationalPurposes/FeatureServer/0/query";
 const FMZ_API="https://ws.lioservices.lrc.gov.on.ca/arcgis2/rest/services/LIO_OPEN_DATA/LIO_Open07/MapServer/14/query";
 const MB_ANGLERS_GUIDE="https://www.gov.mb.ca/nrnd/fish-wildlife/pubs/fish_wildlife/fish/angling-guide.pdf";
@@ -744,7 +776,9 @@ if (!mapAvailable) {
   });
 }
 
-const map=L.map("map").setView([46.2,-81.0],5);
+/* MANITOBA: was Ontario's [46.2,-81.0], which is Sudbury. Until a search or
+   My Location moves it, the map opened on the wrong province. */
+const map=L.map("map").setView([52.2,-97.6],5);
 
 const markerLayer=L.layerGroup().addTo(map);
 
@@ -1226,6 +1260,7 @@ drawSavedTrails("main",map);
 drawSpots("main",map);
 map.on("click",mapClickForSpot);
 map.on("contextmenu",spotLongPress);
+attachTapHold(map);
 
 /* ---- Saving a lake for offline use -------------------------------------
    The tile cache already keeps whatever you have looked at, but it is capped
@@ -1372,7 +1407,7 @@ function applyDetailBase(){
  if(detailBase){try{detailMap.removeLayer(detailBase)}catch(e){}detailBase=null}
  const b=BASEMAPS[detailBaseKey]||BASEMAPS.map;
  if(b.url){
-  detailBase=b.wms?L.tileLayer.wms(b.url,b.opts):L.tileLayer(b.url,b.opts);
+  detailBase=makeBaseLayer(b);
   detailBase.addTo(detailMap);
   detailBase.bringToBack&&detailBase.bringToBack();
  }
@@ -1413,6 +1448,7 @@ function showDetailMap(l){
    new LocationControl().addTo(detailMap);
    detailMap.on("click",mapClickForSpot);
    detailMap.on("contextmenu",spotLongPress);
+   attachTapHold(detailMap);
   }
   /* The base layer is rebuilt on every open, not just when the map is first
      created -- it used to keep whatever layer it was born with for the rest
@@ -1551,7 +1587,7 @@ function setBasemap(key){
  if(baseLayer){map.removeLayer(baseLayer);baseLayer=null}
  const b=BASEMAPS[key];
  if(b.url){
-  baseLayer=(b.wms?L.tileLayer.wms(b.url,b.opts):L.tileLayer(b.url,b.opts)).addTo(map);
+  baseLayer=makeBaseLayer(b).addTo(map);
   baseLayer.bringToBack&&baseLayer.bringToBack();
   /* Tiles that never arrive used to leave an unexplained grey rectangle —
      the commonest way this map looks broken when it is merely offline. Say
@@ -1679,6 +1715,64 @@ function refreshLocationQuietly(){
    the sheet says so when a filter empties a list.
 --------------------------------------------------------------------------- */
 const HIDDEN_SPECIES=new Set([
+ /* Ontario v7j parity. Ontario hid 29 more survey-only names; Manitoba takes
+    them all EXCEPT Goldeye and Mooneye. In Ontario those are incidental survey
+    records; in Manitoba, Goldeye is a signature sport fish -- Winnipeg Goldeye
+    is on restaurant menus -- and Mooneye is fished alongside it. Hiding them
+    here would have been the mirror-Ontario mistake this app exists to avoid.
+    Of the rest, only Quillback (29 lakes) and Bigmouth Buffalo (10) occur in
+    Manitoba data, and neither is an angling target. */
+ "Bigmouth Buffalo",
+ "Black Buffalo",
+ "Black Redhorse",
+ "Blackfin Cisco",
+ "Blue Pike",
+ "Deepwater Cisco",
+ "Fallfish",
+ "Golden Redhorse",
+ "Grass Carp",
+ "Grass Pickerel",
+ "Greater Redhorse",
+ "Green Sunfish",
+ "Lake Chubsucker",
+ "Longnose Sucker",
+ "Northern Hog Sucker",
+ "Northern Sunfish",
+ "Orangespotted Sunfish",
+ "Pink Salmon",
+ "Quillback",
+ "River Redhorse",
+ "Shorthead Redhorse",
+ "Shortnose Cisco",
+ "Silver Redhorse",
+ "Sockeye Salmon",
+ "Spotted Gar",
+ "Spotted Sucker",
+ "Warmouth",
+
+ /* MANITOBA-ONLY, added mb1l. Manitoba's waterbody layer uses the species
+    field for record-keeping notes as well as species, so these strings arrive
+    as if they were fish and render as selectable chips. "No Info" alone sits
+    on 310 of the 920 waterbodies -- it would be the third most common "species"
+    in the app, ahead of Yellow Perch. Hiding them routes those lakes to the
+    existing no-species empty state, which says the right thing. */
+ "No Info","Unknown",
+ "No angling species on record",
+ "No angling speices on record",          // Manitoba's typo, present in the data
+
+ /* MANITOBA-ONLY, added mb1l. Misspellings in Manitoba's own data. Each is a
+    single record and each duplicates a species already listed, so they show as
+    a second chip for a fish already on the lake, and the filter finds nothing
+    when tapped. Corrected in the build script too -- these entries are the
+    safety net for data already shipped. */
+ "Northen Pike","Northern Oike","Raibow Trout","low Perch",
+ "Brook trout","Arctic Charr","Sauger Lake Whitefish",
+
+ /* Ontario parity, v6z. None of these occur in Manitoba's data; they are here
+    so the two provinces share one list and the template stays diffable. */
+ "Kiyi","Bloater","Shortjaw Cisco","Nipigon Cisco","Pygmy Whitefish",
+ "Brindled Madtom","Northern Madtom","Topminnows","Goldfish x Carp",
+
  // Shiners
  "Common Shiner","Golden Shiner","Blacknose Shiner","Spottail Shiner","Mimic Shiner",
  "Emerald Shiner","Blackchin Shiner","Rosyface Shiner","Spotfin Shiner","Sand Shiner",
@@ -1744,10 +1838,18 @@ function displaySpecies(l){
    and "records we don't show you" are different facts, and telling an angler
    the wrong one about a lake they are about to drive to is exactly the kind of
    thing this app must not do. */
+/* MANITOBA: NO_RECORD is checked before the forage test, and the order is the
+   point. Manitoba writes "No Info" into the species field on 310 waterbodies.
+   Those strings are hidden, so anglerSpecies() comes back empty and the old
+   code fell through to "forage" -- telling the angler the lake holds baitfish
+   only, when what Manitoba actually said was that nobody has looked. That is
+   a different claim and an equally wrong one. */
+const NO_RECORD=new Set(["No Info","Unknown","No angling species on record","No angling speices on record"]);
 function speciesGap(list){
  const raw=list||[];
  if(!raw.length)return "none";                       // nobody has surveyed it
  if(anglerSpecies(raw).length)return "";             // something to show
+ if(raw.every(s=>NO_RECORD.has(s)))return "none";    // Manitoba said "no record", not "forage"
  return raw.some(s=>/sp\.$|hybrids$|^Unidentifiable$|subfamily$|^Suckers$|^Perches$|^Sunfishes$|^Pikes$|^Herrings$|^Smelts$|^Sculpins$|^Sticklebacks$|Catfishes$|^Bowfins$|^Cods$|Eels$|Basses$/.test(s))
   ? "unidentified"                                   // surveyed, not keyed to species
   : "forage";                                        // surveyed, all baitfish
@@ -2110,6 +2212,7 @@ function afterStockingLoaded(){
  if(!restoreLastSearch())apply();
  loadFMZ(false).then(()=>apply());
  loadObservedSpecies();loadFullRegulations();loadTripData();loadSpeciesArt();
+ openLakeFromHash();
 
 }
 
@@ -3474,6 +3577,9 @@ function presentBlock(l){
 }
 
 function detail(l){
+ /* Re-renders of the same sheet (favouriting, weather landing) must not
+    inflate the count, so only a genuine change of lake is an "open". */
+ if(l.key!==detailLakeKey)noteLakeSheetOpened();
  recentLakes=[l.key,...recentLakes.filter(k=>k!==l.key)].slice(0,10);localStorage.setItem("osl-recent",JSON.stringify(recentLakes));persistDurable();
  const fav=favoriteKeys.has(l.key),history=l.records.map(r=>`<div class="historyrow"><div><b>${esc(r.Stocking_Year||"—")}</b><span>${esc(r.Species?speciesLabel(r.Species):t("speciesUnavailable"))}</span></div><div class="historyright"><b>${num(r.Number_of_Fish_Stocked)}</b><span>${esc(r.Developmental_Stage?stageLabel(r.Developmental_Stage):"")}</span></div></div>`).join("");
  $("detail").innerHTML=`<div class="detailhead"><div><h2>${esc(l.name)}</h2><div class="species">${esc(displaySpecies(l).slice(0,6).map(speciesLabel).join(" • "))}${displaySpecies(l).length>6?` <span class="more">+${displaySpecies(l).length-6}</span>`:""}</div></div><button class="bigstar ${fav?"saved":""}" id="detailFav">${fav?"★":"☆"}</button></div>
@@ -3486,6 +3592,7 @@ function detail(l){
  ${regsStaleNote()}
 ${presentBlock(l)}
  <button class="tripStart" id="startTrip">Start a fishing trip</button>
+ <button class="shareLakeBtn" id="shareLakeBtn" type="button">${t("shareLake")}</button>
  <div id="lake-rules" class="tabAnchor"></div>${fullRegCard(l,l.species[0]||"Fish")}
  ${fishingConditionsCard(l)}
  <div id="lake-eating" class="tabAnchor"></div><div class="infoCard"><h3>\u{1F37D}\uFE0F ${t("eatingGuide")}</h3>${advisoryPanel(l)}</div>
@@ -3507,7 +3614,9 @@ ${presentBlock(l)}
 
  /* MANITOBA: nothing to fetch. The advisory panel is static prose and a link.
     The 11 MB Ontario advisory file is no longer shipped. */
- const st=$("startTrip");if(st)st.onclick=()=>startTrip(l);wireAdvisory(l);wireWeather(l);
+ const st=$("startTrip");if(st)st.onclick=()=>startTrip(l);
+ const sh=$("shareLakeBtn");if(sh)sh.onclick=()=>shareLake(l);
+ wireAdvisory(l);wireWeather(l);
  document.querySelectorAll("[data-laketab]").forEach(b=>b.onclick=()=>{
   document.querySelectorAll("[data-laketab]").forEach(x=>x.classList.remove("active"));b.classList.add("active");
   const id=b.dataset.laketab, target=id==="trips"?st:$("lake-"+id);
@@ -3891,12 +4000,54 @@ function addCatch(id){
   trip.catches.unshift({id:Date.now(),species,lenCm,wtKg,disposition,notes,
    time:new Date().toISOString(),location:loc});
   saveTrips();openTrip(id);
+  maybeAskForReview();
  };
  const gps=$("catchLocation");
  if(gps)try{localStorage.setItem("osl-catch-gps",gps.checked?"1":"0")}catch(_){}
  if(gps&&gps.checked&&navigator.geolocation)
   navigator.geolocation.getCurrentPosition(p=>finish({lat:p.coords.latitude,lon:p.coords.longitude}),()=>finish(null),{timeout:8000});
  else finish(null);
+}
+
+const REVIEW_SHEETS_NEEDED=8, REVIEW_DAYS_NEEDED=3;
+
+function noteLakeSheetOpened(){
+ try{
+  if(localStorage.getItem("osl-review-asked")==="1")return;
+  const n=(parseInt(localStorage.getItem("osl-review-sheets"),10)||0)+1;
+  localStorage.setItem("osl-review-sheets",String(n));
+  const today=new Date().toISOString().slice(0,10);
+  let days=[];
+  try{days=JSON.parse(localStorage.getItem("osl-review-days")||"[]")}catch(e){days=[]}
+  if(!Array.isArray(days))days=[];
+  if(days.indexOf(today)<0){
+   days.push(today);
+   /* Only the count matters, so the list never needs to grow without limit. */
+   days=days.slice(-REVIEW_DAYS_NEEDED);
+   localStorage.setItem("osl-review-days",JSON.stringify(days));
+  }
+ }catch(e){}
+ maybeAskForReview();
+}
+
+function maybeAskForReview(){
+ const bridge=nativeBridge("requestReview"); if(!bridge)return;
+ let catches=0,sheets=0,days=0;
+ try{
+  if(localStorage.getItem("osl-review-asked")==="1")return;
+  catches=trips.reduce((n,tr)=>n+((tr.catches&&tr.catches.length)||0),0);
+  sheets=parseInt(localStorage.getItem("osl-review-sheets"),10)||0;
+  let d=[];
+  try{d=JSON.parse(localStorage.getItem("osl-review-days")||"[]")}catch(e){d=[]}
+  days=Array.isArray(d)?d.length:0;
+ }catch(e){ return; }
+ const earnedByCatches=catches>=3;
+ const earnedByReading=sheets>=REVIEW_SHEETS_NEEDED&&days>=REVIEW_DAYS_NEEDED;
+ if(!earnedByCatches&&!earnedByReading)return;
+ try{ localStorage.setItem("osl-review-asked","1"); }catch(e){}
+ /* Let whatever triggered it finish rendering first: the prompt should land
+    on a settled screen, not on top of a half-drawn sheet. */
+ setTimeout(()=>{ try{ bridge.postMessage({}); }catch(e){} },1200);
 }
 
 function renderTrips(){
@@ -3980,6 +4131,12 @@ function fishingConditionsCard(l){
  return `<div id="lake-weather" class="tabAnchor"></div><div class="infoCard weatherCard"><h3>🌤️ ${t("weatherTitle")}</h3>
  <p>Check current Environment Canada conditions and active weather alerts before heading out. Wind and storms can make lake conditions unsafe even when the fishing looks good.</p>
  <div id="weatherAlertBox"><span class="weatherLoading">Checking Environment Canada alerts…</span></div>
+ ${(()=>{const sun=sunTimes(l.lat,l.lon,new Date()),mp=moonPhase(new Date()),
+   hhmm=d=>d?d.toLocaleTimeString(appLang==="fr"?"fr-CA":"en-CA",{hour:"numeric",minute:"2-digit"}):"\u2014";
+   return `<div class="reportCond sunMoon">
+   <div><small>${t("sunrise")}</small><b>${sun?hhmm(sun.rise):"\u2014"}</b></div>
+   <div><small>${t("sunset")}</small><b>${sun?hhmm(sun.set):"\u2014"}</b></div>
+   <div><small>${t("moon")}</small><b>${mp.icon}<span class="moonName">${t(mp.key)}</span></b></div></div>`})()}
  <div class="weatherActions"><a target="_blank" rel="noopener" href="${ECCC_WEATHER_HOME}">Environment Canada Weather</a><button id="refreshAlerts">${t("refreshAlerts")}</button></div>
  <p class="microcopy">Manitoba Stocked Lakes does not claim to predict whether fish will bite. Weather is trip-planning information only.</p></div>`;
 }
@@ -3992,6 +4149,127 @@ async function wireWeather(l){
   box.innerHTML=alerts.slice(0,5).map(f=>{const p=f.properties||{};return `<div class="weatherAlert"><b>⚠ ${esc(p.alert_name_en||p.alert_short_name_en||t("weatherAlert"))}</b><span>${esc(p.feature_name_en||p.province||t("lakeArea"))}</span>${p.alert_type?`<span>${esc(p.alert_type)}</span>`:""}</div>`}).join("");
  };
  await load();const b=$("refreshAlerts");if(b)b.onclick=load;
+}
+
+/* ---- Ported from Ontario v7n (mtb-v1m) ----------------------------------
+   sunTimes / moonPhase: pure astronomy, no province in them.
+   attachTapHold: the vendored Leaflet is 1.1.1, which predates TapHold
+   (added 1.8), so on iOS a long press never fired contextmenu and the
+   add-a-spot panel could not be opened from a phone. Same bug, same fix.
+   makeBaseLayer: Toporama renders each WMS tile on demand and drops most of
+   a screenful of simultaneous requests; a dropped tile stayed grey forever.
+   Caps in-flight requests at six and retries twice. Manitoba uses the same
+   Toporama service, so this was live here too.
+   --------------------------------------------------------------------- */
+function sunTimes(lat,lon,date){
+ const d=date||new Date();
+ const rad=Math.PI/180, deg=180/Math.PI;
+ /* Standard sunrise equation. n counts whole days since J2000, which is the
+    step an earlier draft got wrong by using day-of-year -- that put every
+    result half a day out. lw is west longitude, positive. */
+ const jd=d.getTime()/86400000+2440587.5;
+ const n=Math.round(jd-2451545.0+0.0008);
+ const Jstar=n-lon/360;   /* west of Greenwich, solar noon is later in UTC */
+ const M=(357.5291+0.98560028*Jstar)%360;
+ const C=1.9148*Math.sin(M*rad)+0.02*Math.sin(2*M*rad)+0.0003*Math.sin(3*M*rad);
+ const L=(M+C+180+102.9372)%360;
+ const transit=2451545.0+Jstar+0.0053*Math.sin(M*rad)-0.0069*Math.sin(2*L*rad);
+ const dec=Math.asin(Math.sin(L*rad)*Math.sin(23.44*rad))*deg;
+ const cosH=(Math.sin(-0.833*rad)-Math.sin(lat*rad)*Math.sin(dec*rad))/
+            (Math.cos(lat*rad)*Math.cos(dec*rad));
+ if(cosH>1||cosH<-1)return null;           /* no sunrise or no sunset today */
+ const H=Math.acos(cosH)*deg;
+ const toDate=j=>new Date((j-2440587.5)*86400000);
+ return {rise:toDate(transit-H/360),set:toDate(transit+H/360)};
+}
+
+function moonPhase(date){
+ const d=date||new Date();
+ const known=Date.UTC(2000,0,6,18,14);      /* a known new moon */
+ const syn=29.530588853*86400000;
+ let age=(((d.getTime()-known)%syn)+syn)%syn/syn;   /* 0..1 through the cycle */
+ const names=["moonNew","moonWaxCres","moonFirst","moonWaxGib",
+              "moonFull","moonWanGib","moonLast","moonWanCres"];
+ const icons=["\u{1F311}","\u{1F312}","\u{1F313}","\u{1F314}",
+              "\u{1F315}","\u{1F316}","\u{1F317}","\u{1F318}"];
+ const i=Math.floor(age*8+0.5)%8;
+ return {key:names[i],icon:icons[i],frac:age};
+}
+
+function attachTapHold(mapObj){
+ /* Leaflet 1.1.1 predates the TapHold handler (added in 1.8), so on iOS a
+    press-and-hold never becomes a contextmenu event and spotLongPress was
+    simply never called -- the feature worked on a desktop right-click and
+    nowhere else. Rather than move the whole app to a new Leaflet, this is
+    the one behaviour we actually need, hand-rolled: 550ms, cancelled by a
+    drag of more than 10px or by a second finger (pinch-zoom). */
+ const el=mapObj.getContainer();
+ let timer=null,startX=0,startY=0,fired=false;
+ const cancel=()=>{if(timer){clearTimeout(timer);timer=null}};
+ el.addEventListener("touchstart",function(ev){
+  fired=false;
+  if(!ev.touches||ev.touches.length!==1){cancel();return}
+  const t=ev.touches[0];startX=t.clientX;startY=t.clientY;
+  const pt=mapObj.mouseEventToContainerPoint(t);
+  cancel();
+  timer=setTimeout(function(){
+   timer=null;fired=true;
+   try{
+    const ll=mapObj.containerPointToLatLng(pt);
+    spotLongPress({latlng:ll,originalEvent:null});
+    if(navigator.vibrate)try{navigator.vibrate(10)}catch(_){}
+   }catch(_){}
+  },550);
+ },{passive:true});
+ el.addEventListener("touchmove",function(ev){
+  if(!timer)return;
+  if(!ev.touches||ev.touches.length!==1){cancel();return}
+  const t=ev.touches[0];
+  if(Math.abs(t.clientX-startX)>10||Math.abs(t.clientY-startY)>10)cancel();
+ },{passive:true});
+ el.addEventListener("touchend",function(ev){
+  cancel();
+  /* Swallow the click Safari synthesises after the hold, or the sheet we
+     just opened would immediately receive a stray tap. */
+  if(fired&&ev.cancelable)try{ev.preventDefault()}catch(_){}
+  fired=false;
+ },{passive:false});
+ el.addEventListener("touchcancel",cancel,{passive:true});
+}
+
+function makeBaseLayer(b){
+ if(!b.wms)return L.tileLayer(b.url,b.opts);
+ const layer=L.tileLayer.wms(b.url,b.opts);
+ let inflight=0; const queue=[];
+ function pump(){while(inflight<WMS_MAX_INFLIGHT&&queue.length)queue.shift()()}
+ /* Replacing createTile outright rather than wrapping Leaflet's: Leaflet's
+    own version assigns img.src immediately, so anything that wraps it has
+    already lost the race and ends up asking for every tile twice. Owning the
+    element means the queue actually gates the request. Mirrors Leaflet's
+    createTile otherwise -- same alt, role and crossOrigin handling -- and
+    still calls done() exactly once, which its tile bookkeeping relies on. */
+ layer.createTile=function(coords,done){
+  const img=document.createElement("img");
+  const co=this.options.crossOrigin;
+  if(co||co==="")img.crossOrigin=co===true?"":co;
+  img.alt=""; img.setAttribute("role","presentation");
+  const url=this.getTileUrl(coords);
+  let tries=0, settled=false;
+  const settle=err=>{if(settled)return;settled=true;done(err,img)};
+  const ask=()=>{inflight++;img.src=url};
+  img.onload=()=>{inflight--;pump();settle(null)};
+  img.onerror=()=>{
+   inflight--;
+   /* Back off further each time: a server shedding load needs a moment, and
+      hammering it is what caused the drop in the first place. */
+   if(tries++<WMS_RETRIES)setTimeout(()=>{queue.push(ask);pump()},WMS_RETRY_MS*tries);
+   else settle(new Error("tile"));
+   pump();
+  };
+  queue.push(ask); pump();
+  return img;
+ };
+ return layer;
 }
 
 function lakeOverviewTabs(l){
@@ -4215,7 +4493,7 @@ const nativeBridge=k=>window.webkit&&window.webkit.messageHandlers&&window.webki
    Language, units and text size stay plain localStorage on purpose: losing
    them costs two taps, and rebuilding them here would be complexity spent on
    nothing. */
-const DURABLE_KEYS=["osl-trips","osl-favorites","osl-recent"];
+const DURABLE_KEYS=["osl-trips","osl-favorites","osl-recent","osl-review-asked"];
 const SAVED_AT_KEY="osl-saved-at";
 
 function persistDurable(){
@@ -4331,7 +4609,7 @@ function helpMarkup(){
    <label class="importBtn">${t("importData")}<input id="importData" type="file" accept="application/json,.json" hidden></label>
   </div>
  </div>
- <div class="versionStamp">Manitoba Stocked Lakes • ${APP_VERSION}<span>© 2026 Richard J Allinson</span><span class="rightsNote">${t("rightsNote")}</span></div>`;
+ <div class="versionStamp">Manitoba Stocked Lakes • ${APP_VERSION}<span>© 2026 Richard J Allinson and Trevor Allinson</span><span class="rightsNote">${t("rightsNote")}</span></div>`;
 }
 
 const TEXT_SIZES=["standard","large","larger"];
@@ -4414,7 +4692,7 @@ function settingsMarkup(){
   <button id="openHelpFromSettings" class="ghostbtn wide" type="button">${t("helpTitle")}</button>
  </section>
 
- <div class="versionStamp">Manitoba Stocked Lakes • ${APP_VERSION}<span>© 2026 Richard J Allinson</span><span class="rightsNote">${t("rightsNote")}</span></div>`;
+ <div class="versionStamp">Manitoba Stocked Lakes • ${APP_VERSION}<span>© 2026 Richard J Allinson and Trevor Allinson</span><span class="rightsNote">${t("rightsNote")}</span></div>`;
 }
 
 function openSettings(){
@@ -4490,6 +4768,7 @@ document.addEventListener("DOMContentLoaded",()=>{
  migrateTrips();
  setLanguage(appLang);wireShell();
  refreshLocationQuietly();
+ window.addEventListener("hashchange",openLakeFromHash);
 });
 
 /* ---- The master Spots screen -------------------------------------------
@@ -4501,6 +4780,52 @@ document.addEventListener("DOMContentLoaded",()=>{
    planning case, which is the common one. */
 let allSpotsFilter=null,allSpotsIconFilter=null,allSpotsQuery="",allSpotsEditing=null;
 let allSpotsCollapsed={};
+/* ---- Share a lake (ported from Ontario v7n, mtb-v1m) ---- */
+const SHARE_BASE="https://manitoba-stocked-lakes.vercel.app/";
+function lakeShareUrl(l){ return SHARE_BASE+"#lake="+encodeURIComponent(l.key); }
+
+function lakeShareText(l){
+ const lines=[];
+ lines.push(l.name+" \u2014 Manitoba Stocked Lakes");
+ if(l.stocked&&l.records&&l.records.length){
+  const r=l.records[0];
+  const sp=r.Species?speciesLabel(r.Species):"";
+  const yr=r.Stocking_Year||l.latestYear||"";
+  if(sp||yr)lines.push([t("stockedWord"),sp,yr].filter(Boolean).join(" "));
+ }
+ const facts=[];
+ if(l.depthMax)facts.push(t("maxDepth")+" "+depthFt(l.depthMax)+" ft");
+ if(facts.length)lines.push(facts.join(" \u00b7 "));
+ lines.push(lakeShareUrl(l));
+ return lines.join("\n");
+}
+
+async function shareLake(l){
+ const text=lakeShareText(l), url=lakeShareUrl(l);
+ /* Inside the wrapper, hand the text straight to UIActivityViewController.
+    navigator.share needs a user-gesture context that the bridge round trip
+    can lose, and a silent failure reads as a dead button. */
+ const native=nativeBridge("shareText");
+ if(native){ try{ native.postMessage({text}); return; }catch(e){} }
+ try{
+  if(navigator.share){ await navigator.share({title:l.name,text,url}); return; }
+ }catch(e){ if(e&&e.name==="AbortError")return; }
+ try{
+  await navigator.clipboard.writeText(text);
+  toast(t("shareCopied"));
+ }catch(e){ toast(t("shareFail")); }
+}
+
+function openLakeFromHash(){
+ const m=/[#&]lake=([^&]+)/.exec(location.hash||"");
+ if(!m)return false;
+ let k; try{ k=decodeURIComponent(m[1]); }catch(e){ k=m[1]; }
+ const l=lakeByKey(k);
+ if(!l)return false;
+ detail(l);
+ return true;
+}
+
 function lakeByKey(k){
  return lakes.find(l=>String(l.key)===String(k))||
         lakes.find(l=>String(l.waterbodyId||"")===String(k))||null;

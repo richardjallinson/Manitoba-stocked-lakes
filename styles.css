@@ -167,7 +167,9 @@ body{padding-bottom:76px}.filters{display:grid;grid-template-columns:1fr 1fr;gap
 .microcopy{font-size:11px!important;margin-top:9px!important}
 .inlineBtn{border:0;background:var(--green);color:white;padding:10px 12px;border-radius:10px;font-weight:800;cursor:pointer}
 
-.bottomnav button{min-width:0}.tripStart{width:100%;border:0;background:var(--accent);color:var(--green);padding:14px;border-radius:12px;font-weight:900;font-size:15px;margin:0 0 16px}
+.bottomnav button{min-width:0}.tripStart{width:100%;border:0;background:var(--accent);color:var(--green);padding:14px;border-radius:12px;font-weight:900;font-size:15px;margin:0 0 8px}
+.shareLakeBtn{width:100%;border:1px solid var(--line);background:#fff;color:var(--green);padding:13px;border-radius:12px;font-weight:800;font-size:14px;margin:0 0 16px}
+.shareLakeBtn:active{background:#f1f5f9}
 .tripmeta{color:var(--muted);font-size:12px;margin:-8px 0 14px}.lakeSnapshot{display:grid;gap:5px;background:#eef5f2;border:1px solid var(--line);border-radius:14px;padding:13px;margin:12px 0}.lakeSnapshot span{font-size:12px;color:var(--muted)}
 .catchform{display:grid;gap:8px;background:#F2F6FA;border:1px solid var(--line);border-radius:14px;padding:12px}.catchform input,.catchform select,.catchform textarea,.tripnotes{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit;background:#fff}.formrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.catchform textarea,.tripnotes{min-height:70px;resize:vertical}.catchform button{border:0;background:var(--green);color:white;padding:12px;border-radius:10px;font-weight:900}.checkline{font-size:12px;color:var(--muted)}
 .catchrow{display:flex;justify-content:space-between;padding:10px 2px;border-bottom:1px solid var(--line)}.catchrow span{display:block;font-size:11px;color:var(--muted);margin-top:2px}.catchrow button{border:0;background:#eee;border-radius:50%;width:28px;height:28px}.tripnotes{margin:12px 0 8px}.endTrip{width:100%;border:1px solid #a94442;background:white;color:#8a2927;padding:12px;border-radius:10px;font-weight:900;margin-top:8px}
@@ -1496,3 +1498,15 @@ body.spotCreating .leaflet-container{cursor:crosshair}
  background:#FFFFFFD9;border-radius:0 0 8px 8px;
  padding:3px 9px;font-size:10.5px;line-height:1.3;
  max-width:62vw;text-align:center;box-shadow:0 1px 3px #13263C1A}
+
+/* ---- Sun & moon row in the weather card (ported from Ontario v7n) ---- */
+.sunMoon{margin:10px 0 12px}
+.reportCond{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.reportCond div{background:#F2F6FA;border-radius:10px;padding:9px 6px;text-align:center;min-width:0;display:flex;flex-direction:column;justify-content:flex-start}
+.reportCond small{display:block;color:var(--muted);font-size:10px;margin-bottom:2px;line-height:1.2}
+/* French moon names are long ("Gibb. decroissante") and were clipping at the
+   tile edge. Let them wrap and shrink rather than truncate a fact. */
+/* hyphens:auto broke "Waning gibbous" as "Waning gib-bous". Wrap at the
+   space instead, and only break inside a word as a last resort. */
+.reportCond b{font-size:13px;line-height:1.25;font-variant-numeric:tabular-nums;overflow-wrap:break-word;hyphens:none}
+.reportCond .moonName{font-size:11px;display:block}
