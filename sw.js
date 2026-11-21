@@ -4,7 +4,7 @@
    network. MANITOBA: the Ontario regulations and advisory files are no longer
    shipped -- Manitoba publishes neither as data, so the app links out. */
 
-const VERSION = "mtb-v1m";
+const VERSION = "mtb-v1o";
 const SHELL = `osl-shell-${VERSION}`;
 /* Deliberately NOT versioned. The data cache used to be osl-data-${VERSION},
    and activate deletes every cache that is not current — so every app update
@@ -27,7 +27,10 @@ const TILE_CACHE_MAX = 800;
    TILES is trimmed to a cap and would quietly evict the very tiles someone
    saved for a trip. Nothing here is ever evicted automatically -- it goes
    when the user removes that lake's saved area, and not before. */
-const OFFLINE = "osl-offline";
+/* MANITOBA (mtb-v1n): the "osl-offline" cache is retired along with the
+   Save for offline button. The line below deletes any such cache left on a
+   device from an earlier version, then nothing in this file names it again. */
+const RETIRED_CACHES = ["osl-offline"];
 
 const SHELL_FILES = [
   "./",
@@ -76,7 +79,7 @@ self.addEventListener("activate", e => {
   e.waitUntil(
     caches.keys()
       .then(keys => Promise.all(
-        keys.filter(k => k !== SHELL && k !== DATA && k !== TILES && k !== OFFLINE).map(k => caches.delete(k))
+        keys.filter(k => k !== SHELL && k !== DATA && k !== TILES).concat(RETIRED_CACHES.filter(k=>keys.includes(k))).map(k => caches.delete(k))
       ))
       .then(() => self.clients.claim())
   );
@@ -101,45 +104,14 @@ async function trimTileCache(c) {
   for (let i = 0; i < excess; i++) await c.delete(keys[i]);
 }
 
-/* Saving a lake for offline use. The page works out which tile URLs cover the
-   lake and posts them here; the fetching happens in the worker so it survives
-   the user scrolling around, and progress goes back to the page as it lands.
-   Sequential rather than parallel on purpose: these are other people's free
-   public tile servers, and a burst of a hundred parallel requests from every
-   user is exactly the sort of thing that gets an app blocked. */
-self.addEventListener("message", e => {
-  const msg = e.data || {};
-  const reply = m => { try { e.source && e.source.postMessage(m); } catch (_) {} };
-
-  if (msg.type === "saveArea" && Array.isArray(msg.urls)) {
-    e.waitUntil((async () => {
-      const c = await caches.open(OFFLINE);
-      let done = 0, failed = 0;
-      for (const u of msg.urls) {
-        try {
-          if (await c.match(u)) { done++; }
-          else {
-            const res = await fetch(u, { mode: "cors" });
-            if (res && res.ok) { await c.put(u, res.clone()); done++; }
-            else failed++;
-          }
-        } catch (_) { failed++; }
-        reply({ type: "saveProgress", key: msg.key, done: done + failed, total: msg.urls.length });
-      }
-      reply({ type: "saveDone", key: msg.key, saved: done, failed });
-    })());
-    return;
-  }
-
-  if (msg.type === "removeArea" && Array.isArray(msg.urls)) {
-    e.waitUntil((async () => {
-      const c = await caches.open(OFFLINE);
-      for (const u of msg.urls) { try { await c.delete(u); } catch (_) {} }
-      reply({ type: "removeDone", key: msg.key });
-    })());
-    return;
-  }
-});
+/* MANITOBA (mtb-v1n): the message listener that used to live here --
+   saveArea / removeArea, the far side of the "Save for offline" button's
+   postMessage bridge -- is removed. The button relied on
+   navigator.serviceWorker.controller, which does not behave the same way
+   inside the native app's WKWebView wrapper as it does in a browser tab: it
+   worked in web testing and failed silently on the App Store build. Ontario
+   has the identical bug; removed here since it is a real defect, not a
+   Manitoba difference. */
 
 self.addEventListener("fetch", e => {
   const req = e.request;
@@ -152,10 +124,6 @@ self.addEventListener("fetch", e => {
   // isTileRequest for why tiles are safe to keep and everything else isn't.
   if (isTileRequest(url)) {
     e.respondWith((async () => {
-      // Deliberately saved tiles win, and are answered without touching the
-      // network at all -- the whole point is a lake that works with no signal.
-      const saved = await caches.open(OFFLINE).then(c => c.match(req));
-      if (saved) return saved;
       const c = await caches.open(TILES);
       const hit = await c.match(req);
       const network = fetch(req).then(res => {

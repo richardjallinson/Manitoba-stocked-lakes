@@ -1120,14 +1120,7 @@ body.filtering .searchAlt{display:flex}
 /* The lake sheet's own basemap tabs, riding above its mini map. Right-aligned
    the way the main map's are; the wrap below loses its top margin so the two
    read as one control-plus-map unit. */
-.detailMapHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:12px 0 8px}
-/* Save-for-offline sits opposite the basemap tabs. Quiet until it has done
-   something: outlined normally, filled green once this lake is saved. */
-.offlineBtn{border:1px solid var(--line);background:#fff;color:var(--ink);
- border-radius:11px;padding:7px 12px;font:inherit;font-weight:800;font-size:12.5px;
- cursor:pointer;white-space:nowrap}
-.offlineBtn.saved{background:var(--accent);border-color:var(--accent);color:var(--green)}
-.offlineBtn:disabled{opacity:.65;cursor:default}
+.detailMapHead{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin:12px 0 8px}
 .detailMapHead+.detailMapWrap,.detailMapBlock .detailMapWrap{margin-top:0}
 .detailMapWrap{margin:12px 0 4px;position:relative}
 /* Full screen for the sheet map — same idea as .mapcard.isFull, one layer

@@ -2,7 +2,7 @@
   "id": "./",
   "name": "Manitoba Stocked Lakes",
   "short_name": "Manitoba Lakes",
-  "description": "Find Ontario stocked lakes by distance, species and stocking year, then check regulations, access points, weather and consumption advice.",
+  "description": "Find Manitoba stocked lakes by distance, species and stocking year, then check access points, weather and maps.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

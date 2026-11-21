@@ -46,9 +46,9 @@ Outstanding:
   service rather than a queryable table, so it is a map layer in `app.js`, not
   a build script.
 - Splash art and app icon.
-- Regulations and consumption advisories still ship Ontario data files, and
-  the ~28 strings describing them still say Ontario. That is deliberate:
-  relabelling them would hide the mismatch rather than fix it.
+- Regulations and consumption advisories. The Ontario data files and the
+  engine that read them were removed in mb1i/mb1j. The app shows no limits
+  and links to the Manitoba Anglers' Guide instead.
 
 ## Licence
 
